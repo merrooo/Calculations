@@ -1,0 +1,113 @@
+// Firebase v8 compat setup
+// Add scripts:
+// <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app-compat.js"><\/script>
+// <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-database-compat.js"><\/script>
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+function addRecord(){
+  const id = document.getElementById("id").value.trim();
+  if(!id) return Swal.fire("Warning","Enter id","warning");
+  const data = {
+    inpt1: document.getElementById("inpt1").value,
+    drp1: document.getElementById("drp1").value
+  };
+  db.ref("users/" + id).set(data)
+    .then(()=>Swal.fire("Saved","Record added","success"))
+    .catch((e)=>Swal.fire("Error",e.message,"error"));
+}
+
+function fetchRecordById(){
+  const id = document.getElementById("id").value.trim();
+  if(!id) return Swal.fire("Info","Enter id","info");
+  db.ref("users/" + id).once("value").then((s)=>{
+    if(!s.exists()) return Swal.fire("Info","No record found","info");
+    const data = s.val() || {};
+    document.getElementById("inpt1").value = data.inpt1 || "";
+    document.getElementById("drp1").value = data.drp1 || "";
+    Swal.fire("Done","Record loaded","success");
+  }).catch((e)=>Swal.fire("Error",e.message,"error"));
+}
+
+function fetchAllRecords(){
+  db.ref("users").once("value").then((s)=>{
+    const all = s.val() || {};
+    console.log(all);
+    Swal.fire("Done","Fetched all records. Check console.","success");
+    return all;
+  }).catch((e)=>Swal.fire("Error",e.message,"error"));
+}
+
+function updateRecord(){
+  const id = document.getElementById("id").value.trim();
+  if(!id) return Swal.fire("Warning","Enter id","warning");
+  const data = {
+    inpt1: document.getElementById("inpt1").value,
+    drp1: document.getElementById("drp1").value
+  };
+  db.ref("users/" + id).update(data)
+    .then(()=>Swal.fire("Updated","Record updated","success"))
+    .catch((e)=>Swal.fire("Error",e.message,"error"));
+}
+
+function deleteRecordById(){
+  const id = document.getElementById("id").value.trim();
+  if(!id) return Swal.fire("Warning","Enter id","warning");
+  Swal.fire({title:"Delete?", text:id, icon:"warning", showCancelButton:true})
+    .then((r)=>{
+      if(!r.isConfirmed) return;
+      return db.ref("users/" + id).remove()
+        .then(()=>Swal.fire("Deleted","Record removed","success"));
+    })
+    .catch((e)=>Swal.fire("Error",e.message,"error"));
+}
+
+function deleteAllRecords(){
+  Swal.fire({title:"Delete all data?", icon:"warning", showCancelButton:true, confirmButtonText:"Delete All"})
+    .then((r)=>{
+      if(!r.isConfirmed) return;
+      return db.ref("users").remove()
+        .then(()=>Swal.fire("Done","All records deleted","success"));
+    })
+    .catch((e)=>Swal.fire("Error",e.message,"error"));
+}
+
+function populateTable(tableBodyId="tableBody"){
+  const tbody = document.getElementById(tableBodyId);
+  if(!tbody) return Swal.fire("Info","table body not found","info");
+  db.ref("users").once("value").then((s)=>{
+    const data = s.val() || {};
+    tbody.innerHTML = "";
+    Object.keys(data).forEach((key)=>{
+      const tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + key + "</td><td><button onclick=\"loadFromRow('" + key + "')\">Load</button></td>";
+      tbody.appendChild(tr);
+    });
+    Swal.fire("Done","Table populated","success");
+  }).catch((e)=>Swal.fire("Error",e.message,"error"));
+}
+
+function loadFromRow(id){
+  const idInput = document.getElementById("id");
+  if(idInput) idInput.value = id;
+  if(typeof fetchRecordById === "function") fetchRecordById();
+}
+
+function exportTableToExcel(tableId="dataTable", fileName="report.xls"){
+  const table = document.getElementById(tableId);
+  if(!table) return Swal.fire("Info","Table not found","info");
+  const html = table.outerHTML.replace(/ /g, "%20");
+  const a = document.createElement("a");
+  a.href = "data:application/vnd.ms-excel," + html;
+  a.download = fileName;
+  a.click();
+  Swal.fire("Done","Excel exported","success");
+}
