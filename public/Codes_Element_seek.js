@@ -1,6 +1,5 @@
 ﻿const el = (id) => document.getElementById(id);
     const components = [];
-    const selectedLogics = [];
 
     const escHtml = (v) => String(v || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;");
     const escJs = (v) => String(v || "").replace(/\\/g, "\\\\").replace(/\"/g, '\\"').replace(/\r?\n/g, " ");
@@ -19,22 +18,6 @@
         chip.className = "chip";
         chip.innerText = c.id + " (" + c.type + ")";
         chip.onclick = () => { components.splice(i, 1); renderChips(); };
-        box.appendChild(chip);
-      });
-    }
-
-    function renderLogicChips() {
-      const box = el("logicChips");
-      if (!selectedLogics.length) {
-        box.innerHTML = '<span class="muted">No logic selected</span>';
-        return;
-      }
-      box.innerHTML = "";
-      selectedLogics.forEach((k, i) => {
-        const chip = document.createElement("span");
-        chip.className = "chip";
-        chip.innerText = k;
-        chip.onclick = () => { selectedLogics.splice(i, 1); renderLogicChips(); };
         box.appendChild(chip);
       });
     }
@@ -289,12 +272,6 @@
       };
     }
 
-    function generateSelectedBundle() {
-      if (!selectedLogics.length) return "// No logic selected";
-      const map = getGeneratorMap();
-      return selectedLogics.map((k) => (map[k] ? map[k]() : "// Unknown logic: " + k)).join("\n\n");
-    }
-
     function sanitizeGeneratedFunctions(code) {
       let clean = String(code || "");
       clean = clean.replace(/<\/(script)/gi, "<\\/$1");
@@ -305,7 +282,7 @@
       const title = escHtml((el("pageTitle").value || "My App").trim());
       const styleText = document.querySelector("style") ? document.querySelector("style").textContent : "";
       const htmlCodes = generateHTML();
-      const rawFunctionsCode = selectedLogics.length ? generateSelectedBundle() : generateCRUD();
+      const rawFunctionsCode = generateCRUD();
       const functionsCode = sanitizeGeneratedFunctions(rawFunctionsCode);
       const cs = "<" + "/script>";
 
@@ -358,30 +335,12 @@
     };
 
     el("genHTML").onclick = () => { el("output").innerText = generateHTML(); };
-    el("genJS").onclick = () => { el("output").innerText = generateCRUD(); };
     el("genPage").onclick = () => { el("output").innerText = generateFullPageTemplate(); };
-    el("genConfig").onclick = () => { el("output").innerText = generateFirebaseConfig(); };
-    el("genAdd").onclick = () => { el("output").innerText = generateAddFunction(); };
-    el("genFetch").onclick = () => { el("output").innerText = generateFetchFunction(); };
-    el("genFetchAll").onclick = () => { el("output").innerText = generateFetchAllFunction(); };
-    el("genUpdate").onclick = () => { el("output").innerText = generateUpdateFunction(); };
-    el("genDelete").onclick = () => { el("output").innerText = generateDeleteFunction(); };
-    el("genDeleteAll").onclick = () => { el("output").innerText = generateDeleteAllFunction(); };
-    el("genPopulate").onclick = () => { el("output").innerText = generatePopulateTableFunction(); };
-    el("genExcel").onclick = () => { el("output").innerText = generateExcelFunction(); };
-
-    el("addLogic").onclick = () => {
-      selectedLogics.push(el("logicType").value);
-      renderLogicChips();
-    };
-
-    el("clearLogic").onclick = () => {
-      selectedLogics.length = 0;
-      renderLogicChips();
-    };
-
-    el("genLogicBundle").onclick = () => {
-      el("output").innerText = generateSelectedBundle();
+    el("genSnippet").onclick = () => {
+      const type = el("snippetType").value;
+      const map = getGeneratorMap();
+      const code = type === "all" ? generateCRUD() : (map[type] ? map[type]() : "// Unknown snippet type");
+      el("output").innerText = code;
     };
 
     el("elementType").addEventListener("change", updateExtraHint);
@@ -401,5 +360,4 @@
     }
 
     renderChips();
-    renderLogicChips();
     updateExtraHint();

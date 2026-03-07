@@ -1,178 +1,259 @@
 ﻿<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HTML + Firebase CRUD Generator</title>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <style>
-    :root {
-      --bg: #0b1220;
-      --panel: #111c33;
-      --line: #2b3f63;
-      --text: #e6eefc;
-      --muted: #9ab0d6;
-      --primary: #2f80ed;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML + Firebase CRUD Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --panel: #111c33;
+        --line: #2b3f63;
+        --text: #e6eefc;
+        --muted: #9ab0d6;
+        --primary: #2f80ed;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+      }
 
-    * { box-sizing: border-box; }
+      * {
+        box-sizing: border-box;
+      }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Segoe UI, Tahoma, Arial, sans-serif;
-      color: var(--text);
-      background: radial-gradient(circle at 10% 10%, #1a2c4d 0, transparent 35%), radial-gradient(circle at 90% 90%, #153a56 0, transparent 35%), var(--bg);
-      display: grid;
-      grid-template-columns: 430px 1fr;
-      gap: 14px;
-      padding: 14px;
-    }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family:
+          Segoe UI,
+          Tahoma,
+          Arial,
+          sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 10% 10%, #1a2c4d 0, transparent 35%),
+          radial-gradient(circle at 90% 90%, #153a56 0, transparent 35%),
+          var(--bg);
+        display: grid;
+        grid-template-columns: 430px 1fr;
+        gap: 14px;
+        padding: 14px;
+      }
 
-    .left, .right {
-      background: linear-gradient(180deg, rgba(17,28,51,.98), rgba(12,22,42,.98));
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,.3);
-    }
+      .left,
+      .right {
+        background: linear-gradient(
+          180deg,
+          rgba(17, 28, 51, 0.98),
+          rgba(12, 22, 42, 0.98)
+        );
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      }
 
-    .left { padding: 14px; max-height: calc(100vh - 28px); overflow: auto; }
-    .right { padding: 14px; display: flex; flex-direction: column; min-height: calc(100vh - 28px); }
+      .left {
+        padding: 14px;
+        max-height: calc(100vh - 28px);
+        overflow: auto;
+      }
+      .right {
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - 28px);
+      }
 
-    h3 { margin: 0 0 10px; font-size: 15px; }
-    label { display: block; margin: 8px 0 4px; font-size: 12px; font-weight: 700; color: var(--muted); }
+      h3 {
+        margin: 0 0 10px;
+        font-size: 15px;
+      }
+      label {
+        display: block;
+        margin: 8px 0 4px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--muted);
+      }
 
-    input, select {
-      width: 100%;
-      margin: 0 0 6px;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid var(--line);
-      background: #0c162b;
-      color: var(--text);
-      outline: none;
-    }
+      input,
+      select {
+        width: 100%;
+        margin: 0 0 6px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: #0c162b;
+        color: var(--text);
+        outline: none;
+      }
 
-    input:focus, select:focus { border-color: #64a8ff; box-shadow: 0 0 0 3px rgba(47,128,237,.2); }
+      input:focus,
+      select:focus {
+        border-color: #64a8ff;
+        box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.2);
+      }
 
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-weight: 700;
-      cursor: pointer;
-      margin: 3px;
-    }
+      button {
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-weight: 700;
+        cursor: pointer;
+        margin: 3px;
+      }
 
-    .primary { background: var(--primary); color: #fff; }
-    .success { background: var(--success); color: #fff; }
-    .warning { background: var(--warning); color: #111; }
-    .danger { background: var(--danger); color: #fff; }
+      .primary {
+        background: var(--primary);
+        color: #fff;
+      }
+      .success {
+        background: var(--success);
+        color: #fff;
+      }
+      .warning {
+        background: var(--warning);
+        color: #111;
+      }
+      .danger {
+        background: var(--danger);
+        color: #fff;
+      }
 
-    .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-    .chip { display: inline-block; padding: 5px 10px; border-radius: 999px; background: #1f355b; border: 1px solid #34568d; margin: 3px 3px 0 0; cursor: pointer; font-size: 12px; }
-    .chip:hover { background: #7f1d1d; border-color: #ef4444; }
-    .muted { color: var(--muted); font-size: 12px; margin: 3px 0 8px; }
+      .btn-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+      }
+      .chip {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: #1f355b;
+        border: 1px solid #34568d;
+        margin: 3px 3px 0 0;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .chip:hover {
+        background: #7f1d1d;
+        border-color: #ef4444;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 12px;
+        margin: 3px 0 8px;
+      }
 
-    pre {
-      margin: 8px 0 0;
-      flex: 1;
-      overflow: auto;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: #020811;
-      color: #93f5c8;
-      padding: 12px;
-      font-family: Consolas, monospace;
-      font-size: 12px;
-      line-height: 1.45;
-    }
+      pre {
+        margin: 8px 0 0;
+        flex: 1;
+        overflow: auto;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        background: #020811;
+        color: #93f5c8;
+        padding: 12px;
+        font-family: Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.45;
+      }
 
-    hr { border: 0; border-top: 1px solid var(--line); margin: 12px 0; }
-    @media (max-width: 1080px) { body { grid-template-columns: 1fr; } .btn-grid { grid-template-columns: 1fr; } }
-  </style>
-</head>
-<body>
-  <section class="left">
-    <h3>Basic Settings</h3>
-    <label>Page Name</label>
-    <input id="pageTitle" value="My App" />
-    <label>Database Node</label>
-    <input id="nodePath" value="users" />
-    <label>ID Field</label>
-    <input id="idField" value="id" />
+      hr {
+        border: 0;
+        border-top: 1px solid var(--line);
+        margin: 12px 0;
+      }
+      @media (max-width: 1080px) {
+        body {
+          grid-template-columns: 1fr;
+        }
+        .btn-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="left">
+      <h3>Basic Settings</h3>
+      <label>Page Name</label>
+      <input id="pageTitle" value="My App" />
+      <label>Database Node</label>
+      <input id="nodePath" value="users" />
+      <label>ID Field</label>
+      <input id="idField" value="id" />
 
-    <hr />
+      <hr />
 
-    <h3>Create Element</h3>
-    <select id="elementType">
-      <option value="input">Text Input</option>
-      <option value="number">Number Input</option>
-      <option value="email">Email Input</option>
-      <option value="password">Password Input</option>
-      <option value="tel">Telephone Input</option>
-      <option value="url">URL Input</option>
-      <option value="textarea">Textarea</option>
-      <option value="select">Select Dropdown</option>
-      <option value="checkbox">Checkbox</option>
-      <option value="radio">Radio Group</option>
-      <option value="range">Range Slider</option>
-      <option value="date">Date Picker</option>
-      <option value="time">Time Picker</option>
-      <option value="label">Label</option>
-      <option value="image">Image</option>
-      <option value="upload">File Upload</option>
-      <option value="list">List</option>
-      <option value="table">Table</option>
-    </select>
+      <h3>Create Element</h3>
+      <select id="elementType">
+        <option value="input">Text Input</option>
+        <option value="number">Number Input</option>
+        <option value="email">Email Input</option>
+        <option value="password">Password Input</option>
+        <option value="tel">Telephone Input</option>
+        <option value="url">URL Input</option>
+        <option value="textarea">Textarea</option>
+        <option value="select">Select Dropdown</option>
+        <option value="checkbox">Checkbox</option>
+        <option value="radio">Radio Group</option>
+        <option value="range">Range Slider</option>
+        <option value="date">Date Picker</option>
+        <option value="time">Time Picker</option>
+        <option value="label">Label</option>
+        <option value="image">Image</option>
+        <option value="upload">File Upload</option>
+        <option value="list">List</option>
+        <option value="table">Table</option>
+      </select>
 
-    <label>Element ID</label>
-    <input id="cfg_id" placeholder="name" />
-    <label>Label</label>
-    <input id="cfg_label" placeholder="Name" />
-    <label id="cfg_extra_label">Extra (for select/list/table/radio)</label>
-    <input id="cfg_extra" placeholder="option1,option2 OR col1,col2" />
-    <div class="muted">Comma separated values for `select`, `list`, `table`, `radio`.</div>
+      <label>Element ID</label>
+      <input id="cfg_id" placeholder="name" />
+      <label>Label</label>
+      <input id="cfg_label" placeholder="Name" />
+      <label id="cfg_extra_label">Extra (for select/list/table/radio)</label>
+      <input id="cfg_extra" placeholder="option1,option2 OR col1,col2" />
+      <div class="muted">
+        Comma separated values for `select`, `list`, `table`, `radio`.
+      </div>
 
-    <button class="primary" id="addElement">Add Element</button>
-    <div id="chips"></div>
+      <button class="primary" id="addElement">Add Element</button>
+      <div id="chips"></div>
 
-    <hr />
+      <hr />
 
-    <h3>Generate</h3>
-    <div class="btn-grid">
-      <button class="success" id="genHTML">Generate HTML</button>
-      <button class="success" id="genPage">Generate Full Page</button>
-    </div>
-    <label>Snippet Type</label>
-    <select id="snippetType">
-      <option value="config">Firebase Config</option>
-      <option value="all">All CRUD JS</option>
-      <option value="add">Add</option>
-      <option value="fetch">Fetch By ID</option>
-      <option value="fetchAll">Fetch All</option>
-      <option value="update">Update</option>
-      <option value="delete">Delete By ID</option>
-      <option value="deleteAll">Delete All</option>
-      <option value="populate">Populate Table</option>
-      <option value="excel">Export Excel</option>
-    </select>
-    <button class="warning" id="genSnippet">Generate Snippet</button>
-  </section>
+      <h3>Generate</h3>
+      <div class="btn-grid">
+        <button class="success" id="genHTML">Generate HTML</button>
+        <button class="success" id="genPage">Generate Full Page</button>
+      </div>
+      <label>Snippet Type</label>
+      <select id="snippetType">
+        <option value="config">Firebase Config</option>
+        <option value="all">All CRUD JS</option>
+        <option value="add">Add</option>
+        <option value="fetch">Fetch By ID</option>
+        <option value="fetchAll">Fetch All</option>
+        <option value="update">Update</option>
+        <option value="delete">Delete By ID</option>
+        <option value="deleteAll">Delete All</option>
+        <option value="populate">Populate Table</option>
+        <option value="excel">Export Excel</option>
+      </select>
+      <button class="warning" id="genSnippet">Generate Snippet</button>
+    </section>
 
-  <section class="right">
-    <h3>Output</h3>
-    <div>
-      <button onclick="copyCode()">Copy</button>
-      <button onclick="downloadCode()">Download</button>
-    </div>
-    <pre id="output">Choose a generator button.</pre>
-  </section>
+    <section class="right">
+      <h3>Output</h3>
+      <div>
+        <button onclick="copyCode()">Copy</button>
+        <button onclick="downloadCode()">Download</button>
+      </div>
+      <pre id="output">Choose a generator button.</pre>
+    </section>
 
-  <script src="Codes_Element_seek.js"></script>
-</body>
+    <script src="Codes_Element_seek.js"></script>
+  </body>
 </html>
-
