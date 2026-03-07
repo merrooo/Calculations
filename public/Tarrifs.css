@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 body {
     font-family: 'Cairo', sans-serif;
     background-color: #f4f7f6;
@@ -231,6 +232,8 @@ tr:nth-child(even) {
     font-family: 'Cairo';
     width: 100%;
 =======
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 body {
     font-family: 'Cairo', sans-serif;
     background-color: #f4f7f6;
@@ -462,5 +465,8 @@ tr:nth-child(even) {
     border: 1px solid #ddd;
     font-family: 'Cairo';
     width: 100%;
+<<<<<<< HEAD
 >>>>>>> 79f3cef (h)
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 }

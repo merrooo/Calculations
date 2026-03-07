@@ -1,5 +1,6 @@
 * {
 <<<<<<< HEAD
+<<<<<<< HEAD
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -92,6 +93,8 @@ main {
 }
 
 =======
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -183,7 +186,10 @@ main {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+<<<<<<< HEAD
 >>>>>>> 79f3cef (h)
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 .section {
     display: none;
     background: #ffffff;
@@ -198,6 +204,7 @@ main {
     animation: fadeIn 0.45s ease;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 @keyframes fadeIn {
     from {
@@ -226,6 +233,8 @@ h3 {
 }
 
 =======
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 
 @keyframes fadeIn {
     from {
@@ -253,7 +262,10 @@ h3 {
     font-size: 1.3rem;
 }
 
+<<<<<<< HEAD
 >>>>>>> 79f3cef (h)
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 p {
     margin-bottom: 1.2rem;
     text-align: justify;
@@ -261,6 +273,7 @@ p {
     color: #182635;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 ul,
 ol {
@@ -269,6 +282,8 @@ ol {
 }
 
 =======
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 
 ul,
 ol {
@@ -276,12 +291,16 @@ ol {
     margin-bottom: 1.5rem;
 }
 
+<<<<<<< HEAD
 >>>>>>> 79f3cef (h)
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 li {
     margin-bottom: 0.8rem;
     line-height: 1.7;
     color: #1f2f41;
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 /* Section Controls */
@@ -346,6 +365,8 @@ li {
 }
 
 =======
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 
 /* Section Controls */
 .section-controls {
@@ -408,7 +429,10 @@ li {
     display: none;
 }
 
+<<<<<<< HEAD
 >>>>>>> 79f3cef (h)
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 .content-ar {
     display: block;
 }
@@ -423,6 +447,7 @@ main {
     color: #1a2b3c !important;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 /* Images */
 img {
@@ -457,6 +482,8 @@ footer {
     }
 
 =======
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 
 /* Images */
 img {
@@ -490,7 +517,10 @@ footer {
         flex-direction: column;
     }
 
+<<<<<<< HEAD
 >>>>>>> 79f3cef (h)
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
     .sidebar-nav {
         position: static;
         width: 100%;
@@ -501,6 +531,7 @@ footer {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 1rem;
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     .section-controls {
@@ -687,6 +718,8 @@ canvas {
     }
 
 =======
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 
     .section-controls {
         flex-direction: column;
@@ -871,7 +904,10 @@ canvas {
         justify-content: center;
     }
 
+<<<<<<< HEAD
 >>>>>>> 79f3cef (h)
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
     .circle-content {
         grid-template-columns: 1fr;
     }

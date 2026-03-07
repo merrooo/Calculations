@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* --- Global Styles --- */
 * {
     box-sizing: border-box;
@@ -333,6 +334,8 @@ body.dark-mode .alert-active {
 body.dark-mode .alert-active .res-val {
     color: #ffffff !important;
 =======
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 /* --- Global Styles --- */
 * {
     box-sizing: border-box;
@@ -666,5 +669,8 @@ body.dark-mode .alert-active {
 
 body.dark-mode .alert-active .res-val {
     color: #ffffff !important;
+<<<<<<< HEAD
 >>>>>>> 79f3cef (h)
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 }

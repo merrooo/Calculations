@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ﻿/* --- Global Styles --- */
 * {
     box-sizing: border-box;
@@ -75,6 +76,8 @@ body {
 
 /* --- Transformer Specific Grid (Force All Beside Each Other) --- */
 =======
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 ﻿/* --- Global Styles --- */
 * {
     box-sizing: border-box;
@@ -150,7 +153,10 @@ body {
 }
 
 /* --- Transformer Specific Grid (Force All Beside Each Other) --- */
+<<<<<<< HEAD
 >>>>>>> 79f3cef (h)
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 .trans-input-grid {
     padding: 20px;
     display: grid;
@@ -158,6 +164,7 @@ body {
     gap: 15px;
     background: #ffffff;
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 .input-group {
@@ -314,6 +321,8 @@ input:focus {
 
 
 =======
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 
 .input-group {
     display: flex;
@@ -468,4 +477,7 @@ input:focus {
 }
 
 
+<<<<<<< HEAD
 >>>>>>> 79f3cef (h)
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 :root {
     --primary-color: #004a99;
     --secondary-color: #0099ff;
@@ -236,6 +237,8 @@ canvas {
         grid-column: span 2;
     }
 =======
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 :root {
     --primary-color: #004a99;
     --secondary-color: #0099ff;
@@ -472,5 +475,8 @@ canvas {
     .full-width {
         grid-column: span 2;
     }
+<<<<<<< HEAD
 >>>>>>> 79f3cef (h)
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 }

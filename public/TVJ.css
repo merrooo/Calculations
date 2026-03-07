@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 :root {
     --bg: #f8fafc;
     --panel: #5678ad;
@@ -356,6 +357,8 @@ td {
         font-size: 0.75rem;
     }
 =======
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 :root {
     --bg: #f8fafc;
     --panel: #5678ad;
@@ -712,5 +715,8 @@ td {
         padding: 5px 10px;
         font-size: 0.75rem;
     }
+<<<<<<< HEAD
 >>>>>>> 79f3cef (h)
+=======
+>>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 }
