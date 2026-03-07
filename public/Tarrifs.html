@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -572,4 +573,580 @@
     </script>
 </body>
 
+=======
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة شرائح الكهرباء الموحدة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Tarrifs.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-wrapper">
+            <h2><i class="fas fa-bolt"></i>الشرائح</h2>
+            <button class="btn-home" onclick="window.location.href='index.html'">
+                <i class="fas fa-home"></i> الرئيسية
+            </button>
+        </div>
+
+        <div class="input-group">
+            <div class="input-item">
+                <label>رقم العداد</label>
+                <input type="text" id="meterNo" value="0803083177-41963763" title="رقم العداد"
+                    placeholder="أدخل رقم العداد">
+            </div>
+            <div class="input-item">
+                <label>من تاريخ</label>
+                <input type="date" id="fromDate" title="من تاريخ" placeholder="من تاريخ">
+            </div>
+            <div class="input-item">
+                <label>إلى تاريخ</label>
+                <input type="date" id="toDate" title="إلى تاريخ" placeholder="إلى تاريخ">
+            </div>
+            <div class="input-item">
+                <label>الاستهلاك (ك.و.س)</label>
+                <input type="number" id="tkwh" value="13795" oninput="calculate()" title="الاستهلاك (ك.و.س)"
+                    placeholder="أدخل الاستهلاك">
+            </div>
+            <div class="input-item">
+                <label>رصيد دخول الشهر</label>
+                <input type="number" id="balmoney1" value="14757.57" title="رصيد دخول الشهر"
+                    placeholder="أدخل رصيد دخول الشهر">
+            </div>
+            <div class="input-item">
+                <label>ماتم شحنه</label>
+                <input type="number" id="charge" value="5484" title="ماتم شحنه" placeholder="أدخل المبلغ المشحون">
+            </div>
+            <div class="input-item">
+                <label>رصيد خروج الشهر</label>
+                <input type="number" id="balmoney2" value="7657.52" title="رصيد خروج الشهر"
+                    placeholder="أدخل رصيد خروج الشهر">
+            </div>
+
+            <div class="input-item">
+                <label for="tariffType">نوع النشاط</label>
+                <select id="tariffType" onchange="initTable()">
+                    <option value="factory">قوى محركة</option>
+                    <option value="residential">منزلي</option>
+                    <option value="commercial">تجاري</option>
+                    <option value="farmer">الري</option>
+                    <option value="lighting">انارة عامة</option>
+                    <option value="balance_cst">باقى المشتركين</option>
+                </select>
+            </div>
+            <div class="input-item" id="yearList"></div>
+
+            <div class="input-item">
+                <label for="periodSelect">فترة التعرفة (السعر)</label>
+                <select id="periodSelect" onchange="onPeriodChange()">
+                </select>
+            </div>
+
+            <div class="input-item">
+                <label for="totmoney">إجمالي التشريح</label>
+                <input type="number" id="totmoney" value="0" readonly title="إجمالي التشريح المحسوب" placeholder="0.00">
+            </div>
+        </div>
+
+        <table id="mainTable">
+            <thead>
+                <tr>
+                    <th>الشريحة</th>
+                    <th>الاستهلاك</th>
+                    <th>السعر</th>
+                    <th>خدمة العملاء</th>
+                    <th>فرق تشريح</th>
+                    <th>الإجمالي</th>
+                </tr>
+            </thead>
+            <tbody id="tariffTableBody"></tbody>
+        </table>
+
+
+        <div class="comparison-section">
+            <h3><i class="fas fa-balance-scale"></i> سجل التشريح التعريفة </h3>
+            <button class="btn-save" onclick="addToComparison()"><i class="fas fa-plus"></i> إضافة التشريح</button>
+            <button class="btn-export" onclick="exportTableToCSV()"><i class="fas fa-file-excel"></i> تصدير
+                البيانات</button>
+
+            <table id="comparisonTable" border="1">
+                <thead>
+                    <tr>
+                        <th>السنة</th>
+                        <th>الشهر</th>
+                        <th>الاستهلاك</th>
+                        <th id="currentPeriodHeader">التشريح (المختار)</th>
+                        <th>إجراء</th>
+                    </tr>
+                </thead>
+                <tbody id="comparisonTableBody"></tbody>
+                <tfoot>
+                    <tr class="summary-yellow">
+                        <td colspan="2">الإجمالي</td>
+
+                        <td id="compSumKwh">0</td>
+
+                        <td id="compSumNew">0</td>
+
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+
+        <div class="btn-group">
+            <button class="btn-save" onclick="addToLog()"><i class="fas fa-plus"></i> إضافة للسجل</button>
+
+            <button class="btn-export" onclick="exportTableToCSV()"><i class="fas fa-file-excel"></i> تصدير
+                البيانات</button>
+            <button class="btn-clear" onclick="clearLog()"><i class="fas fa-trash"></i> مسح السجل</button>
+        </div>
+
+        <div class="log-section">
+            <h3><i class="fas fa-history"></i> سجل الاستهلاك التاريخي</h3>
+            <table id="logTable">
+                <thead>
+                    <tr>
+                        <th>العداد</th>
+                        <th>من</th>
+                        <th>إلى</th>
+                        <th>الاستهلاك</th>
+                        <th>دخول</th>
+                        <th>شحن</th>
+                        <th>خروج</th>
+                        <th>التشريح</th>
+                        <th class="actual-col">الفعلي</th>
+                        <th>الفرق</th>
+                        <th>إجراء</th>
+                    </tr>
+                </thead>
+                <tbody id="logTableBody"></tbody>
+                <tfoot>
+                    <tr class="summary-row">
+                        <td colspan="3">الإجمالي العام</td>
+                        <td id="sumKwh">0</td>
+                        <td>---</td>
+                        <td id="sumCharge">0.00</td>
+                        <td>---</td>
+                        <td id="sumMoney">0.00</td>
+                        <td id="sumActual" class="actual-col">0.00</td>
+                        <td id="sumDiff">0.00</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const allConfigs = {
+            "Aug-2024": {
+                residential: [
+                    { label: "ش1 (0-50)", p: 0.68, s: 1 },
+                    { label: "ش2 (51-100)", p: 0.78, s: 2 },
+                    { label: "ش3 (0-200)", p: 0.95, s: 6 },
+                    { label: "ش4 (201-350)", p: 1.55, s: 11 },
+                    { label: "ش5 (351-650)", p: 1.65, s: 15 },
+                    { label: "ش6 (651-1000)", p: 2.10, s: 25 },
+                    { label: "ش7 (1001+)", p: 2.23, s: 40 }
+                ],
+                commercial: [
+                    { label: "ش1 (0-100)", p: 0.85, s: 5 },
+                    { label: "ش2 (0-250)", p: 1.68, s: 15 },
+                    { label: "ش3 (0-600)", p: 2.20, s: 20 },
+                    { label: "ش4 (601-1000)", p: 2.27, s: 25 },
+                    { label: "ش5 (1001+)", p: 2.33, s: 40 }
+                ],
+                farmer: [{ label: "الري", p: 2.00, s: 4 }],
+                factory: [{ label: "قوى محركة", p: 2.34, s: 15 }],
+                "lighting": [{ label: "انارة عامة", p: 2.34, s: 4 }],
+                "balance_cst": [{ label: "باقى المشتركين", p: 2.34, s: 15 }]
+            },
+            "Jan2024-Jul2024": {
+                residential: [
+                    { label: "ش1 (0-50)", p: 0.58, s: 1 },
+                    { label: "ش2 (51-100)", p: 0.68, s: 2 },
+                    { label: "ش3 (0-200)", p: 0.83, s: 6 },
+                    { label: "ش4 (201-350)", p: 1.25, s: 11 },
+                    { label: "ش5 (351-650)", p: 1.40, s: 15 },
+                    { label: "ش6 (651-1000)", p: 1.50, s: 25 },
+                    { label: "ش7 (1001+)", p: 1.65, s: 40 }
+                ],
+                commercial: [
+                    { label: "ش1 (0-100)", p: 0.65, s: 5 },
+                    { label: "ش2 (0-250)", p: 1.36, s: 15 },
+                    { label: "ش3 (0-600)", p: 1.50, s: 20 },
+                    { label: "ش4 (601-1000)", p: 1.65, s: 25 },
+                    { label: "ش5 (1001+)", p: 1.80, s: 40 }
+                ],
+                farmer: [{ label: "الري", p: 1.10, s: 4 }],
+                factory: [{ label: "قوى محركة", p: 1.50, s: 15 }],
+                "lighting": [{ label: "انارة عامة", p: 1.50, s: 4 }],
+                "balance_cst": [{ label: "باقى المشتركين", p: 1.50, s: 15 }]
+            },
+            "2021-2023": {
+                residential: [
+                    { label: "ش1 (0-50)", p: 0.48, s: 1 },
+                    { label: "ش2 (51-100)", p: 0.58, s: 2 },
+                    { label: "ش3 (0-200)", p: 0.77, s: 6 },
+                    { label: "ش4 (201-350)", p: 1.06, s: 11 },
+                    { label: "ش5 (351-650)", p: 1.28, s: 15 },
+                    { label: "ش6 (651-1000)", p: 1.28, s: 25 },
+                    { label: "ش7 (1001+)", p: 1.45, s: 40 }
+                ],
+                commercial: [
+                    { label: "ش1 (0-100)", p: 0.65, s: 5 },
+                    { label: "ش2 (0-250)", p: 1.20, s: 15 },
+                    { label: "ش3 (0-600)", p: 1.40, s: 20 },
+                    { label: "ش4 (601-1000)", p: 1.55, s: 25 },
+                    { label: "ش5 (1001+)", p: 1.60, s: 40 }
+                ],
+                farmer: [{ label: "الري (موحد)", p: 0.95, s: 4 }],
+                factory: [{ label: "قوى محركة", p: 1.25, s: 15 }],
+                "lighting": [{ label: "انارة عامة", p: 1.25, s: 4 }],
+                "balance_cst": [{ label: "باقى المشتركين", p: 1.25, s: 15 }]
+            },
+            "2019-2020": {
+                residential: [
+                    { label: "ش1 (0-50)", p: 0.30, s: 1 },
+                    { label: "ش2 (51-100)", p: 0.40, s: 2 },
+                    { label: "ش3 (0-200)", p: 0.50, s: 6 },
+                    { label: "ش4 (201-350)", p: 0.82, s: 11 },
+                    { label: "ش5 (351-650)", p: 1.00, s: 15 },
+                    { label: "ش6 (651-1000)", p: 1.40, s: 25 },
+                    { label: "ش7 (1001+)", p: 1.45, s: 40 }
+                ],
+                commercial: [
+                    { label: "ش1 (0-100)", p: 0.65, s: 5 },
+                    { label: "ش2 (0-250)", p: 1.20, s: 15 },
+                    { label: "ش3 (0-600)", p: 1.40, s: 20 },
+                    { label: "ش4 (601-1000)", p: 1.55, s: 25 },
+                    { label: "ش5 (1001+)", p: 1.60, s: 40 }
+                ],
+                farmer: [{ label: "الري (موحد)", p: 0.75, s: 4 }],
+                factory: [{ label: "قوى محركة", p: 1.25, s: 15 }],
+                "lighting": [{ label: "انارة عامة", p: 1.25, s: 4 }],
+                "balance_cst": [{ label: "باقى المشتركين", p: 1.25, s: 15 }]
+            }
+        };
+
+        let selectedPeriod = "Aug-2024";
+
+        // وظيفة لملء القائمة المنسدلة بالسنوات المتاحة
+        function fillPeriodDropdown() {
+            const select = document.getElementById('periodSelect');
+            select.innerHTML = '';
+            Object.keys(allConfigs).forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.text = key;
+                select.appendChild(option);
+            });
+            select.value = selectedPeriod;
+        }
+
+        // تحديث عنوان الجدول عند تغيير القائمة المنسدلة
+        function onPeriodChange() {
+            selectedPeriod = document.getElementById('periodSelect').value;
+            document.getElementById('currentPeriodHeader').innerText = "تشريح " + selectedPeriod;
+            initTable();
+        }
+
+        function initTable() {
+            const type = document.getElementById('tariffType').value;
+            const tbody = document.getElementById('tariffTableBody');
+            tbody.innerHTML = '';
+            const cfg = allConfigs[selectedPeriod];
+            const list = cfg[type] || [];
+
+            list.forEach((item, index) => {
+                const i = index + 1;
+                tbody.innerHTML += `<tr id="row${i}">
+                    <td>${item.label}</td>
+                    <td><input id="q${i}" readonly value="0" class="table-input-small"></td>
+                    <td><input id="p${i}" value="${item.p}" oninput="calculate()" class="table-input-small"></td>
+                    <td><input id="s${i}" value="${item.s}" oninput="calculate()" class="table-input-small"></td>
+                    <td><input id="r${i}" value="0" readonly class="table-input-small"></td>
+                    <td><input id="t${i}" readonly value="0" class="table-input-medium"></td>
+                </tr>`;
+            });
+            calculate();
+        }
+
+        // وظيفة حساب التكلفة بناءً على استهلاك معين وتعرفة معينة
+        function calculateCostForConfig(kwh, type, configSet) {
+            let tempTotal = 0;
+            const list = configSet[type] || [];
+            if (type === 'residential') {
+                if (kwh >= 1001) tempTotal = (kwh * list[6].p) + list[6].s + 170;
+                else if (kwh >= 651) tempTotal = (kwh * list[5].p) + list[5].s + 135;
+                else if (kwh > 200) {
+                    let rem = kwh - 200;
+                    tempTotal = (200 * list[2].p) + list[2].s + 24;
+                    if (rem <= 150) tempTotal += (rem * list[3].p) + list[3].s;
+                    else tempTotal += (150 * list[3].p) + list[3].s + ((rem - 150) * list[4].p) + list[4].s;
+                } else {
+                    if (kwh <= 50) tempTotal = (kwh * list[0].p) + list[0].s;
+                    else if (kwh <= 100) tempTotal = (50 * list[0].p) + list[0].s + ((kwh - 50) * list[1].p) + list[1].s;
+                    else tempTotal = (100 * list[1].p) + list[1].s + ((kwh - 100) * list[2].p) + list[2].s;
+                }
+            } else if (type === 'commercial') {
+                if (kwh >= 1001) tempTotal = (kwh * list[4].p) + list[4].s + 140;
+                else if (kwh >= 601) tempTotal = (kwh * list[3].p) + list[3].s + 25;
+                else if (kwh >= 251) tempTotal = (kwh * list[2].p) + list[2].s + 70; // 20+50
+                else if (kwh >= 101) tempTotal = (kwh * list[1].p) + list[1].s + 70; // 15+55
+                else tempTotal = (kwh * list[0].p) + list[0].s;
+            } else {
+                tempTotal = (kwh * list[0].p) + list[0].s;
+            }
+            return tempTotal;
+        }
+
+        function calculate() {
+            const type = document.getElementById('tariffType').value;
+            const totalKwh = Number(document.getElementById('tkwh').value) || 0;
+            const cfg = allConfigs[selectedPeriod];
+            const rowsCount = (cfg[type] || []).length;
+
+            // ريست لجميع المدخلات في الجدول
+            for (let i = 1; i <= 7; i++) {
+                if (document.getElementById(`q${i}`)) {
+                    document.getElementById(`q${i}`).value = 0;
+                    document.getElementById(`r${i}`).value = 0;
+                    document.getElementById(`t${i}`).value = 0;
+                    document.getElementById(`row${i}`).classList.remove('highlight');
+                }
+            }
+
+            // منطق التشريح (منزلي)
+            if (type === 'residential') {
+                if (totalKwh >= 1001) {
+                    document.getElementById('q7').value = totalKwh; document.getElementById('r7').value = 170;
+                    document.getElementById('row7').classList.add('highlight');
+                } else if (totalKwh >= 651) {
+                    document.getElementById('q6').value = totalKwh; document.getElementById('r6').value = 135;
+                    document.getElementById('row6').classList.add('highlight');
+                } else if (totalKwh > 200) {
+                    document.getElementById('q3').value = 200; document.getElementById('r3').value = 24;
+                    let rem = totalKwh - 200;
+                    if (rem <= 150) { document.getElementById('q4').value = rem; document.getElementById('row4').classList.add('highlight'); }
+                    else { document.getElementById('q4').value = 150; document.getElementById('q5').value = (rem - 150).toFixed(2); document.getElementById('row5').classList.add('highlight'); }
+                } else {
+                    let q1 = Math.min(50, totalKwh); document.getElementById('q1').value = q1;
+                    if (totalKwh > 50) {
+                        document.getElementById('q2').value = Math.min(50, totalKwh - 50);
+                        if (totalKwh > 100) { document.getElementById('q3').value = (totalKwh - 100).toFixed(2); document.getElementById('row3').classList.add('highlight'); }
+                        else { document.getElementById('row2').classList.add('highlight'); }
+                    } else { document.getElementById('row1').classList.add('highlight'); }
+                }
+            } else if (type === 'commercial') {
+                if (totalKwh >= 1001) {
+                    document.getElementById('q5').value = totalKwh; document.getElementById('r5').value = 140;
+                    document.getElementById('row5').classList.add('highlight');
+                } else if (totalKwh >= 601) {
+                    document.getElementById('q4').value = totalKwh; document.getElementById('row4').classList.add('highlight');
+                } else if (totalKwh >= 251) {
+                    document.getElementById('q3').value = totalKwh; document.getElementById('r3').value = 50;
+                    document.getElementById('row3').classList.add('highlight');
+                } else if (totalKwh >= 101) {
+                    document.getElementById('q2').value = totalKwh; document.getElementById('r2').value = 55;
+                    document.getElementById('row2').classList.add('highlight');
+                } else {
+                    document.getElementById('q1').value = totalKwh; document.getElementById('row1').classList.add('highlight');
+                }
+            } else {
+                if (document.getElementById('q1')) {
+                    document.getElementById('q1').value = totalKwh;
+                    document.getElementById('row1').classList.add('highlight');
+                }
+            }
+
+            let grandTotal = 0;
+            for (let i = 1; i <= rowsCount; i++) {
+                let q = Number((document.getElementById(`q${i}`) || {}).value) || 0;
+                let p = Number((document.getElementById(`p${i}`) || {}).value) || 0;
+                let s = Number((document.getElementById(`s${i}`) || {}).value) || 0;
+                let r = Number((document.getElementById(`r${i}`) || {}).value) || 0;
+                if (q > 0 || r > 0) {
+                    let rowT = (q * p) + s + r;
+                    const tEl = document.getElementById(`t${i}`);
+                    if (tEl) tEl.value = rowT.toFixed(2);
+                    grandTotal += rowT;
+                }
+            }
+            document.getElementById('totmoney').value = grandTotal.toFixed(2);
+        }
+
+        function addToLog() {
+            const meter = document.getElementById('meterNo').value || "N/A";
+            const fromD = document.getElementById('fromDate').value || "-";
+            const toD = document.getElementById('toDate').value || "-";
+            const kwh = Number(document.getElementById('tkwh').value);
+            const bal1 = Number(document.getElementById('balmoney1').value);
+            const charge = Number(document.getElementById('charge').value);
+            const bal2 = Number(document.getElementById('balmoney2').value);
+            const cost = Number(document.getElementById('totmoney').value);
+
+            const actualCost = (bal1 + charge) - bal2;
+            const diff = actualCost - cost;
+
+            const logBody = document.getElementById('logTableBody');
+            const row = document.createElement('tr');
+            if (diff < 0) row.classList.add('negative-diff');
+
+            row.innerHTML = `
+                <td>${meter}</td><td>${fromD}</td><td>${toD}</td>
+                <td class="log-kwh">${kwh}</td><td>${bal1.toFixed(2)}</td>
+                <td class="log-charge">${charge.toFixed(2)}</td><td>${bal2.toFixed(2)}</td>
+                <td class="log-cost">${cost.toFixed(2)}</td>
+                <td class="log-actual actual-col">${actualCost.toFixed(2)}</td>
+                <td class="log-diff diff-col inherit-color">${diff.toFixed(2)}</td>
+                <td><button class="btn-delete" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+            `;
+            logBody.appendChild(row);
+            updateTotals();
+        }
+
+        function addToComparison() {
+            const kwh = Number(document.getElementById('tkwh').value) || 0;
+            const type = document.getElementById('tariffType').value;
+            const toDateStr = document.getElementById('toDate').value;
+
+            // Get Date details
+            const dateObj = toDateStr ? new Date(toDateStr) : new Date();
+            const year = dateObj.getFullYear();
+            const month = dateObj.getMonth() + 1;
+
+            // Calculate cost based on selected period
+            const costCurrent = calculateCostForConfig(kwh, type, allConfigs[selectedPeriod]);
+
+            const tableBody = document.getElementById('comparisonTableBody');
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+        <td contenteditable="true" style="background-color: #fffde7; cursor: edit;" title="اضغط للتعديل">${year}</td>
+        <td contenteditable="true" style="background-color: #fffde7; cursor: edit;" title="اضغط للتعديل">${month}</td>
+        <td class="comp-kwh">${kwh}</td>
+        <td class="comp-new">${costCurrent.toFixed(2)}</td>
+        <td><button class="btn-delete" onclick="this.closest('tr').remove(); updateComparisonTotals();"><i class="fas fa-trash-alt"></i></button></td>
+    `;
+
+            tableBody.appendChild(row);
+            updateComparisonTotals();
+
+            // Add event listener to update totals if the user edits the KWH or Cost manually (optional)
+            row.querySelector('[contenteditable]').addEventListener('input', updateComparisonTotals);
+        }
+
+        function updateTotals() {
+            let tk = 0, tm = 0, ta = 0, td = 0, tc = 0;
+            document.querySelectorAll('.log-kwh').forEach(el => tk += Number(el.innerText));
+            document.querySelectorAll('.log-cost').forEach(el => tm += Number(el.innerText));
+            document.querySelectorAll('.log-actual').forEach(el => ta += Number(el.innerText));
+            document.querySelectorAll('.log-diff').forEach(el => td += Number(el.innerText));
+            document.querySelectorAll('.log-charge').forEach(el => tc += Number(el.innerText));
+
+            document.getElementById('sumKwh').innerText = tk.toFixed(2);
+            document.getElementById('sumMoney').innerText = tm.toFixed(2);
+            document.getElementById('sumActual').innerText = ta.toFixed(2);
+            document.getElementById('sumCharge').innerText = tc.toFixed(2);
+            document.getElementById('sumDiff').innerText = td.toFixed(2);
+        }
+
+
+
+
+        // تحديث وظيفة الحساب الإجمالي للمقارنة
+        // Updated Comparison Totals to ensure correct summation
+        function updateComparisonTotals() {
+            let totalKwh = 0;
+            let totalMoney = 0;
+
+            // Summing Consumption
+            document.querySelectorAll('.comp-kwh').forEach(el => {
+                totalKwh += parseFloat(el.innerText) || 0;
+            });
+
+            // Summing Tariff
+            document.querySelectorAll('.comp-new').forEach(el => {
+                totalMoney += parseFloat(el.innerText) || 0;
+            });
+
+            // Placing them in the footer cells
+            document.getElementById('compSumKwh').innerText = totalKwh;
+            document.getElementById('compSumNew').innerText = totalMoney.toFixed(2);
+        }
+
+
+        function deleteRow(btn) {
+            if (confirm("حذف هذا السجل؟")) {
+                btn.closest('tr').remove();
+                updateTotals();
+            }
+        }
+
+        function clearLog() {
+            if (confirm("سيتم مسح كافة السجلات؟")) {
+                document.getElementById('logTableBody').innerHTML = '';
+                document.getElementById('comparisonTableBody').innerHTML = '';
+                updateTotals();
+                updateComparisonTotals();
+            }
+        }
+
+        function exportTableToCSV() {
+            let csv = [];
+            csv.push("تقرير استهلاك الكهرباء");
+            csv.push("سجل التشريح المختار");
+
+            document.querySelectorAll("#comparisonTable tr").forEach(row => {
+                let data = [];
+                const cells = row.querySelectorAll("th, td");
+
+                // Check if this is the summary row (footer)
+                if (row.classList.contains('summary-yellow')) {
+                    // Cell 0: "الإجمالي" (the one with colspan)
+                    data.push(cells[0].innerText);
+                    // Add an empty string to represent the second column hidden by colspan
+                    data.push("");
+                    // Cell 1: Total Consumption (800)
+                    data.push(cells[1].innerText);
+                    // Cell 2: Total Tariff (1112)
+                    data.push(cells[2].innerText);
+                } else {
+                    // Regular rows: just take the first 4 columns
+                    for (let i = 0; i < 4; i++) {
+                        if (cells[i]) {
+                            // Remove commas from numbers so Excel doesn't break columns
+                            data.push(cells[i].innerText.replace(/,/g, ''));
+                        }
+                    }
+                }
+                csv.push(data.join(","));
+            });
+
+            // Create the CSV file with UTF-8 BOM to support Arabic characters in Excel
+            const blob = new Blob(["\ufeff" + csv.join("\n")], { type: "text/csv;charset=utf-8;" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "تقرير_التشريح.csv";
+            link.click();
+        }
+
+        window.onload = function () {
+            fillPeriodDropdown();
+            initTable();
+        };
+    </script>
+</body>
+
+>>>>>>> 79f3cef (h)
 </html>

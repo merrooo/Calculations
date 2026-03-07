@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -273,3 +274,280 @@
 </body>
 
 </html>
+=======
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Power Calculator</title>
+    <link rel="stylesheet" href="Calibrations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <label class="dark-toggle" title="Toggle dark mode">
+        <input id="darkToggle" class="dark-toggle__input" type="checkbox" aria-label="Dark mode toggle" role="switch"
+            aria-checked="false" />
+        <span class="switch"></span>
+        <span class="icon">🌙</span>
+    </label>
+    <div class="app">
+        <div class="logo-section">
+            <h2>⚡ Power Calculator</h2>
+            <div class="header-buttons">
+
+                <button class="btn-reset" onclick="location.reload()">Reset All</button>
+                <button class="btn-home" onclick="window.location.href='index.html'">الصفحة الرئيسية</button>
+
+            </div>
+        </div>
+
+        <div class="section-container">
+            <div class="section-title">📊 Phase Parameters (البيانات الكهربائية)</div>
+            <div class="input-dashboard">
+                <div class="input-group">
+                    <label>System Mode</label>
+                    <select id="phase_mode" aria-label="System mode selection" onchange="handlePhaseModeChange()">
+                        <option value="3">Three Phase (3Φ)</option>
+                        <option value="1">Single Phase (1Φ)</option>
+                    </select>
+                </div>
+                <div class="input-group"><label>Voltage (V)</label><input type="number" id="v" value="380"
+                        aria-label="Voltage in volts" oninput="calculatePhase()"></div>
+                <div class="input-group"><label>Current (A)</label><input type="number" id="i"
+                        aria-label="Current in amperes" oninput="calculatePhase()"></div>
+                <div class="input-group"><label>Angle θ (°)</label><input type="number" id="theta"
+                        aria-label="Angle theta in degrees" oninput="calculatePhase()"></div>
+            </div>
+            <div class="results-dashboard">
+                <div class="result-item grey-box">P.F<span id="res_pf" class="res-val">0.000</span></div>
+                <div class="result-item grey-box">Active (kW)<span id="res_kw" class="res-val">0.00</span></div>
+                <div class="result-item grey-box">H.P<span id="res_hp" class="res-val">0.00</span></div>
+            </div>
+        </div>
+
+        <div class="section-container">
+            <div class="section-title">🛠️ Calibration Setup</div>
+            <div class="input-dashboard">
+                <div class="input-group"><label>kWh Const</label><input type="number" id="kwh_c"
+                        aria-label="kWh constant" oninput="calculatePhase()"></div>
+                <div class="input-group"><label>kVARH Const</label><input type="number" id="kvar_c"
+                        aria-label="kVARH constant" oninput="calculatePhase()"></div>
+                <div class="input-group"><label>Time (Min)</label><input type="number" id="t_c"
+                        aria-label="Time in minutes" oninput="calculatePhase()"></div>
+            </div>
+            <div class="results-dashboard">
+                <div class="result-item blue-box">Required Current (kWh)<span id="cal_kw" class="res-val">0.0</span>
+                </div>
+                <div class="result-item blue-box">Required Current (kVAR)<span id="cal_kv" class="res-val">0.0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-container">
+            <div class="section-title">❄️ A.C Calculation (حسابات التكييف)</div>
+            <div class="input-dashboard">
+
+                <div class="input-group"><label>BTU/H</label><input type="number" id="btu" aria-label="BTU per hour"
+                        oninput="calcAC()"></div>
+
+                <div class="input-group"><label>Tons/Reg</label><input type="number" id="tons"
+                        aria-label="Tons or refrigeration" oninput="calcAC()"></div>
+
+                <div class="input-group"><label>Room L (m)</label><input type="number" id="l"
+                        aria-label="Room length in meters" oninput="calcAC()" placeholder="L"></div>
+                <div class="input-group"><label>Room W (m)</label><input type="number" id="w"
+                        aria-label="Room width in meters" oninput="calcAC()" placeholder="W"></div>
+                <div class="input-group"><label>Room H (m)</label><input type="number" id="h"
+                        aria-label="Room height in meters" oninput="calcAC()" placeholder="H"></div>
+
+            </div>
+            <div class="results-dashboard">
+                <div class="result-item grey-box">Result H.P<span id="ac_hp_res" class="res-val">0.00</span></div>
+            </div>
+        </div>
+
+        <div class="section-container">
+        <div class="section-title">📟 فرق الأرصدة (قوى محركة)</div>
+        <div class="input-group"><label>التعريفة</label><input type="number" id="m_tariff" aria-label="Tariff rate"
+                value="2.34" oninput="calcMeter()"></div>
+        <div class="input-dashboard">
+            <div class="input-group"><label>الاستهلاك الحالي</label><input type="number" id="m_kwh_curr"
+                    aria-label="Current consumption" value="56651" oninput="calcMeter()"></div>
+            <div class="input-group"><label>إجمالي الشحنات الحالية</label><input type="number" id="m_tt_curr"
+                    aria-label="Current total charges" value="5974" oninput="calcMeter()">
+            </div>
+            <div class="input-group"><label>الرصيد الحالى بالعداد</label><input type="number" id="m_t_curr"
+                    aria-label="Current meter balance" value="7657.52" oninput="calcMeter()"></div>
+        </div>
+        <div class="input-dashboard">
+            <div class="input-group"><label>الاستهلاك السابق</label><input type="number" id="m_kwh_prev"
+                    aria-label="Previous consumption" value="42856" oninput="calcMeter()"></div>
+            <div class="input-group"><label>إجمالي الشحنات السابقة</label><input type="number" id="m_tt_prev_val"
+                    aria-label="Previous total charges" value="2400" oninput="calcMeter()">
+            </div>
+            <div class="input-group"><label>الرصيد السابق بالعداد</label><input type="number" id="m_t_prev"
+                    aria-label="Previous meter balance" value="14757.57" oninput="calcMeter()"></div>
+        </div>
+
+        <div class="results-dashboard">
+            <div id="box_tt_sdiff" class="result-item blue-box">إجمالي الشحنات (S)<span id="out_tt_sdiff"
+                    class="res-val">0</span></div>
+            <div id="box_tt_kdiff" class="result-item blue-box">إجمالي الشحنات (K)<span id="out_tt_kdiff"
+                    class="res-val">0</span></div>
+            <div id="box_tttdiff" class="result-item blue-box">الفرق (الشحنات)<span id="out_tttdiff"
+                    class="res-val">0</span></div>
+
+            <div id="box_kwh_sdiff" class="result-item red-box">فرق الاستهلاك (S)<span id="out_kwh_sdiff"
+                    class="res-val">0</span></div>
+            <div id="box_kwh_tts" class="result-item red-box">فرق الاستهلاك (T)<span id="out_kwh_tts"
+                    class="res-val">0</span></div>
+            <div id="box_kwhtdiff" class="result-item red-box">الفرق (kWh)<span id="out_kwhtdiff"
+                    class="res-val">0</span></div>
+        </div>
+    </div>
+    
+
+    <script>
+        function handlePhaseModeChange() {
+            const mode = document.getElementById("phase_mode").value;
+            const voltageInput = document.getElementById("v");
+            voltageInput.value = mode === "3" ? "380" : "220";
+            calculatePhase();
+        }
+
+        function calculatePhase() {
+            const mode = document.getElementById("phase_mode").value;
+            const thetaInput = document.getElementById("theta");
+
+            // Disable theta input for single phase, enable for three phase
+            thetaInput.disabled = mode === "1";
+
+            const v = parseFloat(document.getElementById("v").value) || 0;
+            const i = parseFloat(document.getElementById("i").value) || 0;
+            const thDeg = parseFloat(document.getElementById("theta").value) || 0;
+            const factor = mode === "3" ? Math.sqrt(3) : 1;
+            const pf = Math.cos(thDeg * Math.PI / 180);
+            const kw = (factor * v * i * pf) / 1000;
+
+            document.getElementById("res_pf").innerText = pf.toFixed(3);
+            document.getElementById("res_kw").innerText = kw.toFixed(2);
+            document.getElementById("res_hp").innerText = (kw / 0.746).toFixed(2);
+
+            const kc = parseFloat(document.getElementById("kwh_c").value) || 0;
+            const kvc = parseFloat(document.getElementById("kvar_c").value) || 0;
+            const tc = parseFloat(document.getElementById("t_c").value) || 0;
+
+            if (tc > 0 && v > 0) {
+                document.getElementById("cal_kw").innerText = ((60000 * kc) / (factor * v * pf * tc)).toFixed(1);
+                document.getElementById("cal_kv").innerText = ((60000 * kvc) / (factor * v * Math.abs(Math.sin(thDeg * Math.PI / 180)) * tc)).toFixed(1);
+            }
+        }
+
+        function calcAC() {
+            const btu = parseFloat(document.getElementById("btu").value) || 0;
+            const tons = parseFloat(document.getElementById("tons").value) || 0;
+            const l = parseFloat(document.getElementById("l").value) || 0;
+            const w = parseFloat(document.getElementById("w").value) || 0;
+            const h = parseFloat(document.getElementById("h").value) || 0;
+            let res = 0;
+
+            if (btu > 0) res = btu / 8000;
+            else if (tons > 0) res = tons * 1.5;
+            else if (l > 0 && w > 0 && h > 0) res = (300 * l * w * h) / 12000;
+
+            document.getElementById("ac_hp_res").innerText = res.toFixed(2);
+        }
+
+        function calcMeter() {
+            const kCurr = parseFloat(document.getElementById("m_kwh_curr").value) || 0;
+            const tCurr = parseFloat(document.getElementById("m_tt_curr").value) || 0;
+            const tPrevBal = parseFloat(document.getElementById("m_t_prev").value) || 0;
+            const tCurrBal = parseFloat(document.getElementById("m_t_curr").value) || 0;
+            const tVal = parseFloat(document.getElementById("m_tariff").value) || 1;
+            const kPrev = parseFloat(document.getElementById("m_kwh_prev").value) || 0;
+            const tPrev = parseFloat(document.getElementById("m_tt_prev_val").value) || 0;
+
+            // const tt_sdiff = (tCurr - tPrev + tPrevBal - tCurrBal);   just try
+            const tt_sdiff = (tCurr - tCurrBal) - (tPrev - tPrevBal);
+            // const tt_sdiff = tCurr-(tPrev + tPrevBal);                 just try
+            const k_diff = kCurr - kPrev;
+            const tt_kdiff = k_diff * tVal;
+            const tttdiff = tt_sdiff - tt_kdiff;
+            const kwh_sdiff = k_diff;
+            const kwh_tts = tt_sdiff / tVal;
+            const kwhtdiff = kwh_tts - kwh_sdiff;
+
+            document.getElementById("out_tt_sdiff").innerText = tt_sdiff.toFixed(2);
+            document.getElementById("out_tt_kdiff").innerText = tt_kdiff.toFixed(2);
+            document.getElementById("out_tttdiff").innerText = tttdiff.toFixed(2);
+            document.getElementById("out_kwh_sdiff").innerText = kwh_sdiff.toFixed(2);
+            document.getElementById("out_kwh_tts").innerText = kwh_tts.toFixed(2);
+            document.getElementById("out_kwhtdiff").innerText = kwhtdiff.toFixed(2);
+
+            const checkAlert = (id, val, limit) => {
+                const el = document.getElementById(id);
+                if (Math.abs(val) > limit) {
+                    el.classList.add("alert-active");
+                } else {
+                    el.classList.remove("alert-active");
+                }
+            };
+
+            checkAlert("box_tttdiff", tttdiff, 1000);
+            checkAlert("box_kwhtdiff", kwhtdiff, 500);
+        }
+
+        window.onload = function () {
+            handlePhaseModeChange();
+            calcMeter();
+        };
+    </script>
+    <script>
+        (function () {
+            const checkbox = document.getElementById("darkToggle");
+
+            function setDark(enable) {
+                if (enable) {
+                    document.body.classList.add("dark-mode");
+                    localStorage.setItem("darkMode", "1");
+                } else {
+                    document.body.classList.remove("dark-mode");
+                    localStorage.setItem("darkMode", "0");
+                }
+                if (checkbox) checkbox.setAttribute("aria-checked", enable);
+            }
+
+            window.toggleDarkMode = function () {
+                if (checkbox) setDark(!checkbox.checked);
+            };
+
+            if (checkbox) {
+                checkbox.addEventListener("change", function (e) {
+                    setDark(e.target.checked);
+                });
+            }
+
+            function init() {
+                const saved = localStorage.getItem("darkMode");
+                const enabled = saved === "1";
+                if (checkbox) {
+                    checkbox.checked = enabled;
+                    setDark(enabled);
+                }
+            }
+
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", init);
+            } else {
+                init();
+            }
+        })();
+    </script>
+</body>
+
+</html>
+>>>>>>> 79f3cef (h)
