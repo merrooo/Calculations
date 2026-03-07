@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TVJ Calibration Lab - Responsive</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="TVJ.css">
+</head>
+
+<body>
+
+    <div class="lab-container">
+        <div class="config-side">
+            <div class="panel">
+                <div class="header-container">
+                    <h2>TVJ Calibration</h2>
+                    <button class="btn-home" onclick="window.location.href='index.html'">
+                        <i class="fas fa-home"></i>الصفحة الرئيسية
+                    </button>
+                </div>
+                <div id="input-fields">
+                    <div class="input-group">
+                        <label for="mno">Meter No</label>
+                        <input type="number" id="mno" placeholder="Enter Meter.No">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Voltage (V) & Current (A)</label>
+                        <div class="flex-row-gap">
+                            <input type="number" id="V" value="220" aria-label="Voltage">
+                            <input type="number" id="I" value="5" aria-label="Current">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="type">Measurement Mode</label>
+                        <select id="type" onchange="toggleMode()">
+                            <option value="mech">Mechanical (Meter)</option>
+                            <option value="digital">Digital (Meter)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label id="countLabel" for="countInput">Test Revolutions (n)</label>
+                        <input type="number" id="countInput" value="2">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="constant">Meter Constant (C)</label>
+                        <input type="number" id="constant" value="400">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="limit">IEC Class</label>
+                        <select id="limit">
+                            <option value="0.5">Class 0.5</option>
+                            <option value="1">Class 1.0</option>
+                            <option value="2" selected>Class 2.0</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="btn-grid">
+                    <button id="startBtn" class="start" onclick="runTest()">START</button>
+                    <button id="stopBtn" class="stop" onclick="stopTest()" disabled>CAPTURE</button>
+                    <button class="export" onclick="exportToExcel()">EXCEL</button>
+                    <button class="reset" onclick="resetLogsOnly()">RESET</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="meter-side">
+            <div class="panel">
+                <div class="meter-case">
+                    <div class="digital-display">
+                        <div id="timer">CHRONO: 0.00s</div>
+                        <div id="live-error-display">0.000%</div>
+                    </div>
+
+                    <div id="mech-section">
+                        <div class="disc-label">DISC ROTATION</div>
+                        <div class="disc-container">
+                            <div class="disc-grid">
+                            </div>
+                            <div class="disc-center-line">
+                            </div>
+                            <div id="disc-mark"></div>
+                        </div>
+                    </div>
+
+                    <div id="digital-section" class="digital-section">
+                        <div id="pulse-led" class="pulse-led">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="live-stats">
+                    <div><small>POWER</small><br><b id="live-p" class="accent-text">0.0</b> W</div>
+                    <div><small>STD ENERGY</small><br><b id="live-e" class="accent-text">0.0000</b> Wh</div>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="logTable">
+                        <thead>
+                            <tr>
+                                <th>Meter</th>
+                                <th>Time</th>
+                                <th>Type</th>
+                                <th>Error</th>
+                                <th>Status</th>
+                                <th>Del</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="image-gallery">
+                <img src="TVJ_1.jpeg" alt="Calibration Steps">
+                <img src="TVJ_2.jpeg" alt="Illustration Example">
+            </div>
+        </div>
+    </div>
+    <script>
+        let startTime, timerInt, simInt, elapsed = 0, discPos = -50;
+
+        function toggleMode() {
+            const type = document.getElementById('type').value;
+            document.getElementById('mech-section').style.display = type === 'mech' ? 'block' : 'none';
+            document.getElementById('digital-section').style.display = type === 'digital' ? 'block' : 'none';
+            document.getElementById('countLabel').innerText = type === 'mech' ? 'Test Revolutions (n)' : 'Test Pulses (n)';
+        }
+
+        function runTest() {
+            const V = +document.getElementById('V').value;
+            const I = +document.getElementById('I').value;
+            const power = V * I; // Simplified PF as 1.0 for logic
+            const type = document.getElementById('type').value;
+            const C = +document.getElementById('constant').value;
+            const count = +document.getElementById('countInput').value;
+            const limit = +document.getElementById('limit').value;
+
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = false;
+            startTime = Date.now();
+
+            timerInt = setInterval(() => {
+                elapsed = (Date.now() - startTime) / 1000;
+                const E_true = (power * elapsed) / 3600;
+                const E_meter = (count * 1000) / C;
+                const error = ((E_meter - E_true) / E_meter) * 100;
+
+                document.getElementById('timer').innerText = `CHRONO: ${elapsed.toFixed(2)}s`;
+                document.getElementById('live-e').innerText = E_true.toFixed(4);
+                document.getElementById('live-p').innerText = power.toFixed(1);
+
+                const errEl = document.getElementById('live-error-display');
+                errEl.innerText = (error > 99 ? ">99" : error.toFixed(3)) + "%";
+                errEl.style.color = Math.abs(error) <= limit ? "#00ff00" : "#ff4d4d";
+            }, 50);
+
+            if (type === 'mech') {
+                simInt = setInterval(() => {
+                    discPos += (power / 1000) + 1;
+                    if (discPos > 280) discPos = -40;
+                    document.getElementById('disc-mark').style.left = discPos + "px";
+                }, 30);
+            } else {
+                const pulseRate = (3600000 * 1000) / (power * C);
+                simInt = setInterval(() => {
+                    const led = document.getElementById('pulse-led');
+                    led.style.background = "#ff0";
+                    setTimeout(() => led.style.background = "#1a1a1a", 100);
+                }, pulseRate);
+            }
+        }
+
+        function stopTest() {
+            clearInterval(timerInt);
+            clearInterval(simInt);
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+
+            const mno = document.getElementById('mno').value || "N/A";
+            const error = document.getElementById('live-error-display').innerText;
+            const limit = +document.getElementById('limit').value;
+            const numericErr = parseFloat(error);
+            const isPass = Math.abs(numericErr) <= limit;
+
+            const row = document.querySelector('#logTable tbody').insertRow(0);
+            row.innerHTML = `
+                <td>${mno}</td>
+                <td>${elapsed.toFixed(1)}s</td>
+                <td>${document.getElementById('type').value.toUpperCase()}</td>
+                <td>${error}</td>
+                <td class="${isPass ? 'pass' : 'fail'}">${isPass ? 'PASS' : 'FAIL'}</td>
+                <td><button class="delete-btn" onclick="this.parentElement.parentElement.remove()">X</button></td>
+            `;
+        }
+
+        function exportToExcel() {
+            let table = document.getElementById("logTable").outerHTML;
+            let url = 'data:application/vnd.ms-excel,' + encodeURIComponent(table);
+            let link = document.createElement("a");
+            link.download = "TVJ_Calibration_Report.xls";
+            link.href = url;
+            link.click();
+        }
+
+        async function resetLogsOnly() {
+            const { value: pw } = await Swal.fire({ title: 'Password', input: 'password', background: '#1e293b', color: '#fff' });
+            if (pw === '1') {
+                document.querySelector('#logTable tbody').innerHTML = "";
+                Swal.fire('Cleared', '', 'success');
+            }
+        }
+    </script>
+</body>
+
+</html>

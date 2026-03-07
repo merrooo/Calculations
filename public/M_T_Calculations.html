@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>حاسبة القدرة والمحركات</title>
+    <link rel="stylesheet" href="M_T_Calculations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div class="app">
+        <div class="logo-section">
+            <h2>حساب مفاقيد المحولات والمحركات</h2>
+
+            <div class="header-buttons">
+                <button class="btn-reset" onclick="resetForm()">Reset All</button>
+                <button class="btn-reset btn-home" onclick="window.location.href='index.html'">
+                    الصفحة الرئيسية
+                </button>
+            </div>
+        </div>
+
+
+        <div class="section-container">
+            <div class="section-title">Load & Loss Factors (معاملات الحمل والفقد)</div>
+            <div class="input-dashboard">
+                <div class="input-group">
+                    <label>Avg Power (kW)</label>
+                    <input type="number" id="avg_p" value="880" oninput="calculateAll()">
+                </div>
+                <div class="input-group">
+                    <label>Max Demand (kW)</label>
+                    <input type="number" id="max_d" value="978" oninput="calculateAll()">
+                </div>
+            </div>
+            <div class="results-dashboard">
+                <div class="result-item lf-border">
+                    <h3>Load Factor (LF)</h3>
+                    <input type="text" id="lf_res" class="val-display" readonly>
+                </div>
+                <div class="result-item loss-border">
+                    <h3>Loss Factor</h3>
+                    <input type="text" id="loss_res" class="val-display" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-container">
+            <div class="section-title">Motor Mechanics (ميكانيكا المحرك)</div>
+            <div class="input-dashboard">
+                <div class="input-group">
+                    <label>Frequency (Hz)</label>
+                    <input type="number" id="freq" value="50" oninput="calculateAll()">
+                </div>
+                <div class="input-group">
+                    <label>No. of Poles</label>
+                    <input type="number" id="poles" value="4" oninput="calculateAll()">
+                </div>
+                <div class="input-group">
+                    <label>Power (kW)</label>
+                    <input type="number" id="motor_kw" value="100" oninput="calculateAll()">
+                </div>
+            </div>
+            <div class="results-dashboard">
+                <div class="result-item speed-border">
+                    <h3>Speed (RPM)</h3>
+                    <input type="text" id="speed_res" class="val-display" readonly>
+                </div>
+                <div class="result-item torque-border">
+                    <h3>Torque (N.m)</h3>
+                    <input type="text" id="torque_res" class="val-display" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-container">
+            <div class="section-title">Transformer Analysis (تحليل المحول)</div>
+
+            <div class="trans-input-grid">
+                <div class="input-group">
+                    <label>Rating (kVA)</label>
+                    <input type="number" id="KVATR" value="1000" oninput="calculateAll()">
+                </div>
+                <div class="input-group">
+                    <label>Impedance (%Z)</label>
+                    <input type="number" id="impd" value="5" oninput="calculateAll()">
+                </div>
+                <div class="input-group">
+                    <label>V1 Primary (V)</label>
+                    <input type="number" id="VPR" value="11000" oninput="calculateAll()">
+                </div>
+                <div class="input-group">
+                    <label>V2 FL (V)</label>
+                    <input type="number" id="VSECFL" value="380" oninput="calculateAll()">
+                </div>
+                <div class="input-group">
+                    <label>V2 NL (V)</label>
+                    <input type="number" id="VSECNL" value="400" oninput="calculateAll()">
+                </div>
+            </div>
+
+            <div class="results-dashboard">
+                <div class="result-item trans-border">
+                    <h3>I-Primary (A)</h3>
+                    <input type="text" id="IPR" class="val-display" readonly>
+                </div>
+                <div class="result-item trans-border">
+                    <h3>I-Sec (A)</h3>
+                    <input type="text" id="ISEC" class="val-display" readonly>
+                </div>
+                <div class="result-item trans-border">
+                    <h3>I-sc (kA)</h3>
+                    <input type="text" id="isc_res" class="val-display" readonly>
+                </div>
+                <div class="result-item trans-border">
+                    <h3>Turns Ratio (n)</h3>
+                    <input type="text" id="tr_res" class="val-display" readonly>
+                </div>
+                <div class="result-item trans-border">
+                    <h3>VR %</h3>
+                    <input type="text" id="vr_perc" class="val-display" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = calculateAll;
+
+        function calculateAll() {
+            // 1. Load Factor
+            const avg = parseFloat(document.getElementById("avg_p").value) || 0;
+            const max = parseFloat(document.getElementById("max_d").value) || 0;
+            if (max > 0) {
+                const lf = avg / max;
+                document.getElementById("lf_res").value = lf.toFixed(4);
+                document.getElementById("loss_res").value = (0.25 * lf + 0.75 * Math.pow(lf, 2)).toFixed(4);
+            }
+
+            // 2. Motor Mechanics
+            const freq = parseFloat(document.getElementById("freq").value) || 0;
+            const poles = parseFloat(document.getElementById("poles").value) || 0;
+            const motorKw = parseFloat(document.getElementById("motor_kw").value) || 0;
+            if (poles > 0) {
+                const rpm = (freq / poles) * 120;
+                document.getElementById("speed_res").value = rpm.toFixed(0);
+                const torque = (rpm > 0) ? (9550 * motorKw) / rpm : 0;
+                document.getElementById("torque_res").value = torque.toFixed(2);
+            }
+
+            // 3. Transformer Analysis
+            const kva = parseFloat(document.getElementById("KVATR").value) || 0;
+            const v1 = parseFloat(document.getElementById("VPR").value) || 0;
+            const v2fl = parseFloat(document.getElementById("VSECFL").value) || 0;
+            const v2nl = parseFloat(document.getElementById("VSECNL").value) || 0;
+            const z = parseFloat(document.getElementById("impd").value) || 0;
+
+            const i1 = (v1 > 0) ? (kva * 1000) / (Math.sqrt(3) * v1) : 0;
+            const i2 = (v2fl > 0) ? (kva * 1000) / (Math.sqrt(3) * v2fl) : 0;
+
+            const iscVal = (z > 0 && i2 > 0) ? (i2 / z * 100) / 1000 : 0;
+            const tr = (v2fl > 0) ? v1 / v2fl : 0;
+            const vr = (v2fl > 0) ? ((v2nl - v2fl) / v2fl) * 100 : 0;
+
+            document.getElementById("IPR").value = i1.toFixed(2);
+            document.getElementById("ISEC").value = i2.toFixed(2);
+            document.getElementById("tr_res").value = tr.toFixed(2);
+            document.getElementById("vr_perc").value = vr.toFixed(2) + "%";
+            document.getElementById("isc_res").value = iscVal.toFixed(3);
+        }
+
+        function resetForm() {
+            document.querySelectorAll('input:not([readonly])').forEach(input => input.value = "");
+            calculateAll();
+        }
+    </script>
+</body>
+
+</html>
+
