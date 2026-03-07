@@ -1,0 +1,236 @@
+﻿/* --- Global Styles --- */
+* {
+    box-sizing: border-box;
+    font-family: "Cairo", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    direction: rtl;
+    text-align: right;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+/* --- Header Section --- */
+.logo-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: #065192;
+    padding: 15px 25px;
+    border-radius: 12px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(6, 81, 146, 0.2);
+}
+
+.logo-section h2 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* --- Card Container --- */
+.section-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e1e4e8;
+    margin-bottom: 10px;
+}
+
+.section-title {
+    background: #f8f9fa;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #343a40;
+    border-bottom: 1px solid #eee;
+    text-align: start;
+}
+
+/* --- Input Grid (Dynamic for Load/Motor) --- */
+.input-dashboard {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+    background: #ffffff;
+}
+
+/* --- Transformer Specific Grid (Force All Beside Each Other) --- */
+.trans-input-grid {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+    background: #ffffff;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #065192;
+    white-space: normal;
+    text-align: start;
+}
+
+input[type="number"] {
+    height: 45px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 2px solid #e1e4e8;
+    font-size: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+input:focus {
+    outline: none;
+    border-color: #065192;
+    background-color: #f0f7ff;
+}
+
+/* --- Results Grid --- */
+.results-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    padding: 0 20px 20px 20px;
+}
+
+.result-item {
+    background: #fdfdfd;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #f0f0f0;
+    border-top-width: 5px;
+}
+
+.result-item h3 {
+    font-size: 11px;
+    color: #6c757d;
+    margin-bottom: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.val-display {
+    font-size: 18px;
+    font-weight: 800;
+    color: #212529;
+    border: none;
+    background: transparent;
+    text-align: center;
+    width: 100%;
+}
+
+/* --- Color-Coded Borders --- */
+.lf-border {
+    border-top-color: #17a2b8;
+}
+
+.loss-border {
+    border-top-color: #e83e8c;
+}
+
+.speed-border {
+    border-top-color: #fd7e14;
+}
+
+.torque-border {
+    border-top-color: #6f42c1;
+}
+
+.trans-border {
+    border-top-color: #28a745;
+}
+
+.btn-reset {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* ===============================
+   Header Buttons Group
+================================ */
+.header-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-inline-start: auto;
+    /* RTL compatible */
+}
+
+/* Home button */
+.btn-home {
+    background: #1e90ff;
+}
+
+.btn-home:hover {
+    background: #0b7dda;
+}
+
+#isc_res {
+    color: #d63031;
+}
+
+
+@media (max-width: 800px) {
+    body {
+        padding: 12px;
+    }
+
+    .logo-section {
+        padding: 12px 14px;
+    }
+
+    .logo-section h2 {
+        font-size: 17px;
+    }
+
+    .input-dashboard,
+    .trans-input-grid {
+        padding: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    }
+
+    .results-dashboard {
+        padding: 0 14px 14px 14px;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    .btn-reset {
+        width: 100%;
+    }
+}
+
+

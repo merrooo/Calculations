@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الديناميكية - نظام تحليل الزوايا</title>
+    <link rel="stylesheet" href="Angles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+</head>
+
+<body>
+    <div id="pageOverlay">
+        <div id="loadingSpinner"></div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <div class="main-container">
+        <nav class="main-nav">
+            <div class="nav-brand">
+                <div class="logo"><ion-icon name="flash"></ion-icon></div>
+                <div class="top-right-text">
+                    نظام التحليل الطوري<br>
+                    <input type="date" id="currentDate"
+                        style="background:transparent; border:none; color:white; font-size:0.8rem;">
+                </div>
+            </div>
+
+            <div class="nav-actions">
+                <a href="index.html" class="home-btn">
+                    <ion-icon name="home-outline"></ion-icon>
+                    <span>الصفحة الرئيسية</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="circle-page">
+            <div class="circle-header">
+                <h1>
+                    <ion-icon name="analytics-outline"></ion-icon>
+                    نظام تحليل الزوايا وجيب التمام (3-Phase)
+                </h1>
+            </div>
+
+            <div class="circle-content">
+                <div class="circle-controls">
+                    <h3><ion-icon name="settings-outline"></ion-icon> إدخال زوايا التيار (θ)</h3>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label>خ¸1 (Phase 1)</label>
+                            <input id="theta1" type="number" value="10">
+                        </div>
+                        <div class="input-group">
+                            <label>خ¸2 (Phase 2)</label>
+                            <input id="theta2" type="number" value="130">
+                        </div>
+                        <div class="input-group">
+                            <label>خ¸3 (Phase 3)</label>
+                            <input id="theta3" type="number" value="250">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Pf1 (cos خ¸1)</label>
+                            <input id="pf1" type="text" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Pf2 (cos خ¸2)</label>
+                            <input id="pf2" type="text" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Pf3 (cos خ¸3)</label>
+                            <input id="pf3" type="text" readonly>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+                    <h3><ion-icon name="stats-chart-outline"></ion-icon> تحليل الخطأ والفقد</h3>
+
+                    <div class="results-grid">
+                        <div class="input-group full-width">
+                            <label><ion-icon name="checkmark-circle-outline"></ion-icon> زاوية الحمل المرجعية (Correct
+                                خ¸)</label>
+                            <input id="correcttheta" type="number" value="10">
+                        </div>
+
+                        <div class="input-group">
+                            <label>المسجل [kWH]</label>
+                            <input id="EXkwh" type="number" value="100" step="0.1">
+                        </div>
+
+                        <div class="input-group">
+                            <label>خطأ المقدار (M%)</label>
+                            <input id="Mtheta" type="text" readonly>
+                        </div>
+
+                        <div class="input-group">
+                            <label>خطأ الاستيراد (IM%)</label>
+                            <input id="IMtheta" type="text" readonly>
+                        </div>
+
+                        <div class="input-group highlight">
+                            <label>الفقد المحسوب [kWH]</label>
+                            <input id="Losses" type="text" readonly>
+                        </div>
+                    </div>
+
+                    <div class="color-indicators">
+                        <div class="color-item">
+                            <div class="color-box" style="background: #ffd700;"></div><span>الجهد (V)</span>
+                        </div>
+                        <div class="color-item">
+                            <div class="color-box" style="background: #0011ff;"></div><span>التيار (I)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="circle-canvas">
+                    <h3>المخطط الطوري (Phasor Diagram)</h3>
+
+                    <canvas id="circlePlot" width="500" height="500"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-buttons">
+        <button id="scrollUp" class="scroll-btn" aria-label="Scroll to top">&#9650;</button>
+        <button id="scrollDown" class="scroll-btn" aria-label="Scroll to bottom">&#9660;</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dateInput = document.getElementById('currentDate');
+            if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+
+            const canvas = document.getElementById("circlePlot");
+            const ctx = canvas.getContext("2d");
+            const circleRadius = 200;
+
+            function drawArrow(cx, cy, angleDeg, r, color, label, isCurrent = false) {
+                const rad = (angleDeg - 90) * Math.PI / 180;
+                const x = cx + r * Math.cos(rad);
+                const y = cy + r * Math.sin(rad);
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(x, y);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = isCurrent ? 3 : 2;
+                ctx.stroke();
+
+                const headlen = 10;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x - headlen * Math.cos(rad - Math.PI / 6), y - headlen * Math.sin(rad - Math.PI / 6));
+                ctx.lineTo(x - headlen * Math.cos(rad + Math.PI / 6), y - headlen * Math.sin(rad + Math.PI / 6));
+                ctx.fillStyle = color;
+                ctx.fill();
+
+                ctx.font = "bold 14px Cairo";
+                ctx.fillStyle = color;
+                ctx.fillText(label, x + (12 * Math.cos(rad)), y + (12 * Math.sin(rad)));
+            }
+
+            function updateAll() {
+                const cx = canvas.width / 2;
+                const cy = canvas.height / 2;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.beginPath();
+                ctx.arc(cx, cy, circleRadius, 0, 2 * Math.PI);
+                ctx.strokeStyle = "#eee";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                const theta = [
+                    parseFloat(document.getElementById('theta1').value) || 0,
+                    parseFloat(document.getElementById('theta2').value) || 0,
+                    parseFloat(document.getElementById('theta3').value) || 0
+                ];
+
+                const pfs = theta.map((t, i) => {
+                    const val = Math.cos(t * Math.PI / 180);
+                    const input = document.getElementById(`pf${i + 1}`);
+                    input.value = val.toFixed(3);
+                    input.style.color = val < 0.5 ? "red" : "green";
+                    return val;
+                });
+
+                const vAngles = [0, 120, 240];
+                vAngles.forEach((ang, i) => {
+                    drawArrow(cx, cy, ang, circleRadius - 10, "#ffd700", `V${i + 1}`);
+                    drawArrow(cx, cy, ang + theta[i], circleRadius - 40, "#0011ff", `I${i + 1}`, true);
+                });
+
+                const correctAngle = parseFloat(document.getElementById("correcttheta").value) || 0;
+                const pfCorrectTotal = Math.cos(correctAngle * Math.PI / 180) * 3;
+
+                const sumAbs = pfs.reduce((a, b) => a + Math.abs(b), 0);
+                const mErr = pfCorrectTotal === 0 ? 0 : (1 - (sumAbs / pfCorrectTotal)) * 100;
+
+                const sumPos = pfs.filter(v => v > 0).reduce((a, b) => a + b, 0);
+                const imErr = pfCorrectTotal === 0 ? 0 : (1 - (sumPos / pfCorrectTotal)) * 100;
+
+                document.getElementById("Mtheta").value = mErr.toFixed(2) + " %";
+                document.getElementById("IMtheta").value = imErr.toFixed(2) + " %";
+
+                const kwh = parseFloat(document.getElementById("EXkwh").value) || 0;
+                const losses = (kwh * Math.abs(mErr)) / 100;
+                document.getElementById("Losses").value = losses.toFixed(2) + " kWh";
+            }
+
+            ['theta1', 'theta2', 'theta3', 'correcttheta', 'EXkwh'].forEach(id => {
+                document.getElementById(id).addEventListener('input', updateAll);
+            });
+
+            document.getElementById('scrollUp').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('scrollDown').onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+            updateAll();
+        });
+    </script>
+</body>
+
+</html>
