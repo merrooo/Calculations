@@ -6,7 +6,7 @@
     <title>HTML + Firebase CRUD Generator</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-      <style > :root {
+      :root {
         --bg: #0b1220;
         --panel: #111c33;
         --line: #2b3f63;
@@ -20,16 +20,13 @@
 
       * {
         box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
       body {
-        margin: 0;
         min-height: 100vh;
-        font-family:
-          Segoe UI,
-          Tahoma,
-          Arial,
-          sans-serif;
+        font-family: "Segoe UI", Tahoma, Arial, sans-serif;
         color: var(--text);
         background:
           radial-gradient(circle at 10% 10%, #1a2c4d 0, transparent 35%),
@@ -44,11 +41,12 @@
 
       /* Home Button - Centered in Header */
       .home-button-container {
-        position: absolute;
+        position: fixed;
         top: 20px;
-        left: 50%;
+        left: 87%;
         transform: translateX(-50%);
         z-index: 1000;
+        width: auto;
       }
 
       .btn-home {
@@ -67,17 +65,13 @@
         box-shadow: 0 5px 20px rgba(47, 128, 237, 0.4);
         border: 1px solid rgba(255, 255, 255, 0.2);
         letter-spacing: 0.5px;
+        white-space: nowrap;
       }
 
       .btn-home:hover {
         background: linear-gradient(135deg, #1a5bbf, #2f80ed);
         transform: translateY(-3px);
         box-shadow: 0 8px 25px rgba(47, 128, 237, 0.6);
-      }
-
-      .btn-home i {
-        font-size: 1.1rem;
-        margin-right: 5px;
       }
 
       .btn-home .arrow {
@@ -94,129 +88,213 @@
         border: 1px solid var(--line);
         border-radius: 12px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        margin-top: 70px; /* Increased margin to account for centered button */
+        margin-top: 80px;
+        backdrop-filter: blur(5px);
       }
 
       .left {
-        padding: 14px;
-        max-height: calc(100vh - 28px);
-        overflow: auto;
+        padding: 20px;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary) var(--panel);
+      }
+
+      .left::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .left::-webkit-scrollbar-track {
+        background: var(--panel);
+        border-radius: 10px;
+      }
+
+      .left::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 10px;
       }
 
       .right {
-        padding: 14px;
+        padding: 20px;
         display: flex;
         flex-direction: column;
-        min-height: calc(100vh - 28px);
-        margin-top: 70px; /* Increased margin to account for centered button */
+        min-height: calc(100vh - 100px);
+        max-height: calc(100vh - 100px);
       }
 
       h3 {
-        margin: 0 0 10px;
-        font-size: 15px;
+        margin: 0 0 15px;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--primary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
       }
 
       label {
         display: block;
-        margin: 8px 0 4px;
+        margin: 12px 0 4px;
         font-size: 12px;
         font-weight: 700;
         color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
 
       input,
       select {
         width: 100%;
-        margin: 0 0 6px;
-        padding: 10px;
+        margin: 0 0 8px;
+        padding: 12px;
         border-radius: 8px;
         border: 1px solid var(--line);
         background: #0c162b;
         color: var(--text);
         outline: none;
+        font-size: 14px;
+        transition: all 0.3s ease;
       }
 
       input:focus,
       select:focus {
-        border-color: #64a8ff;
+        border-color: var(--primary);
         box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.2);
+        background: #0e1a32;
+      }
+
+      input:hover,
+      select:hover {
+        border-color: var(--primary);
       }
 
       button {
         border: 0;
         border-radius: 8px;
-        padding: 10px 12px;
-        font-weight: 700;
+        padding: 12px 16px;
+        font-weight: 600;
         cursor: pointer;
         margin: 3px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      button:active {
+        transform: scale(0.98);
       }
 
       .primary {
         background: var(--primary);
         color: #fff;
+        box-shadow: 0 4px 12px rgba(47, 128, 237, 0.3);
+      }
+
+      .primary:hover {
+        background: #1a5bbf;
+        box-shadow: 0 6px 16px rgba(47, 128, 237, 0.5);
       }
 
       .success {
         background: var(--success);
         color: #fff;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      }
+
+      .success:hover {
+        background: #0e9f6e;
+        box-shadow: 0 6px 16px rgba(16, 185, 129, 0.5);
       }
 
       .warning {
         background: var(--warning);
         color: #111;
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+      }
+
+      .warning:hover {
+        background: #e68900;
+        box-shadow: 0 6px 16px rgba(245, 158, 11, 0.5);
       }
 
       .danger {
         background: var(--danger);
         color: #fff;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+      }
+
+      .danger:hover {
+        background: #dc2626;
+        box-shadow: 0 6px 16px rgba(239, 68, 68, 0.5);
       }
 
       .btn-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 6px;
+        gap: 10px;
+        margin: 10px 0;
       }
 
       .chip {
         display: inline-block;
-        padding: 5px 10px;
+        padding: 6px 12px;
         border-radius: 999px;
         background: #1f355b;
         border: 1px solid #34568d;
-        margin: 3px 3px 0 0;
+        margin: 4px 4px 0 0;
         cursor: pointer;
         font-size: 12px;
+        transition: all 0.3s ease;
       }
 
       .chip:hover {
-        background: #7f1d1d;
-        border-color: #ef4444;
+        background: var(--danger);
+        border-color: var(--danger);
+        transform: translateY(-2px);
       }
 
       .muted {
         color: var(--muted);
-        font-size: 12px;
-        margin: 3px 0 8px;
+        font-size: 11px;
+        margin: 4px 0 12px;
+        font-style: italic;
       }
 
       pre {
-        margin: 8px 0 0;
+        margin: 10px 0 0;
         flex: 1;
         overflow: auto;
         border-radius: 10px;
         border: 1px solid var(--line);
         background: #020811;
         color: #93f5c8;
-        padding: 12px;
-        font-family: Consolas, monospace;
-        font-size: 12px;
-        line-height: 1.45;
+        padding: 15px;
+        font-family: "Consolas", "Monaco", monospace;
+        font-size: 13px;
+        line-height: 1.5;
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary) var(--panel);
+      }
+
+      pre::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      pre::-webkit-scrollbar-track {
+        background: var(--panel);
+        border-radius: 10px;
+      }
+
+      pre::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 10px;
       }
 
       hr {
         border: 0;
         border-top: 1px solid var(--line);
-        margin: 12px 0;
+        margin: 20px 0;
       }
 
       /* Button container in output section */
@@ -224,19 +302,26 @@
         display: flex;
         gap: 10px;
         align-items: center;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+
+      .button-container button {
+        min-width: 100px;
       }
 
       .calc-btn {
         background: linear-gradient(135deg, #f59e0b, #d97706);
         color: white;
         border: none;
-        padding: 10px 20px;
+        padding: 12px 24px;
         border-radius: 8px;
         cursor: pointer;
         font-weight: 600;
         transition: all 0.3s ease;
         margin-left: auto;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
 
       .calc-btn:hover {
@@ -245,64 +330,103 @@
         box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
       }
 
+      #chips {
+        margin-top: 10px;
+        min-height: 40px;
+      }
+
       @media (max-width: 1080px) {
         body {
           grid-template-columns: 1fr;
+          padding: 10px;
+        }
+
+        .left,
+        .right {
+          margin-top: 90px;
+          max-height: none;
+          min-height: auto;
+        }
+
+        .left {
+          max-height: 600px;
+        }
+
+        .right {
+          min-height: 400px;
         }
 
         .btn-grid {
           grid-template-columns: 1fr;
         }
 
-        .left,
-        .right {
-          margin-top: 80px; /* Increased for mobile */
-        }
-
         .home-button-container {
-          top: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 90%; /* Make container responsive */
-          max-width: 300px; /* Limit maximum width */
+          top: 15px;
+          width: 90%;
+          max-width: 350px;
         }
 
         .btn-home {
-          padding: 10px 20px;
+          padding: 12px 20px;
           font-size: 0.95rem;
-          width: 100%; /* Full width on mobile */
+          width: 100%;
           justify-content: center;
+          white-space: normal;
+          text-align: center;
+        }
+
+        .button-container {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .button-container button {
+          width: 100%;
+          margin: 2px 0;
+        }
+
+        .calc-btn {
+          margin-left: 0;
         }
       }
 
       @media (max-width: 480px) {
         .left,
         .right {
-          margin-top: 90px; /* Even more margin for very small screens */
+          margin-top: 100px;
+          padding: 15px;
         }
 
         .home-button-container {
-          top: 15px;
-          max-width: 260px;
+          max-width: 280px;
         }
 
         .btn-home {
-          padding: 8px 16px;
+          padding: 10px 16px;
           font-size: 0.9rem;
+        }
+
+        h3 {
+          font-size: 14px;
+        }
+
+        input,
+        select,
+        button {
+          padding: 10px;
+          font-size: 13px;
+        }
+
+        pre {
+          font-size: 11px;
+          padding: 10px;
         }
       }
     </style>
   </head>
   <body>
-    <!-- Home Button at Top Right -->
-    <div class="home-button-container">
-      <button class="btn-home" onclick="window.location.href = 'index.html'">
-        <span class="arrow">⬅️</span> الصفحة الرئيسية
-      </button>
-    </div>
-
     <section class="left">
-      <h3>Basic Settings</h3>
+      <h3>⚙️ Basic Settings</h3>
       <label>Page Name</label>
       <input id="pageTitle" value="My App" />
       <label>Database Node</label>
@@ -312,74 +436,120 @@
 
       <hr />
 
-      <h3>Create Element</h3>
+      <h3>➕ Create Element</h3>
       <select id="elementType">
-        <option value="input">Text Input</option>
-        <option value="number">Number Input</option>
-        <option value="email">Email Input</option>
-        <option value="password">Password Input</option>
-        <option value="tel">Telephone Input</option>
-        <option value="url">URL Input</option>
-        <option value="textarea">Textarea</option>
-        <option value="select">Select Dropdown</option>
-        <option value="checkbox">Checkbox</option>
-        <option value="radio">Radio Group</option>
-        <option value="range">Range Slider</option>
-        <option value="date">Date Picker</option>
-        <option value="time">Time Picker</option>
-        <option value="label">Label</option>
-        <option value="image">Image</option>
-        <option value="upload">File Upload</option>
-        <option value="list">List</option>
-        <option value="table">Table</option>
+        <option value="input">📝 Text Input</option>
+        <option value="number">🔢 Number Input</option>
+        <option value="email">📧 Email Input</option>
+        <option value="password">🔒 Password Input</option>
+        <option value="tel">📞 Telephone Input</option>
+        <option value="url">🌐 URL Input</option>
+        <option value="textarea">📄 Textarea</option>
+        <option value="select">📋 Select Dropdown</option>
+        <option value="checkbox">✅ Checkbox</option>
+        <option value="radio">⚪ Radio Group</option>
+        <option value="range">🎚️ Range Slider</option>
+        <option value="date">📅 Date Picker</option>
+        <option value="time">⏰ Time Picker</option>
+        <option value="label">🏷️ Label</option>
+        <option value="image">🖼️ Image</option>
+        <option value="upload">📎 File Upload</option>
+        <option value="list">📑 List</option>
+        <option value="table">📊 Table</option>
       </select>
 
       <label>Element ID</label>
-      <input id="cfg_id" placeholder="name" />
+      <input id="cfg_id" placeholder="e.g., username" />
       <label>Label</label>
-      <input id="cfg_label" placeholder="Name" />
-      <label id="cfg_extra_label">Extra (for select/list/table/radio)</label>
-      <input id="cfg_extra" placeholder="option1,option2 OR col1,col2" />
+      <input id="cfg_label" placeholder="e.g., Username" />
+      <label id="cfg_extra_label">Extra Options</label>
+      <input id="cfg_extra" placeholder="option1, option2 OR col1, col2" />
       <div class="muted">
-        Comma separated values for `select`, `list`, `table`, `radio`.
+        ⓘ Comma separated values for select, list, table, radio
       </div>
 
-      <button class="primary" id="addElement">Add Element</button>
+      <button class="primary" id="addElement">➕ Add Element</button>
       <div id="chips"></div>
 
       <hr />
 
-      <h3>Generate</h3>
+      <h3>🚀 Generate</h3>
       <div class="btn-grid">
-        <button class="success" id="genHTML">Generate HTML</button>
-        <button class="success" id="genPage">Generate Full Page</button>
+        <button class="success" id="genHTML">📄 Generate HTML</button>
+        <button class="success" id="genPage">📑 Generate Full Page</button>
       </div>
       <label>Snippet Type</label>
       <select id="snippetType">
-        <option value="config">Firebase Config</option>
-        <option value="all">All CRUD JS</option>
-        <option value="add">Add</option>
-        <option value="fetch">Fetch By ID</option>
-        <option value="fetchAll">Fetch All</option>
-        <option value="update">Update</option>
-        <option value="delete">Delete By ID</option>
-        <option value="deleteAll">Delete All</option>
-        <option value="populate">Populate Table</option>
-        <option value="excel">Export Excel</option>
+        <option value="config">🔧 Firebase Config</option>
+        <option value="all">📚 All CRUD JS</option>
+        <option value="add">➕ Add</option>
+        <option value="fetch">🔍 Fetch By ID</option>
+        <option value="fetchAll">📋 Fetch All</option>
+        <option value="update">✏️ Update</option>
+        <option value="delete">🗑️ Delete By ID</option>
+        <option value="deleteAll">⚠️ Delete All</option>
+        <option value="populate">📊 Populate Table</option>
+        <option value="excel">📎 Export Excel</option>
       </select>
-      <button class="warning" id="genSnippet">Generate Snippet</button>
+      <button class="warning" id="genSnippet">⚡ Generate Snippet</button>
     </section>
 
     <section class="right">
-      <h3>Output</h3>
+      <h3>📤 Output</h3>
       <div class="button-container">
-        <button onclick="copyCode()">Copy</button>
-        <button onclick="downloadCode()">Download</button>
-        <!-- Removed the home button from here -->
+        <button class="primary" onclick="copyCode()">📋 Copy</button>
+        <button class="success" onclick="downloadCode()">⬇️ Download</button>
       </div>
-      <pre id="output">Choose a generator button.</pre>
+      <!-- Home Button - Centered -->
+      <div class="home-button-container">
+        <button class="btn-home" onclick="window.location.href = 'index.html'">
+          <span class="arrow">⬅️</span> الصفحة الرئيسية
+        </button>
+      </div>
+      <pre id="output">✨ Choose a generator button to see the output...</pre>
     </section>
 
+    <script>
+      // Placeholder functions for the buttons
+      function copyCode() {
+        const output = document.getElementById("output").innerText;
+        navigator.clipboard.writeText(output).then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Copied!",
+            text: "Code copied to clipboard",
+            background: "#111c33",
+            color: "#e6eefc",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        });
+      }
+
+      function downloadCode() {
+        const output = document.getElementById("output").innerText;
+        const blob = new Blob([output], { type: "text/plain" });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "generated-code.txt";
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+        Swal.fire({
+          icon: "success",
+          title: "Downloaded!",
+          text: "File has been downloaded",
+          background: "#111c33",
+          color: "#e6eefc",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      }
+
+      // Note: The actual Firebase CRUD functionality would be in Codes_Element_seek.js
+      console.log("Page loaded - Firebase CRUD Generator");
+    </script>
     <script src="Codes_Element_seek.js"></script>
   </body>
 </html>
