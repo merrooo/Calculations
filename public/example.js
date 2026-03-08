@@ -1,6 +1,5 @@
 // ========== GLOBAL VARIABLES ==========
 let selectedPeriod = "Aug-2024";
-let tvjAnimationActive = false;
 
 // ========== TAB SWITCHING ==========
 function switchTab(tabName) {
@@ -71,7 +70,6 @@ function drawArrow(cx, cy, angleDeg, r, color, label, isCurrent = false) {
     ctx.fillText(label, x + (12 * Math.cos(rad)), y + (12 * Math.sin(rad)));
 }
 
-// In the updateAngles() function, make sure PF inputs are truly readonly
 function updateAngles() {
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
@@ -94,7 +92,6 @@ function updateAngles() {
         const input = document.getElementById(`pf${i + 1}`);
         input.value = val.toFixed(3);
         input.style.color = val < 0.5 ? "red" : "green";
-        // Ensure readonly attribute is set
         input.setAttribute('readonly', true);
         input.setAttribute('aria-readonly', 'true');
         return val;
@@ -115,19 +112,15 @@ function updateAngles() {
     const sumPos = pfs.filter(v => v > 0).reduce((a, b) => a + b, 0);
     const imErr = pfCorrectTotal === 0 ? 0 : (1 - (sumPos / pfCorrectTotal)) * 100;
 
-    // Set values with proper formatting
     document.getElementById("Mtheta").value = mErr.toFixed(2) + " %";
     document.getElementById("IMtheta").value = imErr.toFixed(2) + " %";
     
-    // Ensure these are readonly
     document.getElementById("Mtheta").setAttribute('readonly', true);
     document.getElementById("IMtheta").setAttribute('readonly', true);
 
     const kwh = parseFloat(document.getElementById("EXkwh").value) || 0;
     const losses = (kwh * Math.abs(mErr)) / 100;
     document.getElementById("Losses").value = losses.toFixed(2) + " kWh";
-    
-    // Ensure Losses is readonly
     document.getElementById("Losses").setAttribute('readonly', true);
 }
 
@@ -204,7 +197,6 @@ function calcMeter() {
     document.getElementById("out_kwh_tts").innerText = kwh_tts.toFixed(2);
     document.getElementById("out_kwhtdiff").innerText = kwhtdiff.toFixed(2);
 
-    // Alert threshold for الشحنات difference > 1500
     checkAlert("box_tttdiff", tttdiff, 1500);
     checkAlert("box_kwhtdiff", kwhtdiff, 500);
 }
@@ -230,7 +222,6 @@ function resetCalibrations() {
 
 // ========== M&T TAB FUNCTIONS ==========
 function calculateMT() {
-    // Load Factor
     const avg = parseFloat(document.getElementById("avg_p").value) || 0;
     const max = parseFloat(document.getElementById("max_d").value) || 0;
     if (max > 0) {
@@ -239,7 +230,6 @@ function calculateMT() {
         document.getElementById("loss_res").value = (0.25 * lf + 0.75 * Math.pow(lf, 2)).toFixed(4);
     }
 
-    // Motor Mechanics
     const freq = parseFloat(document.getElementById("freq").value) || 0;
     const poles = parseFloat(document.getElementById("poles").value) || 0;
     const motorKw = parseFloat(document.getElementById("motor_kw").value) || 0;
@@ -250,7 +240,6 @@ function calculateMT() {
         document.getElementById("torque_res").value = torque.toFixed(2);
     }
 
-    // Transformer Analysis
     const kva = parseFloat(document.getElementById("KVATR").value) || 0;
     const v1 = parseFloat(document.getElementById("VPR").value) || 0;
     const v2fl = parseFloat(document.getElementById("VSECFL").value) || 0;
@@ -699,7 +688,6 @@ function clearLog() {
     }
 }
 
-// Replace the placeholder exportComparison function with:
 function exportComparison() {
     let csv = [];
     csv.push("تقرير استهلاك الكهرباء");
@@ -731,294 +719,10 @@ function exportComparison() {
     link.click();
 }
 
-
-
-// ========== TVJ TAB FUNCTIONS ==========
-let startTime_tvj, timerInt_tvj, simInt_tvj, elapsed_tvj = 0;
-let discPosition_tvj = 0; // Position in degrees (0-360)
-let totalRevolutions_tvj = 0;
-let targetRevolutions_tvj = 2; // Default value
-let discAnimationActive = false;
-let lastTimestamp_tvj = 0;
-let revolutionsCompleted_tvj = 0;
-let expectedTime_tvj = 0;
-let testStartTime_tvj = 0;
-
-function toggleTVJMode() {
-    const type = document.getElementById('type_tvj').value;
-    document.getElementById('mech-section_tvj').style.display = type === 'mech' ? 'block' : 'none';
-    document.getElementById('digital-section_tvj').style.display = type === 'digital' ? 'block' : 'none';
-    document.getElementById('countLabel').innerText = type === 'mech' ? 'Test Revolutions (n)' : 'Test Pulses (n)';
-    
-    // Reset display when switching modes
-    resetTVJDisplay();
-}
-
-function resetTVJDisplay() {
-    document.getElementById('timer_tvj').innerText = "CHRONO: 0.00s";
-    document.getElementById('live-error-display_tvj').innerText = "0.000%";
-    document.getElementById('live-e_tvj').innerText = "0.0000";
-    document.getElementById('live-p_tvj').innerText = "0.0";
-    
-    // Reset disc position
-    const discMark = document.getElementById('disc-mark_tvj');
-    if (discMark) {
-        discMark.style.left = "50%"; // Start at center
-        discMark.style.transform = "translateX(-50%)";
-    }
-    
-    // Reset pulse LED
-    const led = document.getElementById('pulse-led_tvj');
-    if (led) {
-        led.style.background = "#1a1a1a";
-    }
-}
-
-function runTVJTest() {
-    const V = +document.getElementById('V_tvj').value || 220;
-    const I = +document.getElementById('I_tvj').value || 5;
-    const power = V * I;
-    const type = document.getElementById('type_tvj').value;
-    const C = +document.getElementById('constant').value || 400;
-    const count = +document.getElementById('countInput').value || 2;
-    const limit = +document.getElementById('limit').value || 2;
-    
-    targetRevolutions_tvj = count;
-    
-    // Calculate expected time for accurate measurement
-    // Energy per revolution = 1000 / C Wh
-    // Power in Watts, so time for n revolutions = (n * 1000 * 3600) / (C * power) seconds
-    expectedTime_tvj = (count * 1000 * 3600) / (C * power);
-    
-    document.querySelector('#tab-tvj .btn-start').disabled = true;
-    document.querySelector('#tab-tvj .btn-stop').disabled = false;
-    
-    startTime_tvj = Date.now();
-    testStartTime_tvj = Date.now();
-    revolutionsCompleted_tvj = 0;
-    discPosition_tvj = 0;
-    lastTimestamp_tvj = Date.now();
-    discAnimationActive = true;
-    
-    // Clear any existing intervals
-    if (timerInt_tvj) clearInterval(timerInt_tvj);
-    if (simInt_tvj) clearInterval(simInt_tvj);
-    
-    // Timer interval for updating display
-    timerInt_tvj = setInterval(() => {
-        if (!discAnimationActive) return;
-        
-        elapsed_tvj = (Date.now() - startTime_tvj) / 1000;
-        
-        // Calculate actual energy based on time
-        const E_true = (power * elapsed_tvj) / 3600;
-        
-        // Energy that should have been registered based on revolutions
-        const expectedE_meter = (revolutionsCompleted_tvj * 1000) / C;
-        
-        // Calculate error based on completed revolutions vs time
-        let error = 0;
-        if (expectedE_meter > 0) {
-            error = ((expectedE_meter - E_true) / expectedE_meter) * 100;
-        }
-        
-        document.getElementById('timer_tvj').innerText = `CHRONO: ${elapsed_tvj.toFixed(2)}s`;
-        document.getElementById('live-e_tvj').innerText = E_true.toFixed(4);
-        document.getElementById('live-p_tvj').innerText = power.toFixed(1);
-        
-        // Show progress
-        const progress = (revolutionsCompleted_tvj / targetRevolutions_tvj) * 100;
-        
-        const errEl = document.getElementById('live-error-display_tvj');
-        errEl.innerText = error.toFixed(3) + "%";
-        errEl.style.color = Math.abs(error) <= limit ? "#00ff00" : "#ff4d4d";
-        
-        // Auto-stop when target revolutions reached
-        if (revolutionsCompleted_tvj >= targetRevolutions_tvj) {
-            stopTVJTest();
-        }
-    }, 50);
-    
-    if (type === 'mech') {
-        // Mechanical meter simulation with precise revolution counting
-        const discContainer = document.querySelector('.disc-container');
-        const containerWidth = discContainer ? discContainer.offsetWidth : 280;
-        const markWidth = 35; // Width of the red mark
-        
-        // Calculate pixels per revolution (full cycle from left to right and back)
-        const pixelsPerRevolution = containerWidth * 2;
-        
-        simInt_tvj = setInterval(() => {
-            if (!discAnimationActive) return;
-            
-            const now = Date.now();
-            const deltaTime = (now - lastTimestamp_tvj) / 1000; // in seconds
-            lastTimestamp_tvj = now;
-            
-            // Calculate ideal rotation speed based on power and constant
-            // Speed should be such that it completes target revolutions in expected time
-            const idealSpeed = targetRevolutions_tvj / expectedTime_tvj; // revolutions per second
-            
-            // Update position based on ideal speed
-            discPosition_tvj += idealSpeed * deltaTime * 360; // Convert to degrees
-            
-            // Count revolutions
-            if (discPosition_tvj >= 360) {
-                revolutionsCompleted_tvj += Math.floor(discPosition_tvj / 360);
-                discPosition_tvj = discPosition_tvj % 360;
-            }
-            
-            // Limit revolutions to target
-            if (revolutionsCompleted_tvj > targetRevolutions_tvj) {
-                revolutionsCompleted_tvj = targetRevolutions_tvj;
-            }
-            
-            // Calculate position for visual display
-            // Map revolution progress to linear movement
-            const totalProgress = revolutionsCompleted_tvj + (discPosition_tvj / 360);
-            const maxProgress = targetRevolutions_tvj;
-            const progressRatio = Math.min(totalProgress / maxProgress, 1);
-            
-            // Oscillate back and forth to simulate continuous rotation
-            // First half of revolution: left to right, second half: right to left
-            const cycleProgress = (discPosition_tvj / 360) % 1;
-            let pixelPosition;
-            
-            if (cycleProgress < 0.5) {
-                // Moving right
-                pixelPosition = (cycleProgress * 2) * (containerWidth - markWidth);
-            } else {
-                // Moving left
-                pixelPosition = (2 - cycleProgress * 2) * (containerWidth - markWidth);
-            }
-            
-            const discMark = document.getElementById('disc-mark_tvj');
-            if (discMark) {
-                discMark.style.left = pixelPosition + "px";
-                discMark.style.transform = "none";
-            }
-            
-            // If we've reached target revolutions, stop animation
-            if (revolutionsCompleted_tvj >= targetRevolutions_tvj) {
-                stopTVJTest();
-            }
-        }, 20); // Update every 20ms for smooth animation
-        
-    } else {
-        // Digital meter simulation with pulse counting
-        const pulseRate = 3600000 / (power * C) * 1000; // milliseconds per pulse
-        let pulseCount = 0;
-        
-        simInt_tvj = setInterval(() => {
-            if (!discAnimationActive) return;
-            
-            pulseCount++;
-            revolutionsCompleted_tvj = pulseCount;
-            
-            // Flash LED
-            const led = document.getElementById('pulse-led_tvj');
-            led.style.background = "#ff0";
-            setTimeout(() => led.style.background = "#1a1a1a", 50);
-            
-            // Auto-stop when target pulses reached
-            if (pulseCount >= targetRevolutions_tvj) {
-                stopTVJTest();
-            }
-        }, pulseRate);
-    }
-}
-
-function stopTVJTest() {
-    clearInterval(timerInt_tvj);
-    clearInterval(simInt_tvj);
-    discAnimationActive = false;
-    
-    document.querySelector('#tab-tvj .btn-start').disabled = false;
-    document.querySelector('#tab-tvj .btn-stop').disabled = true;
-
-    const mno = document.getElementById('mno').value || "N/A";
-    const error = document.getElementById('live-error-display_tvj').innerText;
-    const limit = +document.getElementById('limit').value;
-    const numericErr = parseFloat(error);
-    const isPass = Math.abs(numericErr) <= limit;
-    const type = document.getElementById('type_tvj').value;
-    const count = +document.getElementById('countInput').value;
-
-    // Calculate final error based on completed revolutions
-    const V = +document.getElementById('V_tvj').value || 220;
-    const I = +document.getElementById('I_tvj').value || 5;
-    const power = V * I;
-    const C = +document.getElementById('constant').value || 400;
-    
-    const E_true = (power * elapsed_tvj) / 3600;
-    const E_meter = (count * 1000) / C;
-    const finalError = ((E_meter - E_true) / E_meter) * 100;
-
-    const row = document.querySelector('#logTable_tvj tbody').insertRow(0);
-    row.innerHTML = `
-        <td>${mno}</td>
-        <td>${elapsed_tvj.toFixed(2)}s</td>
-        <td>${type.toUpperCase()}</td>
-        <td>${finalError.toFixed(3)}%</td>
-        <td class="${isPass ? 'pass' : 'fail'}">${isPass ? 'PASS' : 'FAIL'}</td>
-        <td><button class="delete-btn" onclick="this.parentElement.parentElement.remove()">X</button></td>
-    `;
-    
-    // Show completion message
-    Swal.fire({
-        title: 'Test Complete',
-        text: `Completed ${count} ${type === 'mech' ? 'revolutions' : 'pulses'} in ${elapsed_tvj.toFixed(2)} seconds. Error: ${finalError.toFixed(3)}%`,
-        icon: isPass ? 'success' : 'error',
-        background: '#1e293b',
-        color: '#fff'
-    });
-}
-
-function exportTVJ() {
-    const table = document.getElementById("logTable_tvj");
-    let csv = [];
-    
-    // Add headers
-    let headers = [];
-    table.querySelectorAll('thead th').forEach(th => {
-        if (th.innerText !== 'Del') headers.push(th.innerText);
-    });
-    csv.push(headers.join(','));
-    
-    // Add data rows
-    table.querySelectorAll('tbody tr').forEach(row => {
-        let rowData = [];
-        row.querySelectorAll('td:not(:last-child)').forEach(td => {
-            rowData.push('"' + td.innerText + '"');
-        });
-        csv.push(rowData.join(','));
-    });
-    
-    const blob = new Blob(["\ufeff" + csv.join("\n")], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "TVJ_Calibration_Report.csv";
-    link.click();
-}
-
-function resetTVJ() {
-    if (discAnimationActive) {
-        clearInterval(timerInt_tvj);
-        clearInterval(simInt_tvj);
-        discAnimationActive = false;
-    }
-    
-    resetTVJDisplay();
-    document.querySelector('#tab-tvj .btn-start').disabled = false;
-    document.querySelector('#tab-tvj .btn-stop').disabled = true;
-}
-
-// Update the initialization to include reset on mode change
+// ========== INITIALIZATION ==========
 window.onload = function() {
-    // Set current date
     document.getElementById('currentDate').value = new Date().toISOString().split('T')[0];
     
-    // Initialize all tabs
     updateAngles();
     handlePhaseModeChange();
     calculatePhase();
@@ -1026,10 +730,7 @@ window.onload = function() {
     calcMeter();
     calculateMT();
     initTariffTable();
-    toggleTVJMode();
-    resetTVJDisplay();
     
-    // Add window click for modal
     window.onclick = function(event) {
         const modal = document.getElementById("equationModal");
         if (event.target == modal) {

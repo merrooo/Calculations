@@ -48,10 +48,6 @@
             <ion-icon name="cash-outline"></ion-icon>
             <span>الشرائح</span>
           </button>
-          <button class="nav-btn" onclick="switchTab('tvj')">
-            <ion-icon name="speedometer-outline"></ion-icon>
-            <span>معايرة العدادات</span>
-          </button>
         </nav>
       </div>
 
@@ -66,7 +62,7 @@
             <span>النظام المتكامل للتحليلات الكهربائية</span>
           </div>
           <div class="nav-actions">
-            <button class="home-btn" onclick="scrollToTop()">
+            <button class="home-btn" onclick="window.location.href='index.html'">
               <ion-icon name="arrow-up-outline"></ion-icon>
               <span>الصفحة الرئيسية</span>
             </button>
@@ -1039,7 +1035,6 @@
                   <button class="btn-save" onclick="addToComparison()">
                     <i class="fas fa-plus"></i> إضافة التشريح
                   </button>
-                  <!-- In the tariffs tab section, add this button -->
                   <button class="btn-export" onclick="exportComparison()">
                     <i class="fas fa-file-excel"></i> تصدير البيانات
                   </button>
@@ -1112,132 +1107,6 @@
                       </tr>
                     </tfoot>
                   </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- TVJ Tab -->
-          <div id="tab-tvj" class="tab-pane">
-            <div class="section-container">
-              <div class="section-header">
-                <h3 class="section-title">
-                  <ion-icon name="speedometer-outline"></ion-icon> معايرة
-                  العدادات
-                </h3>
-              </div>
-
-              <div class="tvj-grid">
-                <!-- Control Panel -->
-                <div class="tvj-controls panel">
-                  <h4>TVJ Calibration</h4>
-                  <div class="input-group">
-                    <label>Meter No</label>
-                    <input
-                      type="number"
-                      id="mno"
-                      placeholder="Enter Meter.No"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>Voltage (V) & Current (A)</label>
-                    <div class="flex-row">
-                      <input type="number" id="V_tvj" value="220" />
-                      <input type="number" id="I_tvj" value="5" />
-                    </div>
-                  </div>
-                  <div class="input-group">
-                    <label>Measurement Mode</label>
-                    <select id="type_tvj" onchange="toggleTVJMode()">
-                      <option value="mech">Mechanical (Meter)</option>
-                      <option value="digital">Digital (Meter)</option>
-                    </select>
-                  </div>
-                  <div class="input-group">
-                    <label id="countLabel">Test Revolutions (n)</label>
-                    <input type="number" id="countInput" value="2" />
-                  </div>
-                  <div class="input-group">
-                    <label>Meter Constant (C)</label>
-                    <input type="number" id="constant" value="400" />
-                  </div>
-                  <div class="input-group">
-                    <label>IEC Class</label>
-                    <select id="limit">
-                      <option value="0.5">Class 0.5</option>
-                      <option value="1">Class 1.0</option>
-                      <option value="2" selected>Class 2.0</option>
-                    </select>
-                  </div>
-
-                  <div class="btn-grid">
-                    <button class="btn-start" onclick="runTVJTest()">
-                      START
-                    </button>
-                    <button class="btn-stop" onclick="stopTVJTest()" disabled>
-                      CAPTURE
-                    </button>
-                    <button class="btn-export" onclick="exportTVJ()">
-                      EXCEL
-                    </button>
-                    <button class="btn-reset" onclick="resetTVJ()">
-                      RESET
-                    </button>
-                  </div>
-                </div>
-
-                <!-- Meter Display -->
-                <div class="tvj-meter">
-                  <div class="meter-case">
-                    <div class="digital-display">
-                      <div id="timer_tvj">CHRONO: 0.00s</div>
-                      <div id="live-error-display_tvj">0.000%</div>
-                    </div>
-
-                    <div id="mech-section_tvj" class="mech-section">
-                      <div class="disc-label">DISC ROTATION</div>
-                      <div class="disc-container">
-                        <div class="disc-grid"></div>
-                        <div class="disc-center-line"></div>
-                        <div id="disc-mark_tvj" class="disc-mark"></div>
-                      </div>
-                    </div>
-
-                    <div
-                      id="digital-section_tvj"
-                      class="digital-section"
-                      style="display: none"
-                    >
-                      <div id="pulse-led_tvj" class="pulse-led"></div>
-                    </div>
-                  </div>
-
-                  <div class="live-stats">
-                    <div>
-                      <small>POWER</small>
-                      <br /><b id="live-p_tvj" class="accent-text">0.0</b> W
-                    </div>
-                    <div>
-                      <small>STD ENERGY</small>
-                      <br /><b id="live-e_tvj" class="accent-text">0.0000</b> Wh
-                    </div>
-                  </div>
-
-                  <div class="table-responsive">
-                    <table id="logTable_tvj">
-                      <thead>
-                        <tr>
-                          <th>Meter</th>
-                          <th>Time</th>
-                          <th>Type</th>
-                          <th>Error</th>
-                          <th>Status</th>
-                          <th>Del</th>
-                        </tr>
-                      </thead>
-                      <tbody></tbody>
-                    </table>
-                  </div>
                 </div>
               </div>
             </div>
