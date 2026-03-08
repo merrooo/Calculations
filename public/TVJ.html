@@ -6,6 +6,10 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <title>TVJ Meter Calibration - Professional Suite</title>
     <style>
       :root {
@@ -23,7 +27,7 @@
       }
 
       body {
-        font-family: "Segoe UI", system-ui, sans-serif;
+        font-family: "Cairo", sans-serif;
         background-color: var(--bg);
         color: var(--text);
         margin: 0;
@@ -31,12 +35,38 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        position: relative;
+      }
+
+      .home-link {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 8px 16px;
+        border-radius: 12px;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 0.9rem;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        transition: all 0.3s ease;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .home-link:hover {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
       }
 
       h1 {
         font-size: 1.3rem;
         text-align: center;
-        margin: 15px 0;
+        margin: 45px 0 15px 0;
         color: var(--primary);
         text-transform: uppercase;
       }
@@ -113,7 +143,6 @@
         outline: none;
       }
 
-      /* JUMBO CIRCULAR BUTTONS */
       .btn-container {
         display: flex;
         justify-content: space-evenly;
@@ -160,7 +189,6 @@
         box-shadow: none;
       }
 
-      /* Displays & Visuals */
       .meter-box {
         background: #000;
         border: 3px solid #334155;
@@ -261,7 +289,6 @@
         color: var(--primary);
       }
 
-      /* LOG SECTION */
       .export-btn {
         background: var(--warning);
         color: #000;
@@ -293,55 +320,57 @@
         border-bottom: 1px solid #334155;
         font-size: 0.85rem;
       }
-      th {
-        color: #94a3b8;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
     </style>
   </head>
   <body>
+    <a href="index.html" class="home-link">
+      <span>🏠</span>
+      <span>الصفحة الرئيسية</span>
+    </a>
+
     <h1>TVJ CALIBRATION METER SUITE</h1>
 
     <div class="container">
       <div class="panel config">
         <h2>Configuration</h2>
         <div class="input-group">
-          <label>Meter Serial No.</label
-          ><input type="text" id="mno" placeholder="TVJ-XXXX" />
-        </div>
-
-        <div class="flex-row">
-          <div class="input-group">
-            <label>Voltage (V)</label><input type="number" id="V" value="220" />
-          </div>
-          <div class="input-group">
-            <label>Current (I)</label><input type="number" id="I" value="5" />
-          </div>
+          <label>Meter Serial No.</label>
+          <input type="text" id="mno" placeholder="TVJ-XXXX" />
         </div>
 
         <div class="flex-row">
           <div class="input-group">
             <label>Phases</label>
-            <select id="phases">
-              <option value="1">1-Phase</option>
-              <option value="3">3-Phase (√3)</option>
+            <select id="phases" onchange="handlePhaseChange()">
+              <option value="1">احادى</option>
+              <option value="3">ثلاثي</option>
             </select>
           </div>
           <div class="input-group">
-            <label>Angle (Φ°)</label
-            ><input type="number" id="angle" value="0" />
+            <label>Voltage (V)</label>
+            <input type="number" id="V" value="220" disabled />
           </div>
         </div>
 
         <div class="flex-row">
           <div class="input-group">
-            <label>Constant (C)</label
-            ><input type="number" id="constant" value="1600" />
+            <label>Current (I)</label>
+            <input type="number" id="I" value="5" />
           </div>
           <div class="input-group">
-            <label>Test Revs (n)</label
-            ><input type="number" id="countInput" value="2" />
+            <label>Angle (Φ°)</label>
+            <input type="number" id="angle" value="0" />
+          </div>
+        </div>
+
+        <div class="flex-row">
+          <div class="input-group">
+            <label>Constant (C)</label>
+            <input type="number" id="constant" value="400" />
+          </div>
+          <div class="input-group">
+            <label>Test Revs (n)</label>
+            <input type="number" id="countInput" value="5" />
           </div>
         </div>
 
@@ -350,17 +379,19 @@
             <label>Limit / Class (%)</label>
             <select id="limit">
               <option value="0.2">Class 0.2</option>
-              <option value="0.5" selected>Class 0.5</option>
+              <option value="0.5">Class 0.5</option>
               <option value="1.0">Class 1.0</option>
-              <option value="2.0">Class 2.0</option>
+              <option value="2.0" selected>Class 2.0</option>
               <option value="2.5">Class 2.5</option>
             </select>
           </div>
           <div class="input-group">
             <label>Meter Type</label>
             <select id="type" onchange="toggleUI()">
-              <option value="mech">Mechanical</option>
-              <option value="digi">Digital</option>
+              <option value="mech">ميكانيكي</option>
+              <option value="digi">رقمي</option>
+              <option value="digi">مسبوق</option>
+              <option value="digi">ذكي</option>
             </select>
           </div>
         </div>
@@ -433,7 +464,7 @@
           <thead>
             <tr>
               <th>Serial No</th>
-              <th>Conn.</th>
+              <th>Connection</th>
               <th>Type</th>
               <th>Error %</th>
               <th>Constant</th>
@@ -450,6 +481,13 @@
 
     <script>
       let timerInt, simInt, startTime, elapsed;
+
+      function handlePhaseChange() {
+        const phase = document.getElementById("phases").value;
+        const voltageInput = document.getElementById("V");
+        voltageInput.value = phase === "3" ? 380 : 220;
+      }
+
       function toggleUI() {
         const type = document.getElementById("type").value;
         document.getElementById("mech-ui").style.display =
@@ -457,6 +495,7 @@
         document.getElementById("digi-ui").style.display =
           type === "digi" ? "flex" : "none";
       }
+
       function runTest() {
         const V = +document.getElementById("V").value,
           I = +document.getElementById("I").value,
@@ -466,28 +505,35 @@
           C = +document.getElementById("constant").value,
           count = +document.getElementById("countInput").value,
           limit = +document.getElementById("limit").value;
-        const pf = Math.cos(angleDeg * (Math.PI / 180)),
-          multiplier = phaseType == 3 ? Math.sqrt(3) : 1,
-          power = V * I * pf * multiplier;
+
+        const pf = Math.cos(angleDeg * (Math.PI / 180));
+        // Power calculation: P = sqrt(3) * V_line * I * pf for 3-phase, else V*I*pf
+        const power = phaseType == 3 ? Math.sqrt(3) * V * I * pf : V * I * pf;
+
         document.getElementById("startBtn").disabled = true;
         document.getElementById("stopBtn").disabled = false;
         startTime = Date.now();
         let rotationPhase = 0,
           lastPassCount = 0;
+
         timerInt = setInterval(() => {
           elapsed = (Date.now() - startTime) / 1000;
           const E_true = (power * elapsed) / 3600,
             E_meter = (count * 1000) / C,
             error = ((E_meter - E_true) / E_meter) * 100;
+
           document.getElementById("timer").innerText = `${elapsed.toFixed(2)}s`;
           document.getElementById("live-e").innerText = E_true.toFixed(4);
           document.getElementById("live-p").innerText = power.toFixed(1);
+
           const errEl = document.getElementById("live-error-display");
           errEl.innerText =
             (Math.abs(error) > 999 ? "---" : error.toFixed(3)) + "%";
           errEl.style.color = Math.abs(error) <= limit ? "#22c55e" : "#ef4444";
         }, 50);
+
         const idealTime = (count * 3600 * 1000) / (power * C);
+
         if (type === "mech") {
           const targetRounds = count + 1,
             radPerSec = (targetRounds * 2 * Math.PI) / idealTime;
@@ -533,22 +579,46 @@
           }, pulseInterval);
         }
       }
+
       function stopTest() {
         clearInterval(timerInt);
         clearInterval(simInt);
         document.getElementById("startBtn").disabled = false;
         document.getElementById("stopBtn").disabled = true;
-        const mno = document.getElementById("mno").value || "TVJ-LAB",
-          connection = document.getElementById("phases").value + "-Ph",
-          type = document.getElementById("type").value,
-          errorStr = document.getElementById("live-error-display").innerText,
-          constant = document.getElementById("constant").value,
-          limitVal = document.getElementById("limit").value,
-          currentVal = document.getElementById("I").value;
+
+        const mno = document.getElementById("mno").value || "TVJ-LAB";
+
+        // 1. Get the Arabic Text for Connection (Phases)
+        const phaseSelect = document.getElementById("phases");
+        const connection = phaseSelect.options[phaseSelect.selectedIndex].text;
+
+        // 2. Get the Arabic Text for Meter Type
+        const typeSelect = document.getElementById("type");
+        const type = typeSelect.options[typeSelect.selectedIndex].text;
+
+        const errorStr =
+          document.getElementById("live-error-display").innerText;
+        const constant = document.getElementById("constant").value;
+        const limitVal = document.getElementById("limit").value;
+        const currentVal = document.getElementById("I").value;
+
         const isPass = Math.abs(parseFloat(errorStr)) <= parseFloat(limitVal);
         const row = document.querySelector("#logTable tbody").insertRow(0);
-        row.innerHTML = `<td>${mno}</td><td>${connection}</td><td>${type}</td><td style="color:${isPass ? "#22c55e" : "#ef4444"}; font-weight:bold">${errorStr}</td><td>${constant}</td><td>${limitVal}%</td><td>${currentVal}A</td><td style="font-weight:bold; color:${isPass ? "#22c55e" : "#ef4444"}">${isPass ? "PASS" : "FAIL"}</td><td><button onclick="this.parentElement.parentElement.remove()" style="padding:6px; background:#475569; border:none; color:white; border-radius:8px;">DEL</button></td>`;
+
+        row.innerHTML = `
+          <td>${mno}</td>
+          <td>${connection}</td>
+          <td>${type}</td>
+          <td style="color:${isPass ? "#22c55e" : "#ef4444"}; font-weight:bold">${errorStr}</td>
+          <td>${constant}</td>
+          <td>${limitVal}%</td>
+          <td>${currentVal}A</td>
+          <td style="font-weight:bold; color:${isPass ? "#22c55e" : "#ef4444"}">${isPass ? "PASS" : "FAIL"}</td>
+          <td>
+            <button onclick="this.parentElement.parentElement.remove()" style="padding:6px; background:#475569; border:none; color:white; border-radius:8px;">DEL</button>
+          </td>`;
       }
+
       function exportToExcel() {
         let csv = [];
         const rows = document.querySelectorAll("table tr");
