@@ -1,960 +1,572 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>TVJ Calibration Lab - Responsive</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>TVJ Meter Calibration - Professional Suite</title>
     <style>
-      /* TVJ.css - TVJ Calibration Lab Styles */
+      :root {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --primary: #3b82f6;
+        --accent: #e74c3c;
+        --success: #22c55e;
+        --warning: #f59e0b;
+        --text: #f8fafc;
+      }
 
       * {
-        margin: 0;
-        padding: 0;
         box-sizing: border-box;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
 
       body {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        min-height: 100vh;
-        padding: 20px;
-      }
-
-      .lab-container {
-        display: grid;
-        grid-template-columns: 350px 1fr;
-        gap: 20px;
-        max-width: 1600px;
-        margin: 0 auto;
-      }
-
-      /* Panels */
-      .panel {
-        background: rgba(30, 41, 59, 0.95);
-        backdrop-filter: blur(10px);
-        border-radius: 20px;
-        padding: 20px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
-          inset 0 1px 1px rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-      }
-
-      /* Header */
-      .header-container {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 10px;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
         align-items: center;
-        margin-bottom: 25px;
-        padding-bottom: 15px;
-        border-bottom: 2px solid rgba(52, 152, 219, 0.3);
       }
 
-      .header-container h2 {
-        color: #fff;
-        font-size: 1.5rem;
-        font-weight: 600;
-        background: linear-gradient(135deg, #3498db, #2ecc71);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+      h1 {
+        font-size: 1.3rem;
+        text-align: center;
+        margin: 15px 0;
+        color: var(--primary);
+        text-transform: uppercase;
       }
 
-      .btn-home {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #fff;
-        padding: 8px 15px;
-        border-radius: 50px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .btn-home:hover {
-        background: #3498db;
-        border-color: #3498db;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-      }
-
-      /* Input Fields */
-      #input-fields {
+      .container {
+        width: 100%;
+        max-width: 1200px;
         display: flex;
         flex-direction: column;
         gap: 15px;
-        margin-bottom: 20px;
       }
 
-      .input-group {
+      @media (min-width: 900px) {
+        .container {
+          flex-direction: row;
+          align-items: stretch;
+        }
+        .panel.config {
+          flex: 1;
+        }
+        .panel.live {
+          flex: 1.6;
+        }
+      }
+
+      .panel {
+        background: var(--card);
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        width: 100%;
+        border: 1px solid #334155;
         display: flex;
         flex-direction: column;
-        gap: 8px;
       }
 
-      .input-group label {
-        color: #94a3b8;
-        font-size: 0.9rem;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-      }
-
-      .input-group input,
-      .input-group select {
-        background: rgba(15, 23, 42, 0.6);
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        padding: 12px 15px;
-        color: #fff;
+      h2 {
+        margin-top: 0;
         font-size: 1rem;
-        transition: all 0.3s ease;
-        outline: none;
-        width: 100%;
+        color: var(--primary);
+        border-bottom: 2px solid #334155;
+        padding-bottom: 8px;
+        margin-bottom: 15px;
       }
 
-      .input-group input:focus,
-      .input-group select:focus {
-        border-color: #3498db;
-        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        background: rgba(15, 23, 42, 0.8);
-      }
-
-      .input-group input:hover,
-      .input-group select:hover {
-        border-color: rgba(52, 152, 219, 0.5);
-      }
-
-      /* Voltage and Current inputs side by side */
-      .flex-row-gap {
+      .flex-row {
         display: flex;
-        gap: 10px;
+        flex-wrap: wrap;
+        gap: 12px;
         width: 100%;
       }
-
-      .flex-row-gap input {
-        flex: 1;
+      .input-group {
+        flex: 1 1 140px;
+        margin-bottom: 12px;
         min-width: 0;
-        width: auto;
+      }
+      label {
+        display: block;
+        font-size: 0.75rem;
+        margin-bottom: 6px;
+        color: #94a3b8;
+        font-weight: bold;
       }
 
-      /* Button Grid */
-      .btn-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-top: 20px;
-      }
-
-      .btn-grid button {
+      input,
+      select {
+        width: 100%;
         padding: 14px;
-        border: none;
+        background: #0f172a;
+        border: 1px solid #334155;
+        color: white;
         border-radius: 12px;
-        font-weight: 600;
         font-size: 1rem;
+        outline: none;
+      }
+
+      /* JUMBO CIRCULAR BUTTONS */
+      .btn-container {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        gap: 20px;
+        margin-top: auto;
+        padding: 30px 0 10px 0;
+      }
+
+      .action-btn {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        font-size: 1rem;
+        font-weight: 900;
         cursor: pointer;
-        transition: all 0.3s ease;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         text-transform: uppercase;
         letter-spacing: 1px;
+        transition: all 0.2s;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      }
+
+      .action-btn:active {
+        transform: scale(0.9);
+      }
+      #startBtn {
+        background: var(--success);
+        color: white;
+        border: 5px solid rgba(255, 255, 255, 0.15);
+      }
+      #stopBtn {
+        background: var(--primary);
+        color: white;
+        border: 5px solid rgba(255, 255, 255, 0.15);
+      }
+      .action-btn:disabled {
+        opacity: 0.1;
+        filter: grayscale(1);
+        box-shadow: none;
+      }
+
+      /* Displays & Visuals */
+      .meter-box {
+        background: #000;
+        border: 3px solid #334155;
+        border-radius: 16px;
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         position: relative;
         overflow: hidden;
-      }
-
-      .btn-grid button::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.2);
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
-      }
-
-      .btn-grid button:hover::before {
-        width: 300px;
-        height: 300px;
-      }
-
-      .btn-grid button:active {
-        transform: scale(0.95);
-      }
-
-      .btn-grid button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none;
-      }
-
-      .start {
-        background: linear-gradient(135deg, #2ecc71, #27ae60);
-        color: white;
-        box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
-      }
-
-      .stop {
-        background: linear-gradient(135deg, #e74c3c, #c0392b);
-        color: white;
-        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
-      }
-
-      .export {
-        background: linear-gradient(135deg, #3498db, #2980b9);
-        color: white;
-        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-      }
-
-      .reset {
-        background: linear-gradient(135deg, #f39c12, #e67e22);
-        color: white;
-        box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
-      }
-
-      /* Meter Side */
-      .meter-side {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-
-      /* Meter Case */
-      .meter-case {
-        background: linear-gradient(145deg, #1a2634, #0f172a);
-        border-radius: 20px;
-        padding: 25px;
-        margin-bottom: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5),
-          0 10px 20px rgba(0, 0, 0, 0.3);
-      }
-
-      /* Digital Display */
-      .digital-display {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: #0a0e17;
-        border-radius: 15px;
-        padding: 20px;
-        margin-bottom: 25px;
-        border: 2px solid #2c3e50;
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
-      }
-
-      #timer {
-        font-family: "Courier New", monospace;
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #2ecc71;
-        text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
-      }
-
-      #live-error-display {
-        font-family: "Courier New", monospace;
-        font-size: 2rem;
-        font-weight: bold;
-        transition: color 0.3s ease;
-      }
-
-      /* Mechanical Disc Section */
-      #mech-section {
-        margin-bottom: 20px;
-      }
-
-      .disc-label {
-        text-align: center;
-        color: #94a3b8;
-        font-size: 0.9rem;
-        margin-bottom: 10px;
-        letter-spacing: 2px;
+        margin-bottom: 15px;
       }
 
       .disc-container {
+        width: 85%;
+        height: 44px;
+        background: #1e293b;
+        border-radius: 22px;
         position: relative;
-        height: 100px;
-        background: linear-gradient(90deg, #2c3e50, #34495e);
-        border-radius: 50px;
-        overflow: hidden;
-        border: 3px solid #4a5568;
-        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        border: 2px solid #475569;
       }
-
-      .disc-grid {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: repeating-linear-gradient(
-          90deg,
-          transparent,
-          transparent 9px,
-          rgba(255, 255, 255, 0.1) 9px,
-          rgba(255, 255, 255, 0.1) 10px
-        );
-      }
-
       .disc-center-line {
         position: absolute;
-        top: 0;
         left: 50%;
-        width: 2px;
+        width: 4px;
         height: 100%;
-        background: #e74c3c;
-        transform: translateX(-50%);
-        box-shadow: 0 0 10px #e74c3c;
+        background: var(--accent);
         z-index: 2;
       }
-
+      .center-line-flash {
+        background: #fff !important;
+        box-shadow: 0 0 15px #fff;
+      }
       #disc-mark {
         position: absolute;
         top: 50%;
-        width: 20px;
-        height: 20px;
-        background: #e74c3c;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        box-shadow: 0 0 20px #e74c3c;
+        width: 14px;
+        height: 30px;
+        background: var(--accent);
+        border-radius: 3px;
+        transform: translateY(-50%);
         z-index: 3;
-        border: 2px solid #fff;
-        transition: left 0.03s linear, opacity 0.1s ease, transform 0.1s ease;
       }
-
-      #disc-mark::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 8px;
-        height: 8px;
-        background: #fff;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-      }
-
-      /* Rotation Info */
-      .rotation-info {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 15px;
-        padding: 10px 15px;
-        background: rgba(52, 152, 219, 0.1);
-        border-radius: 30px;
-        border: 1px solid rgba(52, 152, 219, 0.3);
-        color: #fff;
-        font-size: 0.95rem;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .rotation-info span {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-      }
-
-      #rotation-count {
-        color: #3498db;
-        font-weight: bold;
-        font-size: 1.2rem;
-      }
-
-      #target-rotation {
-        color: #e74c3c;
-        font-weight: bold;
-        font-size: 1.2rem;
-      }
-
-      #rotation-angle {
-        background: rgba(0, 0, 0, 0.3);
-        padding: 4px 10px;
-        border-radius: 20px;
-        color: #2ecc71;
-        font-weight: bold;
-        font-size: 0.9rem;
-        border: 1px solid #2ecc71;
-      }
-
-      /* Digital Section */
-      #digital-section {
-        text-align: center;
-        margin-bottom: 20px;
-        display: none;
-      }
-
-      .pulse-led {
-        width: 60px;
-        height: 60px;
+      #pulse-led {
+        width: 50px;
+        height: 50px;
         background: #1a1a1a;
         border-radius: 50%;
-        margin: 15px auto;
-        border: 3px solid #4a5568;
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-        transition: all 0.1s ease;
+        border: 3px solid #333;
       }
 
-      /* Live Stats */
-      .live-stats {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        margin-bottom: 20px;
-        padding: 15px;
-        background: rgba(15, 23, 42, 0.6);
-        border-radius: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-      }
-
-      .live-stats div {
+      .big-display {
+        font-family: "Courier New", monospace;
+        font-size: clamp(2.5rem, 10vw, 4rem);
+        font-weight: bold;
         text-align: center;
-        padding: 10px;
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
+        padding: 20px 5px;
+        background: #000;
+        color: var(--success);
+        margin-bottom: 15px;
+        border-radius: 16px;
+        border: 1px solid #1e293b;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
-      .live-stats small {
+      .status-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 12px;
+      }
+      .stat {
+        background: #0f172a;
+        padding: 12px;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid #334155;
+      }
+      .stat small {
+        display: block;
+        font-size: 0.65rem;
         color: #94a3b8;
-        font-size: 0.8rem;
+      }
+      .stat span {
+        font-size: 1.2rem;
+        font-weight: bold;
+        font-family: monospace;
+      }
+      .stat.wide {
+        grid-column: 1 / -1;
+        border-color: var(--primary);
+        background: #1e293b;
+      }
+      .stat.wide span {
+        font-size: 2rem;
+        color: var(--primary);
+      }
+
+      /* LOG SECTION */
+      .export-btn {
+        background: var(--warning);
+        color: #000;
+        padding: 12px 24px;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .log-container {
+        margin-top: 20px;
+        width: 100%;
+        max-width: 1200px;
+      }
+      .table-wrapper {
+        overflow-x: auto;
+        background: var(--card);
+        border-radius: 16px;
+      }
+      table {
+        width: 100%;
+        min-width: 900px;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #334155;
+        font-size: 0.85rem;
+      }
+      th {
+        color: #94a3b8;
         text-transform: uppercase;
         letter-spacing: 1px;
       }
-
-      .accent-text {
-        color: #3498db;
-        font-size: 1.5rem;
-        font-weight: bold;
-        text-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
-      }
-
-      /* Table */
-      .table-responsive {
-        overflow-x: auto;
-        max-height: 300px;
-        overflow-y: auto;
-        border-radius: 12px;
-        background: rgba(15, 23, 42, 0.4);
-      }
-
-      #logTable {
-        width: 100%;
-        border-collapse: collapse;
-        color: #fff;
-      }
-
-      #logTable th {
-        background: #2c3e50;
-        color: #fff;
-        font-weight: 600;
-        font-size: 0.85rem;
-        padding: 12px 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-      }
-
-      #logTable td {
-        padding: 10px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        text-align: center;
-      }
-
-      #logTable tbody tr {
-        transition: all 0.3s ease;
-      }
-
-      #logTable tbody tr:hover {
-        background: rgba(52, 152, 219, 0.1);
-      }
-
-      .pass {
-        color: #2ecc71;
-        font-weight: bold;
-        text-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
-      }
-
-      .fail {
-        color: #e74c3c;
-        font-weight: bold;
-        text-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
-      }
-
-      .delete-btn {
-        background: rgba(231, 76, 60, 0.2);
-        border: 1px solid #e74c3c;
-        color: #e74c3c;
-        width: 30px;
-        height: 30px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: all 0.3s ease;
-      }
-
-      .delete-btn:hover {
-        background: #e74c3c;
-        color: white;
-        transform: scale(1.1);
-      }
-
-      /* Image Gallery - Updated for larger images */
-      .image-gallery {
-        display: flex;
-        gap: 30px;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-        padding: 20px;
-        background: rgba(15, 23, 42, 0.4);
-        border-radius: 20px;
-        flex-wrap: wrap;
-      }
-
-      .image-gallery img {
-        width: 100%;
-        max-width: 500px;  /* Increased from 400px to 500px for larger images */
-        height: auto;
-        min-height: 250px;  /* Ensures minimum height */
-        object-fit: cover;
-        border-radius: 15px;
-        border: 3px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
-        cursor: pointer;
-      }
-
-      .image-gallery img:hover {
-        transform: scale(1.05);
-        border-color: #3498db;
-        box-shadow: 0 15px 40px rgba(52, 152, 219, 0.4);
-      }
-
-      /* Digital Section Enhancements */
-      #digital-section {
-        text-align: center;
-        margin-bottom: 20px;
-        padding: 15px;
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 15px;
-      }
-
-      .pulse-led {
-        width: 80px;
-        height: 80px;
-        background: #1a1a1a;
-        border-radius: 50%;
-        margin: 10px auto;
-        border: 3px solid #4a5568;
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-        transition: all 0.1s ease;
-      }
-
-      #pulse-count {
-        font-size: 1.2rem;
-        color: #3498db;
-        font-weight: bold;
-        margin-top: 10px;
-        padding: 8px;
-        background: rgba(52, 152, 219, 0.1);
-        border-radius: 20px;
-        border: 1px solid rgba(52, 152, 219, 0.3);
-      }
-
-      #target-pulses {
-        color: #e74c3c;
-        font-weight: bold;
-      }
-
-      /* Scrollbar Styling */
-      ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
-
-      ::-webkit-scrollbar-track {
-        background: rgba(15, 23, 42, 0.6);
-        border-radius: 10px;
-      }
-
-      ::-webkit-scrollbar-thumb {
-        background: #4a5568;
-        border-radius: 10px;
-      }
-
-      ::-webkit-scrollbar-thumb:hover {
-        background: #3498db;
-      }
-
-      /* Responsive Design */
-      @media (max-width: 1024px) {
-        .lab-container {
-          grid-template-columns: 1fr;
-        }
-
-        .config-side {
-          max-width: 500px;
-          margin: 0 auto;
-        }
-        
-        .image-gallery img {
-          max-width: 450px;
-        }
-      }
-
-      @media (max-width: 768px) {
-        body {
-          padding: 10px;
-        }
-
-        .digital-display {
-          flex-direction: column;
-          gap: 10px;
-          text-align: center;
-        }
-
-        #live-error-display {
-          font-size: 1.5rem;
-        }
-
-        .btn-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .image-gallery {
-          flex-direction: column;
-          gap: 20px;
-        }
-
-        .image-gallery img {
-          max-width: 100%;
-          min-height: 200px;
-        }
-
-        .rotation-info {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .header-container {
-          flex-direction: column;
-          gap: 10px;
-          text-align: center;
-        }
-
-        .flex-row-gap {
-          flex-direction: column;
-          gap: 8px;
-        }
-
-        .flex-row-gap input {
-          width: 100%;
-        }
-
-        .live-stats {
-          grid-template-columns: 1fr;
-        }
-
-        .digital-display {
-          padding: 15px;
-        }
-
-        #timer {
-          font-size: 1.2rem;
-        }
-
-        #live-error-display {
-          font-size: 1.2rem;
-        }
-
-        .disc-container {
-          height: 80px;
-        }
-
-        #disc-mark {
-          width: 16px;
-          height: 16px;
-        }
-
-        .image-gallery img {
-          min-height: 180px;
-        }
-      }
-
-      /* Print Styles */
-      @media print {
-        body {
-          background: white;
-          padding: 0;
-        }
-
-        .config-side,
-        .btn-grid,
-        .image-gallery,
-        .btn-home,
-        .delete-btn {
-          display: none;
-        }
-
-        .panel {
-          box-shadow: none;
-          border: 1px solid #ddd;
-        }
-
-        #logTable {
-          color: black;
-        }
-
-        #logTable th {
-          background: #f0f0f0;
-          color: black;
-        }
-      }
     </style>
   </head>
-
   <body>
-    <div class="lab-container">
-      <div class="config-side">
-        <div class="panel">
-          <div class="header-container">
-            <h2>TVJ Calibration</h2>
-            <button
-              class="btn-home"
-              onclick="window.location.href = 'index.html'"
-            >
-              <i class="fas fa-home"></i>الصفحة الرئيسية
-            </button>
+    <h1>TVJ CALIBRATION METER SUITE</h1>
+
+    <div class="container">
+      <div class="panel config">
+        <h2>Configuration</h2>
+        <div class="input-group">
+          <label>Meter Serial No.</label
+          ><input type="text" id="mno" placeholder="TVJ-XXXX" />
+        </div>
+
+        <div class="flex-row">
+          <div class="input-group">
+            <label>Voltage (V)</label><input type="number" id="V" value="220" />
           </div>
-          <div id="input-fields">
-            <div class="input-group">
-              <label for="mno">Meter No</label>
-              <input type="number" id="mno" placeholder="Enter Meter.No" />
-            </div>
-
-            <div class="input-group">
-              <label>Voltage (V) & Current (A)</label>
-              <div class="flex-row-gap">
-                <input type="number" id="V" value="220" aria-label="Voltage" />
-                <input type="number" id="I" value="5" aria-label="Current" />
-              </div>
-            </div>
-
-            <div class="input-group">
-              <label for="type">Measurement Mode</label>
-              <select id="type" onchange="toggleMode()">
-                <option value="mech">Mechanical (Meter)</option>
-                <option value="digital">Digital (Meter)</option>
-              </select>
-            </div>
-
-            <div class="input-group">
-              <label id="countLabel" for="countInput"
-                >Test Revolutions (n)</label
-              >
-              <input type="number" id="countInput" value="2" />
-            </div>
-
-            <div class="input-group">
-              <label for="constant">Meter Constant (C)</label>
-              <input type="number" id="constant" value="400" />
-            </div>
-
-            <div class="input-group">
-              <label for="limit">IEC Class</label>
-              <select id="limit">
-                <option value="0.5">Class 0.5</option>
-                <option value="1">Class 1.0</option>
-                <option value="2" selected>Class 2.0</option>
-              </select>
-            </div>
+          <div class="input-group">
+            <label>Current (I)</label><input type="number" id="I" value="5" />
           </div>
+        </div>
 
-          <div class="btn-grid">
-            <button id="startBtn" class="start" onclick="runTest()">
-              START
-            </button>
-            <button id="stopBtn" class="stop" onclick="stopTest()" disabled>
-              CAPTURE
-            </button>
-            <button class="export" onclick="exportToExcel()">EXCEL</button>
-            <button class="reset" onclick="resetLogsOnly()">RESET</button>
+        <div class="flex-row">
+          <div class="input-group">
+            <label>Phases</label>
+            <select id="phases">
+              <option value="1">1-Phase</option>
+              <option value="3">3-Phase (√3)</option>
+            </select>
           </div>
+          <div class="input-group">
+            <label>Angle (Φ°)</label
+            ><input type="number" id="angle" value="0" />
+          </div>
+        </div>
+
+        <div class="flex-row">
+          <div class="input-group">
+            <label>Constant (C)</label
+            ><input type="number" id="constant" value="1600" />
+          </div>
+          <div class="input-group">
+            <label>Test Revs (n)</label
+            ><input type="number" id="countInput" value="2" />
+          </div>
+        </div>
+
+        <div class="flex-row">
+          <div class="input-group">
+            <label>Limit / Class (%)</label>
+            <select id="limit">
+              <option value="0.2">Class 0.2</option>
+              <option value="0.5" selected>Class 0.5</option>
+              <option value="1.0">Class 1.0</option>
+              <option value="2.0">Class 2.0</option>
+              <option value="2.5">Class 2.5</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Meter Type</label>
+            <select id="type" onchange="toggleUI()">
+              <option value="mech">Mechanical</option>
+              <option value="digi">Digital</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="btn-container">
+          <button id="startBtn" class="action-btn" onclick="runTest()">
+            <span style="font-size: 2.5rem">▶</span><span>START</span>
+          </button>
+          <button id="stopBtn" class="action-btn" onclick="stopTest()" disabled>
+            <span style="font-size: 2.5rem">💾</span><span>LOG</span>
+          </button>
         </div>
       </div>
 
-      <div class="meter-side">
-        <div class="panel">
-          <div class="meter-case">
-            <div class="digital-display">
-              <div id="timer">CHRONO: 0.00s</div>
-              <div id="live-error-display">0.000%</div>
-            </div>
-
-            <div id="mech-section">
-              <div class="disc-label">DISC ROTATION</div>
-              <div class="disc-container">
-                <div class="disc-grid"></div>
-                <div class="disc-center-line"></div>
-                <div id="disc-mark"></div>
-              </div>
-            </div>
-
-            <div id="digital-section" class="digital-section">
-              <div id="pulse-led" class="pulse-led"></div>
-            </div>
-          </div>
-
-          <div class="live-stats">
-            <div>
-              <small>POWER</small><br /><b id="live-p" class="accent-text"
-                >0.0</b
-              >
-              W
-            </div>
-            <div>
-              <small>STD ENERGY</small><br /><b id="live-e" class="accent-text"
-                >0.0000</b
-              >
-              Wh
-            </div>
-          </div>
-
-          <div class="table-responsive">
-            <table id="logTable">
-              <thead>
-                <tr>
-                  <th>Meter</th>
-                  <th>Time</th>
-                  <th>Type</th>
-                  <th>Error</th>
-                  <th>Status</th>
-                  <th>Del</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+      <div class="panel live">
+        <h2>Live Measurement</h2>
+        <div
+          id="pass-counter"
+          style="
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+          "
+        >
+          READY
+        </div>
+        <div class="meter-box" id="mech-ui">
+          <div class="disc-container">
+            <div class="disc-center-line"></div>
+            <div id="disc-mark" style="left: 50%"></div>
           </div>
         </div>
-
-        <div class="image-gallery">
-          <img src="TVJ_1.jpeg" alt="Calibration Steps" />
-          <img src="TVJ_2.jpeg" alt="Illustration Example" />
+        <div class="meter-box" id="digi-ui" style="display: none">
+          <div id="pulse-led"></div>
+        </div>
+        <div class="big-display" id="live-error-display">0.000%</div>
+        <div class="status-grid">
+          <div class="stat">
+            <small>POWER (W)</small><span id="live-p">0.0</span>
+          </div>
+          <div class="stat">
+            <small>ENERGY (Wh)</small><span id="live-e">0.0000</span>
+          </div>
+          <div class="stat wide">
+            <small>CHRONOMETER</small><span id="timer">0.00s</span>
+          </div>
         </div>
       </div>
     </div>
+
+    <div class="log-container panel">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-bottom: 15px;
+        "
+      >
+        <h2>Calibration Log</h2>
+        <button class="export-btn" onclick="exportToExcel()">
+          EXPORT EXCEL (.CSV)
+        </button>
+      </div>
+      <div class="table-wrapper">
+        <table id="logTable">
+          <thead>
+            <tr>
+              <th>Serial No</th>
+              <th>Conn.</th>
+              <th>Type</th>
+              <th>Error %</th>
+              <th>Constant</th>
+              <th>Class</th>
+              <th>Current</th>
+              <th>Result</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
     <script>
-      let startTime,
-        timerInt,
-        simInt,
-        elapsed = 0,
-        discPos = -50;
-
-      function toggleMode() {
+      let timerInt, simInt, startTime, elapsed;
+      function toggleUI() {
         const type = document.getElementById("type").value;
-        document.getElementById("mech-section").style.display =
-          type === "mech" ? "block" : "none";
-        document.getElementById("digital-section").style.display =
-          type === "digital" ? "block" : "none";
-        document.getElementById("countLabel").innerText =
-          type === "mech" ? "Test Revolutions (n)" : "Test Pulses (n)";
+        document.getElementById("mech-ui").style.display =
+          type === "mech" ? "flex" : "none";
+        document.getElementById("digi-ui").style.display =
+          type === "digi" ? "flex" : "none";
       }
-
       function runTest() {
-        const V = +document.getElementById("V").value;
-        const I = +document.getElementById("I").value;
-        const power = V * I; // Simplified PF as 1.0 for logic
-        const type = document.getElementById("type").value;
-        const C = +document.getElementById("constant").value;
-        const count = +document.getElementById("countInput").value;
-        const limit = +document.getElementById("limit").value;
-
+        const V = +document.getElementById("V").value,
+          I = +document.getElementById("I").value,
+          angleDeg = +document.getElementById("angle").value,
+          phaseType = +document.getElementById("phases").value,
+          type = document.getElementById("type").value,
+          C = +document.getElementById("constant").value,
+          count = +document.getElementById("countInput").value,
+          limit = +document.getElementById("limit").value;
+        const pf = Math.cos(angleDeg * (Math.PI / 180)),
+          multiplier = phaseType == 3 ? Math.sqrt(3) : 1,
+          power = V * I * pf * multiplier;
         document.getElementById("startBtn").disabled = true;
         document.getElementById("stopBtn").disabled = false;
         startTime = Date.now();
-
+        let rotationPhase = 0,
+          lastPassCount = 0;
         timerInt = setInterval(() => {
           elapsed = (Date.now() - startTime) / 1000;
-          const E_true = (power * elapsed) / 3600;
-          const E_meter = (count * 1000) / C;
-          const error = ((E_meter - E_true) / E_meter) * 100;
-
-          document.getElementById("timer").innerText =
-            `CHRONO: ${elapsed.toFixed(2)}s`;
+          const E_true = (power * elapsed) / 3600,
+            E_meter = (count * 1000) / C,
+            error = ((E_meter - E_true) / E_meter) * 100;
+          document.getElementById("timer").innerText = `${elapsed.toFixed(2)}s`;
           document.getElementById("live-e").innerText = E_true.toFixed(4);
           document.getElementById("live-p").innerText = power.toFixed(1);
-
           const errEl = document.getElementById("live-error-display");
-          errEl.innerText = (error > 99 ? ">99" : error.toFixed(3)) + "%";
-          errEl.style.color = Math.abs(error) <= limit ? "#00ff00" : "#ff4d4d";
+          errEl.innerText =
+            (Math.abs(error) > 999 ? "---" : error.toFixed(3)) + "%";
+          errEl.style.color = Math.abs(error) <= limit ? "#22c55e" : "#ef4444";
         }, 50);
-
+        const idealTime = (count * 3600 * 1000) / (power * C);
         if (type === "mech") {
+          const targetRounds = count + 1,
+            radPerSec = (targetRounds * 2 * Math.PI) / idealTime;
           simInt = setInterval(() => {
-            discPos += power / 1000 + 1;
-            if (discPos > 280) discPos = -40;
-            document.getElementById("disc-mark").style.left = discPos + "px";
+            rotationPhase += radPerSec * 0.03;
+            const currentRound = Math.floor(rotationPhase / (2 * Math.PI));
+            document.getElementById("pass-counter").innerText =
+              `PASS: ${currentRound} / ${targetRounds}`;
+            if (currentRound > lastPassCount) {
+              const line = document.querySelector(".disc-center-line");
+              line.classList.add("center-line-flash");
+              setTimeout(() => line.classList.remove("center-line-flash"), 150);
+              lastPassCount = currentRound;
+            }
+            const mark = document.getElementById("disc-mark"),
+              radius =
+                document.querySelector(".disc-container").offsetWidth / 2 - 20;
+            mark.style.left = `calc(50% + ${Math.sin(rotationPhase) * radius}px)`;
+            mark.style.opacity = Math.cos(rotationPhase) > 0 ? "1" : "0";
           }, 30);
         } else {
-          const pulseRate = (3600000 * 1000) / (power * C);
-          simInt = setInterval(() => {
+          const targetPulses = count + 1,
+            pulseInterval = (idealTime * 1000) / (targetPulses - 1);
+          let pulsesPerformed = 0;
+          const flashLED = (current) => {
+            document.getElementById("pass-counter").innerText =
+              `PULSE: ${current} / ${targetPulses}`;
             const led = document.getElementById("pulse-led");
-            led.style.background = "#ff0";
-            setTimeout(() => (led.style.background = "#1a1a1a"), 100);
-          }, pulseRate);
+            led.style.background = "#22c55e";
+            led.style.boxShadow = "0 0 20px #22c55e";
+            setTimeout(() => {
+              led.style.background = "#1a1a1a";
+              led.style.boxShadow = "none";
+            }, 100);
+          };
+          pulsesPerformed++;
+          flashLED(pulsesPerformed);
+          simInt = setInterval(() => {
+            if (pulsesPerformed < targetPulses) {
+              pulsesPerformed++;
+              flashLED(pulsesPerformed);
+            }
+          }, pulseInterval);
         }
       }
-
       function stopTest() {
         clearInterval(timerInt);
         clearInterval(simInt);
         document.getElementById("startBtn").disabled = false;
         document.getElementById("stopBtn").disabled = true;
-
-        const mno = document.getElementById("mno").value || "N/A";
-        const error = document.getElementById("live-error-display").innerText;
-        const limit = +document.getElementById("limit").value;
-        const numericErr = parseFloat(error);
-        const isPass = Math.abs(numericErr) <= limit;
-
+        const mno = document.getElementById("mno").value || "TVJ-LAB",
+          connection = document.getElementById("phases").value + "-Ph",
+          type = document.getElementById("type").value,
+          errorStr = document.getElementById("live-error-display").innerText,
+          constant = document.getElementById("constant").value,
+          limitVal = document.getElementById("limit").value,
+          currentVal = document.getElementById("I").value;
+        const isPass = Math.abs(parseFloat(errorStr)) <= parseFloat(limitVal);
         const row = document.querySelector("#logTable tbody").insertRow(0);
-        row.innerHTML = `
-                <td>${mno}</td>
-                <td>${elapsed.toFixed(1)}s</td>
-                <td>${document.getElementById("type").value.toUpperCase()}</td>
-                <td>${error}</td>
-                <td class="${isPass ? "pass" : "fail"}">${isPass ? "PASS" : "FAIL"}</td>
-                <td><button class="delete-btn" onclick="this.parentElement.parentElement.remove()">X</button></td>
-            `;
+        row.innerHTML = `<td>${mno}</td><td>${connection}</td><td>${type}</td><td style="color:${isPass ? "#22c55e" : "#ef4444"}; font-weight:bold">${errorStr}</td><td>${constant}</td><td>${limitVal}%</td><td>${currentVal}A</td><td style="font-weight:bold; color:${isPass ? "#22c55e" : "#ef4444"}">${isPass ? "PASS" : "FAIL"}</td><td><button onclick="this.parentElement.parentElement.remove()" style="padding:6px; background:#475569; border:none; color:white; border-radius:8px;">DEL</button></td>`;
       }
-
       function exportToExcel() {
-        let table = document.getElementById("logTable").outerHTML;
-        let url = "data:application/vnd.ms-excel," + encodeURIComponent(table);
-        let link = document.createElement("a");
-        link.download = "TVJ_Calibration_Report.xls";
-        link.href = url;
-        link.click();
-      }
-
-      async function resetLogsOnly() {
-        const { value: pw } = await Swal.fire({
-          title: "Password",
-          input: "password",
-          background: "#1e293b",
-          color: "#fff",
-        });
-        if (pw === "1") {
-          document.querySelector("#logTable tbody").innerHTML = "";
-          Swal.fire("Cleared", "", "success");
+        let csv = [];
+        const rows = document.querySelectorAll("table tr");
+        for (let i = 0; i < rows.length; i++) {
+          let row = [],
+            cols = rows[i].querySelectorAll("td, th");
+          for (let j = 0; j < cols.length - 1; j++) {
+            row.push('"' + cols[j].innerText.trim() + '"');
+          }
+          csv.push(row.join(","));
         }
+        const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+        const downloadLink = document.createElement("a");
+        downloadLink.download = `Calibration_Log.csv`;
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
       }
     </script>
   </body>
