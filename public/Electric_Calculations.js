@@ -125,6 +125,74 @@ function updateAngles() {
 }
 
 // ========== CALIBRATIONS TAB FUNCTIONS ==========
+document.addEventListener('DOMContentLoaded', () => {
+    const thetaInput = document.getElementById('theta_phase');
+    const pfElem = document.getElementById('res_pf');
+    const kwElem = document.getElementById('res_kw');
+    const hpElem = document.getElementById('res_hp');
+    const HP_TO_KW = 0.746;
+
+    // Helper to get numeric values from spans
+    const getVal = (el) => parseFloat(el.innerText.replace(/[^\d.-]/g, '')) || 0;
+
+    // --- 1. Angle (Theta) Logic ---
+    window.calculatePhase = function() {
+        const degrees = parseFloat(thetaInput.value) || 0;
+        const radians = degrees * (Math.PI / 180);
+        const pf = Math.cos(radians);
+        
+        pfElem.innerText = pf.toFixed(3);
+    };
+
+    // --- 2. Power Factor (PF) Logic ---
+    pfElem.addEventListener('input', () => {
+        let pf = getVal(pfElem);
+        
+        // Validation: PF cannot exceed 1
+        if (pf > 1) pf = 1;
+        if (pf < -1) pf = -1; 
+
+        // Reverse calculate Theta: arccos(PF)
+        const radians = Math.acos(pf);
+        const degrees = radians * (180 / Math.PI);
+        
+        thetaInput.value = degrees.toFixed(1);
+    });
+
+    // --- 3. Power Calculations (kW <-> HP) ---
+    hpElem.addEventListener('input', () => {
+        const hp = getVal(hpElem);
+        const kw = hp * HP_TO_KW;
+        kwElem.innerText = kw.toFixed(2);
+    });
+
+    kwElem.addEventListener('input', () => {
+        const kw = getVal(kwElem);
+        const hp = kw / HP_TO_KW;
+        hpElem.innerText = hp.toFixed(2);
+    });
+
+    // --- 4. UX Improvements (Enter key & Blur) ---
+    [pfElem, kwElem, hpElem].forEach(el => {
+        el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                el.blur();
+            }
+        });
+    });
+
+    // Clean up PF formatting on blur
+    pfElem.addEventListener('blur', () => {
+        let pf = getVal(pfElem);
+        if (pf > 1) pf = 1.0;
+        if (pf < 0) pf = 0.0; // Usually PF is positive in this context
+        pfElem.innerText = pf.toFixed(3);
+    });
+});
+
+
+
 function handlePhaseModeChange() {
     const mode = document.getElementById("phase_mode").value;
     const voltageInput = document.getElementById("v");
