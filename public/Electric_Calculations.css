@@ -312,6 +312,19 @@ body {
   font-family: monospace;
 }
 
+.res-val.editable {
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 6px;
+  text-align: center;
+}
+
+.res-val.editable:focus {
+  outline: 2px solid var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.15);
+}
+
 /* ========== COLOR VARIATIONS ========== */
 .grey-box {
   background: #f7fafc;

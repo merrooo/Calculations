@@ -132,19 +132,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const hpElem = document.getElementById('res_hp');
     const HP_TO_KW = 0.746;
 
-    // Helper to get numeric values from spans
-    const getVal = (el) => parseFloat(el.innerText.replace(/[^\d.-]/g, '')) || 0;
-
-    // --- 1. Angle (Theta) Logic ---
-    window.calculatePhase = function () {
-        const degrees = parseFloat(thetaInput.value) || 0;
-        const radians = degrees * (Math.PI / 180);
-        const pf = Math.cos(radians);
-
-        pfElem.innerText = pf.toFixed(3);
+    // Helper to get numeric values from spans/inputs (handles comma decimals)
+    const getVal = (el) => {
+        const raw = ((el && "value" in el) ? el.value : el.innerText || "")
+            .trim()
+            .replace(/,/g, ".");
+        const match = raw.match(/-?\d+(\.\d+)?/);
+        return match ? parseFloat(match[0]) : 0;
+    };
+    const setVal = (el, value) => {
+        if (!el) return;
+        if ("value" in el) el.value = value;
+        else el.innerText = value;
     };
 
-    // --- 2. Power Factor (PF) Logic ---
+    // --- 1. Power Factor (PF) Logic ---
     pfElem.addEventListener('input', () => {
         let pf = getVal(pfElem);
 
@@ -157,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const degrees = radians * (180 / Math.PI);
 
         thetaInput.value = degrees.toFixed(1);
+        calculatePhase();
     });
 
     // --- 3. Power Calculations (kW <-> HP) ---
@@ -187,7 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let pf = getVal(pfElem);
         if (pf > 1) pf = 1.0;
         if (pf < 0) pf = 0.0; // Usually PF is positive in this context
-        pfElem.innerText = pf.toFixed(3);
+        setVal(pfElem, pf.toFixed(3));
+        calculatePhase();
     });
 });
 
@@ -232,7 +236,12 @@ function calculatePhase() {
 
     const hp = kw / 0.746;
 
-    document.getElementById("res_pf").innerText = pf.toFixed(3);
+    const resPfEl = document.getElementById("res_pf");
+    const isEditingPf = document.activeElement === resPfEl;
+    if (resPfEl && !isEditingPf) {
+        if ("value" in resPfEl) resPfEl.value = pf.toFixed(3);
+        else resPfEl.innerText = pf.toFixed(3);
+    }
     document.getElementById("res_kw").innerText = kw.toFixed(2);
     document.getElementById("res_hp").innerText = hp.toFixed(2);
 

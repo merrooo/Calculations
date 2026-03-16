@@ -234,7 +234,7 @@
                     <input
                       type="number"
                       id="theta_phase"
-                      value="30"
+                      value="0"
                       oninput="calculatePhase()"
                     />
                   </div>
@@ -242,7 +242,13 @@
                 <div class="results-dashboard">
                   <div class="result-item grey-box">
                     <span class="result-label">P.F</span>
-                    <span id="res_pf" class="res-val" contenteditable="true">0.866</span>
+                    <input
+                      id="res_pf"
+                      class="res-val editable"
+                      type="text"
+                      inputmode="decimal"
+                      value="0.866"
+                    />
                   </div>
                   <div class="result-item grey-box">
                     <span class="result-label">Active (kW)</span>
