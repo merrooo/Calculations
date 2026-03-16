@@ -5,7 +5,7 @@ let selectedPeriod = "Aug-2024";
 function switchTab(tabName) {
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.tab-pane').forEach(content => content.classList.remove('active'));
-    
+
     event.currentTarget.classList.add('active');
     document.getElementById(`tab-${tabName}`).classList.add('active');
 }
@@ -33,7 +33,7 @@ function closeModal() {
     document.getElementById("equationModal").style.display = "none";
 }
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     const modal = document.getElementById("equationModal");
     if (event.target == modal) {
         modal.style.display = "none";
@@ -114,7 +114,7 @@ function updateAngles() {
 
     document.getElementById("Mtheta").value = mErr.toFixed(2) + " %";
     document.getElementById("IMtheta").value = imErr.toFixed(2) + " %";
-    
+
     document.getElementById("Mtheta").setAttribute('readonly', true);
     document.getElementById("IMtheta").setAttribute('readonly', true);
 
@@ -136,26 +136,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const getVal = (el) => parseFloat(el.innerText.replace(/[^\d.-]/g, '')) || 0;
 
     // --- 1. Angle (Theta) Logic ---
-    window.calculatePhase = function() {
+    window.calculatePhase = function () {
         const degrees = parseFloat(thetaInput.value) || 0;
         const radians = degrees * (Math.PI / 180);
         const pf = Math.cos(radians);
-        
+
         pfElem.innerText = pf.toFixed(3);
     };
 
     // --- 2. Power Factor (PF) Logic ---
     pfElem.addEventListener('input', () => {
         let pf = getVal(pfElem);
-        
+
         // Validation: PF cannot exceed 1
         if (pf > 1) pf = 1;
-        if (pf < -1) pf = -1; 
+        if (pf < -1) pf = -1;
 
         // Reverse calculate Theta: arccos(PF)
         const radians = Math.acos(pf);
         const degrees = radians * (180 / Math.PI);
-        
+
         thetaInput.value = degrees.toFixed(1);
     });
 
@@ -200,31 +200,74 @@ function handlePhaseModeChange() {
     calculatePhase();
 }
 
+
 function calculatePhase() {
+
     const mode = document.getElementById("phase_mode").value;
-    const thetaInput = document.getElementById("theta_phase");
-    thetaInput.disabled = mode === "1";
 
-    const v = parseFloat(document.getElementById("v").value) || 0;
+    const vline = parseFloat(document.getElementById("v").value) || 0;
+    const vphase = 220;
+
     const i = parseFloat(document.getElementById("i").value) || 0;
-    const thDeg = parseFloat(document.getElementById("theta_phase").value) || 0;
-    const factor = mode === "3" ? Math.sqrt(3) : 1;
-    const pf = Math.cos(thDeg * Math.PI / 180);
-    const kw = (factor * v * i * pf) / 1000;
-
-    document.getElementById("res_pf").innerText = pf.toFixed(3);
-    document.getElementById("res_kw").innerText = kw.toFixed(2);
-    document.getElementById("res_hp").innerText = (kw / 0.746).toFixed(2);
+    const theta = parseFloat(document.getElementById("theta_phase").value) || 0;
 
     const kc = parseFloat(document.getElementById("kwh_c").value) || 0;
     const kvc = parseFloat(document.getElementById("kvar_c").value) || 0;
     const tc = parseFloat(document.getElementById("t_c").value) || 0;
 
-    if (tc > 0 && v > 0) {
-        document.getElementById("cal_kw").innerText = ((60000 * kc) / (factor * v * pf * tc)).toFixed(1);
-        document.getElementById("cal_kv").innerText = ((60000 * kvc) / (factor * v * Math.abs(Math.sin(thDeg * Math.PI / 180)) * tc)).toFixed(1);
+    const rad = theta * Math.PI / 180;
+
+    const pf = Math.cos(rad);
+    const sinA = Math.sin(rad);
+
+    let kw = 0;
+
+    if (mode === "1") {
+        // single phase
+        kw = (vphase * i * pf) / 1000;
+    } else {
+        // three phase
+        kw = (Math.sqrt(3) * vline * i * pf) / 1000;
+    }
+
+    const hp = kw / 0.746;
+
+    document.getElementById("res_pf").innerText = pf.toFixed(3);
+    document.getElementById("res_kw").innerText = kw.toFixed(2);
+    document.getElementById("res_hp").innerText = hp.toFixed(2);
+
+
+    /* Current required for kWh test */
+
+    if (tc > 0) {
+
+        let cal_kw = 0;
+
+        if (mode === "1") {
+
+            cal_kw = ((kc * 60) / (vphase * tc)) * 1000;
+
+        } else {
+
+            cal_kw = ((kc * 60) / (Math.sqrt(3) * vline * pf * tc)) * 1000;
+
+        }
+
+        document.getElementById("cal_kw").innerText = cal_kw.toFixed(2);
+    }
+
+
+    /* Current required for kVARh test (3 phase only) */
+
+    if (tc > 0 && sinA !== 0 && mode === "3") {
+
+        const cal_kv = ((kvc * 60) / (Math.sqrt(3) * vline * sinA * tc)) * 1000;
+
+        document.getElementById("cal_kv").innerText = cal_kv.toFixed(2);
     }
 }
+
+
 
 function calcAC() {
     const btu = parseFloat(document.getElementById("btu").value) || 0;
@@ -788,9 +831,9 @@ function exportComparison() {
 }
 
 // ========== INITIALIZATION ==========
-window.onload = function() {
+window.onload = function () {
     document.getElementById('currentDate').value = new Date().toISOString().split('T')[0];
-    
+
     updateAngles();
     handlePhaseModeChange();
     calculatePhase();
@@ -798,8 +841,8 @@ window.onload = function() {
     calcMeter();
     calculateMT();
     initTariffTable();
-    
-    window.onclick = function(event) {
+
+    window.onclick = function (event) {
         const modal = document.getElementById("equationModal");
         if (event.target == modal) {
             modal.style.display = "none";
