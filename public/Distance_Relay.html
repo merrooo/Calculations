@@ -14,7 +14,186 @@
     ></script>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+        background: #f0f4fa;
+        color: #1a2c3e;
+        line-height: 1.5;
+        padding: 1.5rem;
+      }
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 32px;
+        box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+      }
+      .hero {
+        background: linear-gradient(135deg, #0a3b44 0%, #146b5e 100%);
+        color: white;
+        padding: 2rem 2.5rem;
+      }
+      .hero h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      .hero p {
+        opacity: 0.9;
+        max-width: 80%;
+      }
+      .badge {
+        background: #ffb34740;
+        display: inline-block;
+        padding: 0.2rem 1rem;
+        border-radius: 40px;
+        font-size: 0.8rem;
+        margin-top: 1rem;
+      }
+      .content {
+        padding: 2rem 2.5rem;
+      }
+      .topic-section {
+        margin: 2.5rem 0 1rem 0;
+        border-bottom: 2px solid #e0eaf1;
+        padding-bottom: 0.5rem;
+      }
+      .topic-section h2 {
+        font-size: 1.8rem;
+        color: #0f3b3a;
+        border-left: 6px solid #1e8f7a;
+        padding-left: 1rem;
+        margin-bottom: 0.5rem;
+      }
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 1.5rem;
+        margin: 1rem 0;
+      }
+      .calc-card {
+        background: #f9fbfe;
+        border-radius: 24px;
+        padding: 1.2rem;
+        border: 1px solid #e0eaf1;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      }
+      .calc-card h3 {
+        color: #1e6f5c;
+        margin-bottom: 0.8rem;
+        font-size: 1.2rem;
+      }
+      .discussion-card {
+        background: #eef3fc;
+        border-radius: 24px;
+        padding: 1.2rem;
+        border-left: 5px solid #2c7da0;
+        margin: 1rem 0;
+      }
+      .equation-card {
+        background: #fef7e0;
+        border-radius: 20px;
+        padding: 1rem 1.2rem;
+        margin: 1rem 0;
+        font-family: "Courier New", monospace;
+        border-left: 4px solid #f4a261;
+      }
+      .input-group {
+        margin: 0.7rem 0;
+      }
+      .input-group label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #2c5a6e;
+        margin-bottom: 0.2rem;
+      }
+      .input-group input {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 12px;
+        border: 1px solid #cbdbe2;
+        font-size: 0.9rem;
+      }
+      .calc-btn {
+        background: #1e6f5c;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 0.5rem;
+        width: 100%;
+        transition: 0.2s;
+      }
+      .calc-btn:hover {
+        background: #0f5545;
+        transform: scale(0.98);
+      }
+      .result-area {
+        background: #eef2f5;
+        border-radius: 14px;
+        padding: 0.7rem;
+        margin-top: 0.8rem;
+        font-size: 0.85rem;
+        font-family: monospace;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.2rem 0;
+      }
+      th {
+        background: #1e6f5c;
+        color: white;
+        padding: 10px;
+      }
+      td {
+        border: 1px solid #dee4ec;
+        padding: 8px 12px;
+      }
+      .example-full {
+        background: linear-gradient(135deg, #fff8ed, #fff3e0);
+        border-radius: 28px;
+        padding: 1.8rem;
+        margin: 2rem 0;
+        border: 1px solid #ffddb0;
+      }
+      .footnote {
+        text-align: center;
+        font-size: 0.75rem;
+        padding: 1rem;
+        border-top: 1px solid #cbdae9;
+        margin-top: 1.5rem;
+        color: #4a627a;
+      }
+      .output-grid {
+        background: #e9f4ef;
+        border-radius: 20px;
+        padding: 1rem;
+        margin-top: 1rem;
+        font-family: monospace;
+      }
+      hr {
+        margin: 1rem 0;
+      }
+      .param-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 0.8rem;
+        background: #f8f4e8;
+        padding: 1rem;
+        border-radius: 20px;
+        margin-bottom: 1rem;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
@@ -22,10 +201,10 @@
         <h1>⚡ Distance Relay Protection</h1>
         <p>
           Complete educational guide: calculator + discussion + equations for
-          every topic. Adjustable fault locator & zone settings.
+          every topic. Full line parameter integration.
         </p>
         <div class="badge">
-          📖 Theory • Interactive • 220 kV Example with Fault Distance Finder
+          📖 Theory • Interactive • 220 kV Example with Full Parameter Control
         </div>
       </div>
       <div class="content">
@@ -55,25 +234,15 @@
             <h3>📖 Discussion</h3>
             <p>
               <strong>Positive sequence impedance</strong> is the impedance seen
-              by balanced three-phase currents. It represents the line's
-              inherent opposition to normal load and symmetrical faults. The
-              reactance \(X_1\) depends on conductor geometry: larger phase
-              spacing increases reactance; larger conductor radius (GMR)
-              decreases it.
-            </p>
-            <p>
-              <strong>Physical meaning:</strong> \(X_1 = 0.06283
-              \ln(D_{eq}/GMR)\) Ω/km at 50 Hz. This formula derives from
-              Ampere's law and flux linkage.
+              by balanced three-phase currents. The reactance \(X_1 = 0.06283
+              \ln(D_{eq}/GMR)\) Ω/km at 50 Hz depends on conductor geometry.
             </p>
           </div>
         </div>
         <div class="equation-card">
           <strong>📐 Equations:</strong><br />
           \( Z_1 = R_{ac} + j X_1 \) &nbsp; where &nbsp; \( X_1 = 0.06283 \cdot
-          \ln\left(\dfrac{D_{eq}}{GMR}\right) \) Ω/km (50 Hz)<br />
-          \( D_{eq} = \sqrt[3]{D_{ab} D_{bc} D_{ca}} \) (geometric mean
-          distance)
+          \ln\left(\dfrac{D_{eq}}{GMR}\right) \) Ω/km (50 Hz)
         </div>
 
         <!-- ==================== 2. ZERO SEQUENCE Z₀ ==================== -->
@@ -99,29 +268,30 @@
               <label>Shield wire multiplier k_sw</label
               ><input type="number" id="z0_mult" value="2.7" />
             </div>
+            <div class="input-group">
+              <label>GMR (m) for Z₀ calc</label
+              ><input type="number" id="z0_gmr" value="0.012" step="0.001" />
+            </div>
+            <div class="input-group">
+              <label>Phase spacing D (m)</label
+              ><input type="number" id="z0_d" value="6.0" step="0.1" />
+            </div>
             <button class="calc-btn" id="calcZ0Btn">Calculate Z₀</button>
             <div id="z0Result" class="result-area">—</div>
           </div>
           <div class="discussion-card">
             <h3>📖 Discussion</h3>
             <p>
-              <strong>Zero sequence impedance</strong> is the impedance seen by
-              zero sequence currents during ground faults. It includes the earth
-              return path and is typically 2.5–3.5 times larger than \(Z_1\).
-              Overhead shield wires (ground wires) increase \(X_0\)
-              significantly (k_sw = 2.5–3.0).
-            </p>
-            <p>
-              Earth return resistance \(R_e = 9.88\times10^{-4}f\) Ω/km and
-              depth \(D_e = 658.5\sqrt{\rho/f}\) m depend on soil resistivity.
+              <strong>Zero sequence impedance</strong> includes earth return
+              path. \( R_e = 9.88\times10^{-4}f \) Ω/km, \( D_e =
+              658.5\sqrt{\rho/f} \) m.
             </p>
           </div>
         </div>
         <div class="equation-card">
           <strong>📐 Equations:</strong><br />
-          \( Z_0 = (R_{ac} + 3R_e) + j \cdot k_{sw} \cdot X_{0,base} \) <br />
-          \( R_e = 9.88\times10^{-4} f \) &nbsp; \( D_e = 658.5\sqrt{\rho/f} \)
-          &nbsp; \( X_{0,base} = 0.06283 \ln(D_e / GMR_0) \)
+          \( Z_0 = (R_{ac} + 3R_e) + j \cdot k_{sw} \cdot 0.06283 \ln(D_e /
+          GMR_0) \) with \( GMR_0 = \sqrt[3]{GMR \cdot D^2} \)
         </div>
 
         <!-- ==================== 3. COMPENSATION FACTOR k₀ ==================== -->
@@ -153,11 +323,9 @@
           <div class="discussion-card">
             <h3>📖 Discussion</h3>
             <p>
-              <strong>k₀</strong> adjusts ground fault measurements for the
-              difference between \(Z_0\) and \(Z_1\). For single line-to-ground
-              faults, the relay uses compensated current \(I_A + k_0 I_{res}\).
-              Typical 220 kV: \(k_0 \approx 0.67\angle -3^\circ\), so \(1+k_0
-              \approx 1.67\), meaning fault resistance is magnified ~1.67×.
+              <strong>k₀</strong> adjusts ground fault measurements: \( k_0 =
+              (Z_0 - Z_1)/(3Z_1) \). Typical 220 kV: \( k_0 \approx 0.67\angle
+              -3^\circ \).
             </p>
           </div>
         </div>
@@ -203,10 +371,6 @@
             <button class="calc-btn" id="calcPPBtn">Calculate Z_BC</button>
             <div id="ppResult" class="result-area">—</div>
           </div>
-        </div>
-        <div class="equation-card">
-          <strong>Equations:</strong> \( Z_{AG} = \dfrac{V_A}{I_A + k_0 I_{res}}
-          \) &nbsp;|&nbsp; \( Z_{BC} = \dfrac{V_B - V_C}{I_B - I_C} \)
         </div>
 
         <!-- ==================== 5. PROTECTION ZONES & COORDINATION ==================== -->
@@ -267,7 +431,7 @@
               <tr>
                 <td><strong>Zone 2</strong></td>
                 <td>120-150%</td>
-                <td>0.2–0.5 s (typical 0.3 s)</td>
+                <td>0.2–0.5 s</td>
                 <td>Backup + remote end</td>
               </tr>
               <tr>
@@ -314,14 +478,9 @@
             <h3>📖 Discussion</h3>
             <p>
               Mho relay operates if \( |Z_{meas} - Z_{reach}| \le |Z_{reach}|
-              \). The circle passes through origin → inherently directional.
-              Most common distance relay characteristic.
+              \).
             </p>
           </div>
-        </div>
-        <div class="equation-card">
-          <strong>Equation:</strong> \( |Z_{meas} - Z_{reach}| \le |Z_{reach}|
-          \) → Trip
         </div>
 
         <!-- ==================== 7. EARTH PARAMETERS ==================== -->
@@ -343,15 +502,10 @@
           <div class="discussion-card">
             <h3>📖 Discussion</h3>
             <p>
-              Earth return resistance \(R_e\) and equivalent depth \(D_e\) are
-              essential for zero sequence impedance. Soil resistivity \(\rho\)
-              varies from 10 Ω·m (wet soil) to 1000+ Ω·m (rock).
+              \( R_e = 9.88\times10^{-4} f \) Ω/km, \( D_e = 658.5 \sqrt{\rho/f}
+              \) m.
             </p>
           </div>
-        </div>
-        <div class="equation-card">
-          \( R_e = 9.88\times10^{-4} f \) Ω/km &nbsp; &nbsp; \( D_e = 658.5
-          \sqrt{\dfrac{\rho}{f}} \) m
         </div>
 
         <!-- ==================== 8. COMPLETE VARIABLE REFERENCE TABLE ==================== -->
@@ -425,120 +579,179 @@
           </tbody>
         </table>
 
-        <!-- ==================== 9. COMPLETE 220 kV EXAMPLE WITH FAULT DISTANCE FINDER ==================== -->
+        <!-- ==================== 9. ENHANCED FAULT LOCATOR WITH ALL INPUT VARIABLES ==================== -->
         <div class="example-full">
           <h2 style="margin-top: 0; color: #b45f06">
-            📌 220 kV / 100 km LINE – FAULT LOCATOR & ZONE SETTINGS
+            📌 COMPLETE FAULT LOCATOR & ZONE SETTINGS
           </h2>
           <p>
-            <strong>Line parameters:</strong> \(z_1 = 0.05 + j0.4\ \Omega/km\),
-            \(z_0 = 0.2 + j1.2\ \Omega/km\), length = 100 km → \(Z_{line} = 5 +
-            j40\ \Omega\).
-          </p>
-          <p>
-            <strong>Adjustable inputs below:</strong> Set fault distance (km),
-            arc resistance \(R_f\) (Ω), Zone 1 reach (%), Zone 2 reach (%), and
-            Zone 2 time delay (s). The relay will compute measured impedance and
-            tell you which zone operates and at what time.
+            <strong>All line parameters as input variables:</strong> Enter
+            conductor data, system parameters, fault resistance, and relay
+            settings. The tool calculates Z₁, Z₀, k₀, zone reaches, and
+            determines fault operation.
           </p>
 
-          <div
-            style="
-              display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-              gap: 1rem;
-              margin: 1rem 0;
-            "
-          >
+          <div class="param-row">
             <div class="input-group">
-              <label>Fault Distance (km)</label
-              ><input type="number" id="faultDist" value="70" step="1" />
+              <label>R_ac (Ω/km)</label
+              ><input type="number" id="main_rac" value="0.05" step="0.001" />
+            </div>
+            <div class="input-group">
+              <label>D_eq (m)</label
+              ><input type="number" id="main_deq" value="6.0" step="0.1" />
+            </div>
+            <div class="input-group">
+              <label>GMR (m)</label
+              ><input type="number" id="main_gmr" value="0.012" step="0.001" />
+            </div>
+            <div class="input-group">
+              <label>Frequency f (Hz)</label
+              ><input type="number" id="main_freq" value="50" />
+            </div>
+            <div class="input-group">
+              <label>Soil resistivity ρ (Ω·m)</label
+              ><input type="number" id="main_rho" value="100" />
+            </div>
+            <div class="input-group">
+              <label>Shield wire k_sw</label
+              ><input type="number" id="main_ksw" value="2.7" step="0.1" />
+            </div>
+            <div class="input-group">
+              <label>Phase spacing D (m)</label
+              ><input type="number" id="main_d" value="6.0" step="0.1" />
+            </div>
+          </div>
+          <div class="param-row">
+            <div class="input-group">
+              <label>Line Length (km)</label
+              ><input type="number" id="main_len" value="100" />
             </div>
             <div class="input-group">
               <label>Arc Resistance R_f (Ω)</label
-              ><input type="number" id="rfVal" value="10" step="1" />
+              ><input type="number" id="main_rf" value="10" step="1" />
+            </div>
+            <div class="input-group">
+              <label>Fault Distance (km)</label
+              ><input type="number" id="main_faultDist" value="70" step="1" />
             </div>
             <div class="input-group">
               <label>Zone 1 Reach (%)</label
-              ><input type="number" id="z1pct" value="80" step="5" />
+              ><input type="number" id="main_z1pct" value="80" step="5" />
             </div>
             <div class="input-group">
               <label>Zone 2 Reach (%)</label
-              ><input type="number" id="z2pct" value="120" step="5" />
+              ><input type="number" id="main_z2pct" value="120" step="5" />
             </div>
             <div class="input-group">
-              <label>Zone 2 Time Delay (s)</label
-              ><input type="number" id="z2time" value="0.3" step="0.05" />
+              <label>Zone 1 Time (s)</label
+              ><input type="number" id="main_t1" value="0.0" step="0.02" />
+            </div>
+            <div class="input-group">
+              <label>Zone 2 Time (s)</label
+              ><input type="number" id="main_t2" value="0.3" step="0.05" />
             </div>
           </div>
+
           <button
             class="calc-btn"
-            id="runFaultLocator"
-            style="background: #c4450f; width: auto; padding: 0.6rem 1.5rem"
+            id="runMainCalculator"
+            style="
+              background: #c4450f;
+              width: auto;
+              padding: 0.7rem 1.8rem;
+              margin-bottom: 1rem;
+            "
           >
-            🔍 Locate Fault & Simulate Relay Operation
+            🔍 Calculate Z₁, Z₀, k₀ & Zone Operation
           </button>
-          <div
-            id="faultAnalysisResult"
-            class="result-area"
-            style="margin-top: 1rem; background: #f4efe7"
-          ></div>
+
+          <div id="mainOutput" class="output-grid">
+            <strong>📊 COMPLETE RESULTS:</strong><br />
+            <div id="mainResultContent">Click calculate to see results...</div>
+          </div>
         </div>
 
         <div class="footnote">
-          ⚡ All equations follow IEEE C37.113 / IEC 60255-121. Adjust fault
-          distance and zone settings to see coordination behavior.
+          ⚡ All equations follow IEEE C37.113 / IEC 60255-121. All line
+          parameters are used to calculate Z₁, Z₀, and fault response.
         </div>
       </div>
     </div>
 
     <script>
-      // Helper functions for calculators
-      // Z1
+      // Helper functions
+      function calcZ1(Rac, Deq, GMR) {
+        let X1 = 0.06283 * Math.log(Deq / GMR);
+        return { re: Rac, im: X1 };
+      }
+
+      function calcZ0(Rac, f, rho, ksw, GMR, D) {
+        let Re = 9.88e-4 * f;
+        let De = 658.5 * Math.sqrt(rho / f);
+        let GMR0 = Math.cbrt(GMR * D * D);
+        let X0_base = 0.06283 * Math.log(De / GMR0);
+        let X0 = X0_base * ksw;
+        let R0 = Rac + 3 * Re;
+        return { re: R0, im: X0 };
+      }
+
+      function calcK0(Z1, Z0) {
+        let num_re = Z0.re - Z1.re;
+        let num_im = Z0.im - Z1.im;
+        let den_re = 3 * Z1.re;
+        let den_im = 3 * Z1.im;
+        let magNum = Math.hypot(num_re, num_im);
+        let magDen = Math.hypot(den_re, den_im);
+        let angNum = Math.atan2(num_im, num_re);
+        let angDen = Math.atan2(den_im, den_re);
+        let magK = magNum / magDen;
+        let angK = angNum - angDen;
+        return {
+          re: magK * Math.cos(angK),
+          im: magK * Math.sin(angK),
+          mag: magK,
+          ang: angK,
+        };
+      }
+
+      // Individual calculators
       document.getElementById("calcZ1Btn").onclick = () => {
         let Rac = parseFloat(document.getElementById("z1_rac").value);
         let Deq = parseFloat(document.getElementById("z1_deq").value);
         let GMR = parseFloat(document.getElementById("z1_gmr").value);
-        let X1 = 0.06283 * Math.log(Deq / GMR);
+        let Z1 = calcZ1(Rac, Deq, GMR);
         document.getElementById("z1Result").innerHTML =
-          `<strong>Z₁ = ${Rac.toFixed(4)} + j ${X1.toFixed(4)} Ω/km</strong><br>X₁ = ${X1.toFixed(4)} Ω/km`;
+          `<strong>Z₁ = ${Z1.re.toFixed(4)} + j ${Z1.im.toFixed(4)} Ω/km</strong><br>X₁ = ${Z1.im.toFixed(4)} Ω/km`;
       };
-      // Z0
+
       document.getElementById("calcZ0Btn").onclick = () => {
         let Rac = parseFloat(document.getElementById("z0_rac").value);
         let f = parseFloat(document.getElementById("z0_freq").value);
         let rho = parseFloat(document.getElementById("z0_rho").value);
-        let mult = parseFloat(document.getElementById("z0_mult").value);
+        let ksw = parseFloat(document.getElementById("z0_mult").value);
+        let GMR = parseFloat(document.getElementById("z0_gmr").value);
+        let D = parseFloat(document.getElementById("z0_d").value);
+        let Z0 = calcZ0(Rac, f, rho, ksw, GMR, D);
         let Re = 9.88e-4 * f;
         let De = 658.5 * Math.sqrt(rho / f);
-        let X0_base = 0.06283 * Math.log(De / 0.756);
-        let X0_final = X0_base * mult;
-        let R0 = Rac + 3 * Re;
         document.getElementById("z0Result").innerHTML =
-          `<strong>Z₀ = ${R0.toFixed(4)} + j ${X0_final.toFixed(4)} Ω/km</strong><br>Rₑ=${Re.toFixed(5)} Ω/km, Dₑ=${De.toFixed(1)} m`;
+          `<strong>Z₀ = ${Z0.re.toFixed(4)} + j ${Z0.im.toFixed(4)} Ω/km</strong><br>Rₑ=${Re.toFixed(5)} Ω/km, Dₑ=${De.toFixed(1)} m`;
       };
-      // k0
+
       document.getElementById("calcK0Btn").onclick = () => {
-        let r1 = parseFloat(document.getElementById("k0_r1").value),
-          x1 = parseFloat(document.getElementById("k0_x1").value);
-        let r0 = parseFloat(document.getElementById("k0_r0").value),
-          x0 = parseFloat(document.getElementById("k0_x0").value);
-        let num_r = r0 - r1,
-          num_i = x0 - x1,
-          den_r = 3 * r1,
-          den_i = 3 * x1;
-        let magNum = Math.hypot(num_r, num_i),
-          magDen = Math.hypot(den_r, den_i);
-        let angNum = Math.atan2(num_i, num_r),
-          angDen = Math.atan2(den_i, den_r);
-        let magK = magNum / magDen,
-          angK = angNum - angDen;
-        let k_re = magK * Math.cos(angK),
-          k_im = magK * Math.sin(angK);
+        let Z1 = {
+          re: parseFloat(document.getElementById("k0_r1").value),
+          im: parseFloat(document.getElementById("k0_x1").value),
+        };
+        let Z0 = {
+          re: parseFloat(document.getElementById("k0_r0").value),
+          im: parseFloat(document.getElementById("k0_x0").value),
+        };
+        let k0 = calcK0(Z1, Z0);
         document.getElementById("k0Result").innerHTML =
-          `<strong>k₀ = ${k_re.toFixed(5)} + j ${k_im.toFixed(5)}</strong><br>|k₀|=${magK.toFixed(4)}, angle=${((angK * 180) / Math.PI).toFixed(2)}°<br>1+k₀ = ${(1 + k_re).toFixed(4)} + j ${k_im.toFixed(4)}`;
+          `<strong>k₀ = ${k0.re.toFixed(5)} + j ${k0.im.toFixed(5)}</strong><br>|k₀|=${k0.mag.toFixed(4)}, angle=${((k0.ang * 180) / Math.PI).toFixed(2)}°<br>1+k₀ = ${(1 + k0.re).toFixed(4)} + j ${k0.im.toFixed(4)}`;
       };
-      // AG Fault
+
       document.getElementById("calcAGBtn").onclick = () => {
         let Va = parseFloat(document.getElementById("ag_va").value) * 1000;
         let Ia = parseFloat(document.getElementById("ag_ia").value) * 1000;
@@ -547,23 +760,23 @@
         let compRe = Ia + k0r * Ires;
         let Z_re = (Va * compRe) / compRe ** 2;
         document.getElementById("agResult").innerHTML =
-          `<strong>Z_AG = ${Z_re.toFixed(2)} Ω (approx resistive)</strong>`;
+          `<strong>Z_AG = ${Z_re.toFixed(2)} Ω</strong>`;
       };
-      // Phase fault
+
       document.getElementById("calcPPBtn").onclick = () => {
         let V = parseFloat(document.getElementById("pp_vbc").value) * 1000;
         let I = parseFloat(document.getElementById("pp_ibc").value) * 1000;
         document.getElementById("ppResult").innerHTML =
           `<strong>Z_BC = ${(V / I).toFixed(2)} Ω</strong>`;
       };
-      // Zone reaches
+
       document.getElementById("calcZoneBtn").onclick = () => {
         let R = parseFloat(document.getElementById("zone_rL").value);
         let X = parseFloat(document.getElementById("zone_xL").value);
         document.getElementById("zoneResult").innerHTML =
           `<strong>Zone 1 (80%):</strong> ${(0.8 * R).toFixed(2)}+j${(0.8 * X).toFixed(2)} Ω &nbsp;|&nbsp; <strong>Zone 2 (120%):</strong> ${(1.2 * R).toFixed(2)}+j${(1.2 * X).toFixed(2)} Ω`;
       };
-      // Zone2 time
+
       document.getElementById("calcTimeBtn").onclick = () => {
         let t2 =
           parseFloat(document.getElementById("t_adj").value) +
@@ -572,7 +785,7 @@
         document.getElementById("timeResult").innerHTML =
           `<strong>t₂ = ${t2.toFixed(3)} seconds</strong>`;
       };
-      // Mho
+
       document.getElementById("calcMhoBtn").onclick = () => {
         let Rm = parseFloat(document.getElementById("mho_rm").value),
           Xm = parseFloat(document.getElementById("mho_xm").value);
@@ -583,7 +796,7 @@
         document.getElementById("mhoResult").innerHTML =
           `|Z_meas - Z_reach| = ${dist.toFixed(2)} Ω &nbsp; |Z_reach| = ${rad.toFixed(2)} Ω<br><strong>${dist <= rad ? "✅ OPERATE" : "❌ RESTRAIN"}</strong>`;
       };
-      // Earth params
+
       document.getElementById("calcEarthBtn").onclick = () => {
         let f = parseFloat(document.getElementById("earth_f").value);
         let rho = parseFloat(document.getElementById("earth_rho").value);
@@ -593,53 +806,59 @@
           `<strong>Rₑ = ${Re.toFixed(5)} Ω/km</strong><br><strong>Dₑ = ${De.toFixed(1)} m</strong>`;
       };
 
-      // FULL FAULT LOCATOR & ZONE SIMULATOR
-      document.getElementById("runFaultLocator").onclick = () => {
-        // line data
-        const z1r = 0.05,
-          z1i = 0.4,
-          z0r = 0.2,
-          z0i = 1.2;
-        const lineLen = 100; // km
-        let faultDist = parseFloat(document.getElementById("faultDist").value);
-        let Rf = parseFloat(document.getElementById("rfVal").value);
-        let z1pct = parseFloat(document.getElementById("z1pct").value) / 100;
-        let z2pct = parseFloat(document.getElementById("z2pct").value) / 100;
-        let t2_set = parseFloat(document.getElementById("z2time").value);
+      // MAIN CALCULATOR - Uses all input variables
+      document.getElementById("runMainCalculator").onclick = () => {
+        // Get all inputs
+        let Rac = parseFloat(document.getElementById("main_rac").value);
+        let Deq = parseFloat(document.getElementById("main_deq").value);
+        let GMR = parseFloat(document.getElementById("main_gmr").value);
+        let f = parseFloat(document.getElementById("main_freq").value);
+        let rho = parseFloat(document.getElementById("main_rho").value);
+        let ksw = parseFloat(document.getElementById("main_ksw").value);
+        let D = parseFloat(document.getElementById("main_d").value);
+        let lineLen = parseFloat(document.getElementById("main_len").value);
+        let Rf = parseFloat(document.getElementById("main_rf").value);
+        let faultDist = parseFloat(
+          document.getElementById("main_faultDist").value,
+        );
+        let z1pct =
+          parseFloat(document.getElementById("main_z1pct").value) / 100;
+        let z2pct =
+          parseFloat(document.getElementById("main_z2pct").value) / 100;
+        let t1_set = parseFloat(document.getElementById("main_t1").value);
+        let t2_set = parseFloat(document.getElementById("main_t2").value);
 
-        if (isNaN(faultDist) || faultDist < 0 || faultDist > lineLen)
-          faultDist = 70;
-        if (isNaN(Rf)) Rf = 10;
+        // Calculate Z1 per km
+        let Z1_km = calcZ1(Rac, Deq, GMR);
 
-        // compute k0 from given per-km values
-        let num_r = z0r - z1r,
-          num_i = z0i - z1i;
-        let den_r = 3 * z1r,
-          den_i = 3 * z1i;
-        let magK = Math.hypot(num_r, num_i) / Math.hypot(den_r, den_i);
-        let angK = Math.atan2(num_i, num_r) - Math.atan2(den_i, den_r);
-        let k_re = magK * Math.cos(angK),
-          k_im = magK * Math.sin(angK);
-        let oneK_mag = Math.hypot(1 + k_re, k_im);
+        // Calculate Z0 per km
+        let Z0_km = calcZ0(Rac, f, rho, ksw, GMR, D);
 
-        // impedance to fault (positive sequence up to fault + Rf)
-        let Zf_re = z1r * faultDist + Rf;
-        let Zf_im = z1i * faultDist;
+        // Calculate k0
+        let k0 = calcK0(Z1_km, Z0_km);
+        let oneK_mag = Math.hypot(1 + k0.re, k0.im);
+
+        // Total line impedance
+        let Zline_re = Z1_km.re * lineLen;
+        let Zline_im = Z1_km.im * lineLen;
+
+        // Impedance to fault (A-G fault with arc resistance)
+        let Zf_re = Z1_km.re * faultDist + Rf;
+        let Zf_im = Z1_km.im * faultDist;
         let Zf_mag = Math.hypot(Zf_re, Zf_im);
         let Zf_ang = Math.atan2(Zf_im, Zf_re);
-        // compensated Z_relay = Zf / (1+k0)
+
+        // Compensated measured impedance
         let Zrel_mag = Zf_mag / oneK_mag;
-        let Zrel_ang = Zf_ang - Math.atan2(k_im, 1 + k_re);
+        let Zrel_ang = Zf_ang - Math.atan2(k0.im, 1 + k0.re);
         let Zrel_re = Zrel_mag * Math.cos(Zrel_ang);
         let Zrel_im = Zrel_mag * Math.sin(Zrel_ang);
 
-        // total line impedance
-        let Zline_re = z1r * lineLen;
-        let Zline_im = z1i * lineLen;
+        // Zone reaches
         let Z1_reach = { re: z1pct * Zline_re, im: z1pct * Zline_im };
         let Z2_reach = { re: z2pct * Zline_re, im: z2pct * Zline_im };
 
-        // check zones
+        // Check zone operation
         let inZone1 =
           Math.hypot(Zrel_re - Z1_reach.re, Zrel_im - Z1_reach.im) <=
           Math.hypot(Z1_reach.re, Z1_reach.im);
@@ -647,21 +866,33 @@
           Math.hypot(Zrel_re - Z2_reach.re, Zrel_im - Z2_reach.im) <=
           Math.hypot(Z2_reach.re, Z2_reach.im);
 
-        let resultMsg = `<strong>📍 Fault at ${faultDist} km with R_f = ${Rf} Ω (A-G fault)</strong><br>`;
-        resultMsg += `<strong>Measured Z_relay = ${Zrel_re.toFixed(2)} + j ${Zrel_im.toFixed(2)} Ω</strong><br>`;
-        resultMsg += `<strong>Zone 1 reach (${z1pct * 100}%):</strong> ${Z1_reach.re.toFixed(1)}+j${Z1_reach.im.toFixed(1)} Ω → ${inZone1 ? "✅ TRIP INSTANTANEOUS" : "❌ No trip (underreach/outside)"}<br>`;
-        resultMsg += `<strong>Zone 2 reach (${z2pct * 100}%):</strong> ${Z2_reach.re.toFixed(1)}+j${Z2_reach.im.toFixed(1)} Ω → ${inZone2 ? `✅ TRIP after ${t2_set} seconds` : "❌ Outside Zone 2"}<br>`;
-        if (inZone1)
-          resultMsg += `<strong>⚡ Relay operates instantly (Zone 1).</strong>`;
-        else if (inZone2)
-          resultMsg += `<strong>⚡ Relay operates after ${t2_set} s (Zone 2 backup).</strong>`;
-        else
-          resultMsg += `<strong>⚠️ Fault outside all zones → no trip (coordination issue).</strong>`;
-        resultMsg += `<hr><small>Note: Zone 3 (not shown) would provide further backup if set.</small>`;
-        document.getElementById("faultAnalysisResult").innerHTML = resultMsg;
+        // Output
+        let output = `
+            <div style="font-family: monospace; line-height: 1.6;">
+                <strong>🔹 CALCULATED LINE PARAMETERS:</strong><br>
+                Z₁ (per km) = ${Z1_km.re.toFixed(4)} + j ${Z1_km.im.toFixed(4)} Ω/km<br>
+                Z₀ (per km) = ${Z0_km.re.toFixed(4)} + j ${Z0_km.im.toFixed(4)} Ω/km<br>
+                k₀ = ${k0.re.toFixed(5)} + j ${k0.im.toFixed(5)} &nbsp; |k₀|=${k0.mag.toFixed(4)}<br>
+                <hr>
+                <strong>📏 ZONE SETTINGS (Total line = ${Zline_re.toFixed(1)} + j${Zline_im.toFixed(1)} Ω):</strong><br>
+                Zone 1 Reach (${z1pct * 100}%): ${Z1_reach.re.toFixed(1)} + j${Z1_reach.im.toFixed(1)} Ω &nbsp; | Time Delay = ${t1_set} s<br>
+                Zone 2 Reach (${z2pct * 100}%): ${Z2_reach.re.toFixed(1)} + j${Z2_reach.im.toFixed(1)} Ω &nbsp; | Time Delay = ${t2_set} s<br>
+                <hr>
+                <strong>⚡ FAULT ANALYSIS (A-G at ${faultDist} km, R_f = ${Rf} Ω):</strong><br>
+                Measured Z_relay = ${Zrel_re.toFixed(2)} + j${Zrel_im.toFixed(2)} Ω<br>
+                Zone 1: ${inZone1 ? "✅ WILL TRIP (instantaneous)" : "❌ No trip (outside Zone 1)"}<br>
+                Zone 2: ${inZone2 ? `✅ WILL TRIP after ${t2_set} seconds` : "❌ Outside Zone 2"}<br>
+                <strong style="color: #c4450f;">${inZone1 ? "⚡ RELAY OPERATES INSTANTLY (ZONE 1)" : inZone2 ? `⚡ RELAY OPERATES AFTER ${t2_set} s (ZONE 2 BACKUP)` : "⚠️ FAULT OUTSIDE ALL ZONES → NO TRIP"}</strong>
+            </div>
+        `;
+        document.getElementById("mainResultContent").innerHTML = output;
       };
-      // initial run
-      document.getElementById("runFaultLocator").click();
+
+      // Initial run
+      setTimeout(
+        () => document.getElementById("runMainCalculator").click(),
+        100,
+      );
     </script>
   </body>
 </html>
