@@ -1,0 +1,158 @@
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", "Roboto", system-ui, sans-serif;
+        background: #f0f4fa;
+        color: #1a2c3e;
+        line-height: 1.5;
+        padding: 1.5rem;
+      }
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 32px;
+        box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+      }
+      .hero {
+        background: linear-gradient(135deg, #0a3b44 0%, #146b5e 100%);
+        color: white;
+        padding: 2rem 2.5rem;
+      }
+      .hero h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      .hero p {
+        opacity: 0.9;
+        max-width: 80%;
+      }
+      .badge {
+        background: #ffb34740;
+        display: inline-block;
+        padding: 0.2rem 1rem;
+        border-radius: 40px;
+        font-size: 0.8rem;
+        margin-top: 1rem;
+      }
+      .content {
+        padding: 2rem 2.5rem;
+      }
+      /* Section styling */
+      .topic-section {
+        margin: 2.5rem 0 2rem 0;
+        border-bottom: 2px solid #e0eaf1;
+        padding-bottom: 0.5rem;
+      }
+      .topic-section h2 {
+        font-size: 1.8rem;
+        color: #0f3b3a;
+        border-left: 6px solid #1e8f7a;
+        padding-left: 1rem;
+        margin-bottom: 1rem;
+      }
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 1.5rem;
+        margin: 1rem 0;
+      }
+      .calc-card {
+        background: #f9fbfe;
+        border-radius: 24px;
+        padding: 1.2rem;
+        border: 1px solid #e0eaf1;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      }
+      .calc-card h3 {
+        color: #1e6f5c;
+        margin-bottom: 0.8rem;
+        font-size: 1.2rem;
+      }
+      .discussion-card {
+        background: #eef3fc;
+        border-radius: 24px;
+        padding: 1.2rem;
+        border-left: 5px solid #2c7da0;
+        margin: 1rem 0;
+      }
+      .equation-card {
+        background: #fef7e0;
+        border-radius: 20px;
+        padding: 1rem 1.2rem;
+        margin: 1rem 0;
+        font-family: "Courier New", monospace;
+        border-left: 4px solid #f4a261;
+      }
+      .input-group {
+        margin: 0.7rem 0;
+      }
+      .input-group label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #2c5a6e;
+      }
+      .input-group input {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 12px;
+        border: 1px solid #cbdbe2;
+      }
+      .calc-btn {
+        background: #1e6f5c;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 0.5rem;
+        width: 100%;
+      }
+      .calc-btn:hover {
+        background: #0f5545;
+      }
+      .result-area {
+        background: #eef2f5;
+        border-radius: 14px;
+        padding: 0.7rem;
+        margin-top: 0.8rem;
+        font-size: 0.85rem;
+        font-family: monospace;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.2rem 0;
+      }
+      th {
+        background: #1e6f5c;
+        color: white;
+        padding: 10px;
+      }
+      td {
+        border: 1px solid #dee4ec;
+        padding: 8px 12px;
+      }
+      .example-full {
+        background: linear-gradient(135deg, #fff8ed, #fff3e0);
+        border-radius: 28px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        border: 1px solid #ffddb0;
+      }
+      .footnote {
+        text-align: center;
+        font-size: 0.75rem;
+        padding: 1rem;
+        border-top: 1px solid #cbdae9;
+        margin-top: 1.5rem;
+      }
+      hr {
+        margin: 1rem 0;
+      }
