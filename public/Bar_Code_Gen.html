@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Barcode & QR Code Generator</title>
+    <!-- Google Fonts & Libraries -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <!-- QRCode.js from reliable CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- html2canvas for high-quality PNG export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 20px;
+      }
+
+      /* Main Card */
+      .generator-card {
+        max-width: 900px;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 2rem;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        transition: all 0.2s ease;
+      }
+
+      .card-header {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        padding: 1.8rem 2rem;
+        color: white;
+      }
+
+      .card-header h1 {
+        font-weight: 700;
+        font-size: 1.9rem;
+        letter-spacing: -0.5px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .card-header h1 span {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 6px 14px;
+        border-radius: 60px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .card-header p {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        margin-top: 10px;
+      }
+
+      /* content */
+      .content-panel {
+        padding: 2rem 2rem 2rem 2rem;
+      }
+
+      .input-section {
+        background: #f8fafc;
+        border-radius: 1.2rem;
+        padding: 1.3rem 1.5rem;
+        margin-bottom: 1.8rem;
+        border: 1px solid #e2edf2;
+      }
+
+      .label-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+
+      label {
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 1rem;
+      }
+
+      .hint {
+        font-size: 0.75rem;
+        color: #64748b;
+      }
+
+      .input-wrapper {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      #barcodeText {
+        flex: 3;
+        padding: 14px 18px;
+        border: 2px solid #e2e8f0;
+        border-radius: 1rem;
+        font-size: 1rem;
+        font-family: "Inter", monospace;
+        background: white;
+        transition: 0.2s;
+        font-weight: 500;
+      }
+
+      #barcodeText:focus {
+        border-color: #3b82f6;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      /* type selector */
+      .type-selector {
+        display: flex;
+        gap: 20px;
+        margin: 20px 0 24px 0;
+        background: #f1f5f9;
+        padding: 6px;
+        border-radius: 60px;
+        width: fit-content;
+      }
+
+      .type-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 40px;
+        transition: all 0.2s;
+        background: transparent;
+        color: #475569;
+      }
+
+      .type-option.active {
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        color: #2563eb;
+      }
+
+      input[type="radio"] {
+        accent-color: #3b82f6;
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        cursor: pointer;
+      }
+
+      /* action buttons */
+      .action-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 28px;
+      }
+
+      .btn {
+        padding: 12px 28px;
+        border-radius: 40px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #f1f5f9;
+        color: #1e293b;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+      }
+
+      .btn-download {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+      }
+
+      .btn-download:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 2px solid #cbd5e1;
+      }
+
+      .btn-outline:hover {
+        background: #f8fafc;
+        border-color: #3b82f6;
+      }
+
+      /* preview panel */
+      .preview-area {
+        background: #ffffff;
+        border-radius: 1.5rem;
+        border: 1px solid #e9f0f3;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        padding: 2rem;
+        text-align: center;
+      }
+
+      .barcode-wrapper {
+        background: #ffffff;
+        border-radius: 1rem;
+        padding: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 250px;
+        border: 2px dashed #e2e8f0;
+      }
+
+      #barcodeSvg {
+        max-width: 100%;
+        height: auto;
+        background: white;
+      }
+
+      #qrCodeContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+
+      #qrCodeContainer canvas,
+      #qrCodeContainer img {
+        max-width: 250px;
+        height: auto;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        background: white;
+        padding: 10px;
+      }
+
+      .info-note {
+        margin-top: 20px;
+        font-size: 0.8rem;
+        color: #475569;
+        background: #f8fafc;
+        padding: 10px 20px;
+        border-radius: 40px;
+        display: inline-block;
+      }
+
+      @media (max-width: 600px) {
+        .content-panel {
+          padding: 1.5rem;
+        }
+        .type-selector {
+          width: 100%;
+          justify-content: center;
+        }
+        .action-bar {
+          justify-content: center;
+        }
+        .btn {
+          padding: 10px 20px;
+          font-size: 0.85rem;
+        }
+        .barcode-wrapper {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="generator-card">
+      <div class="card-header">
+        <h1>
+          🏷️ BarQR Studio
+          <span>Barcode + QR</span>
+        </h1>
+        <p>
+          Professional CODE128 barcodes & high-quality QR codes · Download as
+          PNG instantly
+        </p>
+      </div>
+
+      <div class="content-panel">
+        <!-- Input Section -->
+        <div class="input-section">
+          <div class="label-group">
+            <label>📝 Content</label>
+            <span class="hint">Text, numbers, URLs, or any data</span>
+          </div>
+          <div class="input-wrapper">
+            <input
+              type="text"
+              id="barcodeText"
+              placeholder="e.g., 123456789012 or https://example.com"
+              value="HELLO-2025"
+            />
+          </div>
+        </div>
+
+        <!-- Code Type Toggle -->
+        <div class="type-selector" id="typeSelector">
+          <label class="type-option active" id="optBarcode">
+            <input type="radio" name="codeType" value="barcode" checked /> 📊
+            Barcode (CODE128)
+          </label>
+          <label class="type-option" id="optQR">
+            <input type="radio" name="codeType" value="qr" /> 📱 QR Code
+          </label>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-bar">
+          <button id="generateBtn" class="btn btn-primary">
+            ✨ Generate Now
+          </button>
+          <button id="downloadBtn" class="btn btn-download">
+            💾 Download as PNG
+          </button>
+          <button id="resetExampleBtn" class="btn btn-outline">
+            🔄 Reset Example
+          </button>
+        </div>
+
+        <!-- Preview area -->
+        <div class="preview-area">
+          <div class="barcode-wrapper" id="previewContainer">
+            <!-- SVG for barcode -->
+            <svg id="barcodeSvg" style="max-width: 100%"></svg>
+            <!-- QR container -->
+            <div id="qrCodeContainer" style="display: none"></div>
+          </div>
+          <div class="info-note" id="statusMsg">
+            ✨ Ready — enter text and click generate
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        // DOM elements
+        const textInput = document.getElementById("barcodeText");
+        const generateBtn = document.getElementById("generateBtn");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const resetBtn = document.getElementById("resetExampleBtn");
+        const barcodeSvg = document.getElementById("barcodeSvg");
+        const qrContainer = document.getElementById("qrCodeContainer");
+        const statusMsg = document.getElementById("statusMsg");
+
+        // Radio options
+        const radioBarcode = document.querySelector("#optBarcode input");
+        const radioQR = document.querySelector("#optQR input");
+        const typeOptions = document.querySelectorAll(".type-option");
+
+        // Current mode state
+        let currentMode = "barcode";
+        let currentRawText = textInput.value.trim() || "HELLO-2025";
+        let qrCodeInstance = null;
+
+        // Update UI active style
+        function updateActiveStyle() {
+          typeOptions.forEach((opt) => {
+            const radio = opt.querySelector("input");
+            if (radio.checked) {
+              opt.classList.add("active");
+            } else {
+              opt.classList.remove("active");
+            }
+          });
+        }
+
+        // Switch visibility based on mode
+        function setUIMode(mode) {
+          if (mode === "barcode") {
+            barcodeSvg.style.display = "block";
+            qrContainer.style.display = "none";
+            // Clear QR container
+            qrContainer.innerHTML = "";
+            qrCodeInstance = null;
+          } else {
+            barcodeSvg.style.display = "none";
+            qrContainer.style.display = "flex";
+          }
+        }
+
+        // Barcode generation (CODE128 with JsBarcode)
+        function generateBarcode(text) {
+          return new Promise((resolve, reject) => {
+            try {
+              if (!text || text.length === 0) {
+                reject(new Error("Empty text for barcode"));
+                return;
+              }
+              JsBarcode(barcodeSvg, text, {
+                format: "CODE128",
+                lineColor: "#000000",
+                width: 2,
+                height: 100,
+                displayValue: true,
+                fontSize: 14,
+                margin: 10,
+                font: "Inter, monospace",
+                textMargin: 5,
+              });
+              resolve(true);
+            } catch (err) {
+              reject(err);
+            }
+          });
+        }
+
+        // QR generation using QRCode.js library
+        function generateQRCode(text) {
+          return new Promise((resolve, reject) => {
+            try {
+              if (!text || text.length === 0) {
+                reject(new Error("Empty text for QR code"));
+                return;
+              }
+
+              // Clear container
+              qrContainer.innerHTML = "";
+
+              // Create a new div for QR code
+              const qrDiv = document.createElement("div");
+              qrDiv.id = "qrcode_" + Date.now();
+              qrContainer.appendChild(qrDiv);
+
+              // Check if QRCode is available
+              if (typeof QRCode === "undefined") {
+                reject(new Error("QRCode library not loaded"));
+                return;
+              }
+
+              // Generate QR code
+              new QRCode(qrDiv, {
+                text: text,
+                width: 220,
+                height: 220,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.M,
+              });
+
+              // Wait for generation
+              setTimeout(() => {
+                const canvas = qrDiv.querySelector("canvas");
+                const img = qrDiv.querySelector("img");
+                if (canvas || img) {
+                  resolve(true);
+                } else {
+                  reject(new Error("QR generation failed"));
+                }
+              }, 100);
+            } catch (err) {
+              reject(err);
+            }
+          });
+        }
+
+        // Main generate function
+        async function generateCode() {
+          let rawText = textInput.value.trim();
+          if (!rawText) {
+            statusMsg.innerText =
+              "⚠️ Please enter text, numbers, or URL before generating.";
+            statusMsg.style.background = "#fee2e2";
+            setTimeout(() => {
+              statusMsg.style.background = "#f8fafc";
+            }, 2000);
+            return false;
+          }
+
+          currentRawText = rawText;
+          statusMsg.innerText =
+            "⏳ Generating " +
+            (currentMode === "barcode" ? "barcode..." : "QR code...");
+          statusMsg.style.background = "#dbeafe";
+
+          try {
+            if (currentMode === "barcode") {
+              await generateBarcode(rawText);
+              statusMsg.innerText = "✅ Barcode generated successfully!";
+              statusMsg.style.background = "#d1fae5";
+              setTimeout(() => {
+                statusMsg.style.background = "#f8fafc";
+              }, 1500);
+            } else {
+              await generateQRCode(rawText);
+              statusMsg.innerText = "✅ QR Code generated successfully!";
+              statusMsg.style.background = "#d1fae5";
+              setTimeout(() => {
+                statusMsg.style.background = "#f8fafc";
+              }, 1500);
+            }
+            downloadBtn.style.display = "inline-flex";
+            return true;
+          } catch (err) {
+            console.error("Generation error:", err);
+            let errorMsg =
+              "Error: " + (err.message || "Could not generate code");
+            if (
+              currentMode === "barcode" &&
+              err.message &&
+              err.message.includes("format")
+            ) {
+              errorMsg =
+                "Barcode error: CODE128 supports alphanumeric and special characters.";
+            }
+            if (currentMode === "qr") {
+              errorMsg = "QR error: " + err.message;
+            }
+            statusMsg.innerText = "❌ " + errorMsg;
+            statusMsg.style.background = "#fee2e2";
+            setTimeout(() => {
+              if (statusMsg && !statusMsg.innerText.includes("✅"))
+                statusMsg.style.background = "#f8fafc";
+            }, 2500);
+            return false;
+          }
+        }
+
+        // PNG DOWNLOAD using html2canvas
+        async function downloadAsPNG() {
+          if (!currentRawText) {
+            statusMsg.innerText =
+              "⚠️ Generate a code first before downloading.";
+            return;
+          }
+
+          let targetElement = null;
+          let mode = currentMode;
+
+          if (mode === "barcode") {
+            targetElement = barcodeSvg;
+            if (
+              !targetElement ||
+              targetElement.innerHTML.trim() === "" ||
+              barcodeSvg.children.length === 0
+            ) {
+              statusMsg.innerText =
+                "⚠️ No barcode visible. Click 'Generate Now' first.";
+              return;
+            }
+          } else {
+            const qrCanvas = qrContainer.querySelector("canvas");
+            const qrImg = qrContainer.querySelector("img");
+            if (qrCanvas) {
+              targetElement = qrCanvas;
+            } else if (qrImg) {
+              targetElement = qrImg;
+            } else {
+              statusMsg.innerText =
+                "⚠️ QR code not found, please generate QR first.";
+              return;
+            }
+          }
+
+          if (!targetElement) {
+            statusMsg.innerText =
+              "⚠️ Nothing to download. Generate code first.";
+            return;
+          }
+
+          statusMsg.innerText = "📸 Rendering high-quality PNG...";
+          statusMsg.style.background = "#dbeafe";
+
+          try {
+            const canvas = await html2canvas(targetElement, {
+              scale: 3,
+              backgroundColor: "#ffffff",
+              logging: false,
+              useCORS: false,
+            });
+
+            const link = document.createElement("a");
+            let fileName = "";
+            const safeText =
+              currentRawText
+                .substring(0, 28)
+                .replace(/[^a-z0-9]/gi, "_")
+                .toLowerCase() || "code";
+            if (currentMode === "barcode") {
+              fileName = `barcode_${safeText}.png`;
+            } else {
+              fileName = `qrcode_${safeText}.png`;
+            }
+            link.download = fileName;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+            statusMsg.innerText = "✅ PNG downloaded successfully!";
+            statusMsg.style.background = "#d1fae5";
+            setTimeout(() => {
+              statusMsg.style.background = "#f8fafc";
+            }, 1800);
+          } catch (err) {
+            console.error(err);
+            statusMsg.innerText =
+              "❌ Download failed: " + (err.message || "canvas error");
+            statusMsg.style.background = "#fee2e2";
+          }
+        }
+
+        // Reset to demo content
+        function resetToExample() {
+          const demoText = "BARCODE-2025";
+          textInput.value = demoText;
+          currentRawText = demoText;
+          generateCode().catch((e) => console.warn);
+        }
+
+        // Mode switching handler
+        function switchMode(mode) {
+          currentMode = mode;
+          setUIMode(mode);
+          generateCode().catch((err) => {
+            console.log("Auto-generate after mode switch:", err);
+          });
+        }
+
+        // Event listeners
+        generateBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          generateCode();
+        });
+
+        downloadBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          downloadAsPNG();
+        });
+
+        resetBtn.addEventListener("click", () => {
+          textInput.value = "SAMPLE-123ABC";
+          generateCode();
+        });
+
+        // Listen to radio changes
+        radioBarcode.addEventListener("change", function (e) {
+          if (this.checked) {
+            switchMode("barcode");
+            updateActiveStyle();
+          }
+        });
+
+        radioQR.addEventListener("change", function (e) {
+          if (this.checked) {
+            switchMode("qr");
+            updateActiveStyle();
+          }
+        });
+
+        // Click on type option labels
+        document.querySelectorAll(".type-option").forEach((opt) => {
+          opt.addEventListener("click", (e) => {
+            const radio = opt.querySelector("input");
+            if (radio && !radio.checked) {
+              radio.checked = true;
+              if (radio.value === "barcode") {
+                switchMode("barcode");
+              } else {
+                switchMode("qr");
+              }
+              updateActiveStyle();
+            }
+          });
+        });
+
+        // Enter key support
+        textInput.addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            generateCode();
+          }
+        });
+
+        // Initial setup
+        function init() {
+          updateActiveStyle();
+          textInput.value = "BARCODE-2025";
+          currentRawText = textInput.value;
+          currentMode = "barcode";
+          setUIMode("barcode");
+          generateBarcode(currentRawText)
+            .then(() => {
+              statusMsg.innerText =
+                "✔️ Ready — Barcode active. Switch to QR anytime.";
+              downloadBtn.style.display = "inline-flex";
+            })
+            .catch((err) => {
+              generateBarcode("123456789").catch(() => {});
+            });
+          qrContainer.innerHTML = "";
+        }
+
+        init();
+      })();
+    </script>
+  </body>
+</html>
