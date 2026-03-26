@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
  const cableDataset = {
             "LT_PVC_1.1KV": {
                 "1c": {
@@ -453,8 +452,4 @@
                     1000: { alum: { r: 0.0291, x: 0.183, amp: "910 TO 1010", sc: 104 } }
                 }
             }
-<<<<<<< HEAD
->>>>>>> 79f3cef (h)
-=======
->>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
         };

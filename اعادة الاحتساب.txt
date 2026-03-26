@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -399,8 +398,4 @@
     window.onload = initTable;
 </script>
 </body>
-<<<<<<< HEAD
->>>>>>> 79f3cef (h)
-=======
->>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
 </html>

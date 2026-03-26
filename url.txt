@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 CTR+shift+R    ** urgent
 
 https://calculations-1ae85.web.app/
@@ -46,10 +45,3 @@ Replace AIzaSyAqZ2UkE-shyD7N0OGbZ4vD2JGXg5ir3y4 in your HTML file with your new 
 
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDl96h-6fqtJh5psKqT8vB5bTEay_8-BHg"></script>
-
-
-
-<<<<<<< HEAD
->>>>>>> 79f3cef (h)
-=======
->>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca

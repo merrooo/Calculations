@@ -1,6 +1,5 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
- <option>هندسة شمال دمياط</option>
+
+                        <option>هندسة شمال دمياط</option>
                         <option>هندسة جنوب دمياط</option>
                         <option>هندسة عزبة البرج</option>
                         <option>هندسة كفر سعد</option>
@@ -54,10 +53,7 @@
                         <option>هندسة قرى الحامول</option>
                         <option>هندسة بيلا</option>
                         <option>هندسة بلطيم</option>
-=======
-=======
->>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
- <option>هندسة شمال دمياط</option>
+                        <option>هندسة شمال دمياط</option>
                         <option>هندسة جنوب دمياط</option>
                         <option>هندسة عزبة البرج</option>
                         <option>هندسة كفر سعد</option>
@@ -111,8 +107,4 @@
                         <option>هندسة قرى الحامول</option>
                         <option>هندسة بيلا</option>
                         <option>هندسة بلطيم</option>
-<<<<<<< HEAD
->>>>>>> 79f3cef (h)
-=======
->>>>>>> 87bbcc15f7876a784eb0a4da9257c028ece8eaca
                         <option>هندسة برج البرلس</option>
