@@ -1,4 +1,6 @@
-/* ========== GLOBAL VARIABLES ========== */
+/* ============================================ */
+/* 1. GLOBAL VARIABLES & RESET
+/* ============================================ */
 :root {
   --primary-color: #004a99;
   --secondary-color: #0099ff;
@@ -16,7 +18,6 @@
   --gold-color: #f59e0b;
 }
 
-/* ========== RESET & BASE ========== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -31,13 +32,14 @@ body {
   overflow-x: hidden;
 }
 
-/* ========== APP WRAPPER ========== */
+/* ============================================ */
+/* 2. LAYOUT STRUCTURE
+/* ============================================ */
 .app-wrapper {
   display: flex;
   min-height: 100vh;
 }
 
-/* ========== MAIN CONTENT ========== */
 .main-content {
   flex: 1;
   padding: 20px;
@@ -45,7 +47,9 @@ body {
   width: 100%;
 }
 
-/* ========== TOP NAVIGATION ========== */
+/* ============================================ */
+/* 3. TOP NAVIGATION & DROPDOWN
+/* ============================================ */
 .top-nav {
   background: linear-gradient(
     135deg,
@@ -79,7 +83,7 @@ body {
   gap: 15px;
 }
 
-/* ========== DROPDOWN MENU ========== */
+/* Dropdown Menu */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -173,7 +177,9 @@ body {
   transform: translateY(-2px);
 }
 
-/* ========== TAB CONTENT ========== */
+/* ============================================ */
+/* 4. TAB CONTENT & SECTIONS
+/* ============================================ */
 .tab-pane {
   display: none;
 }
@@ -182,7 +188,6 @@ body {
   display: block;
 }
 
-/* ========== SECTION CONTAINERS ========== */
 .section-container {
   background: var(--card-bg);
   border-radius: var(--border-radius);
@@ -238,7 +243,9 @@ body {
   font-size: 1.2rem;
 }
 
-/* ========== GRID SYSTEMS ========== */
+/* ============================================ */
+/* 5. GRID SYSTEMS & INPUTS
+/* ============================================ */
 .input-grid,
 .input-dashboard {
   display: grid;
@@ -286,7 +293,9 @@ body {
   grid-column: 1 / -1;
 }
 
-/* ========== RESULTS GRID ========== */
+/* ============================================ */
+/* 6. RESULTS & CARDS
+/* ============================================ */
 .results-grid,
 .results-dashboard {
   display: grid;
@@ -330,7 +339,7 @@ body {
   box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.15);
 }
 
-/* ========== COLOR VARIATIONS ========== */
+/* Color Variations */
 .grey-box {
   background: #f7fafc;
   border-color: #e2e8f0;
@@ -389,7 +398,9 @@ body {
   font-size: 1.5rem;
 }
 
-/* ========== BUTTONS ========== */
+/* ============================================ */
+/* 7. BUTTONS
+/* ============================================ */
 .btn-group {
   display: flex;
   gap: 12px;
@@ -455,26 +466,66 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ========== ANGLES TAB SPECIFIC STYLES ========== */
+/* ============================================ */
+/* 8. ANGLES TAB (تحليل الزوايا) - OPTIMIZED
+/* ============================================ */
+
+/* Main angles grid layout */
 .angles-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 25px;
+  gap: 30px;
+  align-items: start;
 }
 
+/* Controls container */
 .angles-controls {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
+  width: 100%;
 }
 
+/* Input grid - 3 columns for desktop */
 .angles-controls .input-grid:first-of-type {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  width: 100%;
 }
 
+/* Input groups styling */
+.angles-controls .input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+/* Labels */
+.angles-controls .input-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 0;
+}
+
+/* Input fields - fixed width and responsive */
+.angles-controls .input-group input,
+.angles-controls .input-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  background: #f8fafc;
+  transition: all 0.3s ease;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* PF input fields specific styling */
 .angles-controls .input-grid:nth-of-type(2) {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -499,89 +550,58 @@ button:disabled {
   font-weight: 700;
 }
 
+/* Results grid */
 .results-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
-  margin-top: 15px;
+  margin-top: 10px;
   background: #f8f9fa;
   padding: 20px;
   border-radius: 12px;
   border: 1px solid var(--border);
+  width: 100%;
 }
 
+/* Full width item in results */
 .results-grid .full-width {
   grid-column: 1 / -1;
-  margin-bottom: 10px;
 }
 
-.results-grid .input-group input[readonly],
-.results-grid .input-group input:read-only {
+/* Results input fields */
+.results-grid .input-group input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+}
+
+.results-grid .input-group input[readonly] {
   background-color: #f5f5f5;
   border-color: #ddd;
   color: #666;
   font-weight: 600;
   cursor: default;
   pointer-events: none;
-  border-style: solid;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
+/* Highlighted loss field */
 .results-grid .highlight input {
   background-color: #fff0f0 !important;
   border-color: var(--danger) !important;
   color: var(--danger) !important;
   font-weight: 700;
-  font-size: 1.1rem;
-  cursor: default;
-  pointer-events: none;
 }
 
-.results-grid input {
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-}
-
-.results-grid .input-group input:hover {
-  border-color: #ddd;
-  box-shadow: none;
-}
-
-#Mtheta,
-#IMtheta,
-#Losses {
-  background-color: #fafafa;
-  font-family: monospace;
-  letter-spacing: 0.5px;
-}
-
-.angles-controls h4 {
-  color: var(--primary-color);
-  font-size: 1rem;
-  margin: 15px 0 10px 0;
-  padding-right: 5px;
-  border-right: 4px solid var(--secondary-color);
-}
-
-.angles-controls h4:first-of-type {
-  margin-top: 0;
-}
-
-.divider {
-  margin: 25px 0 15px 0;
-  border: none;
-  border-top: 2px dashed var(--border);
-}
-
+/* Color indicators */
 .color-indicators {
   display: flex;
   gap: 30px;
-  margin-top: 25px;
-  padding: 15px;
+  margin-top: 20px;
+  padding: 15px 20px;
   background: #f8f9fa;
-  border-radius: 10px;
+  border-radius: 12px;
   justify-content: center;
+  width: 100%;
 }
 
 .color-item {
@@ -607,6 +627,42 @@ button:disabled {
   background: linear-gradient(135deg, #0011ff, #4169e1);
 }
 
+/* Canvas container */
+.circle-canvas {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid var(--border);
+  width: 100%;
+}
+
+.circle-canvas h4 {
+  margin-bottom: 15px;
+  color: var(--primary-color);
+  font-size: 1rem;
+}
+
+/* Canvas styling */
+#circlePlot {
+  max-width: 100%;
+  height: auto;
+  background: white;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Headers */
+.angles-controls h4 {
+  color: var(--primary-color);
+  font-size: 1rem;
+  margin: 0 0 12px 0;
+  padding-right: 8px;
+  border-right: 4px solid var(--secondary-color);
+}
+
+/* PF input specific styling */
 #pf1,
 #pf2,
 #pf3 {
@@ -643,7 +699,9 @@ button:disabled {
   color: #2c3e50;
 }
 
-/* ========== PF TAB SPECIFIC ========== */
+/* ============================================ */
+/* 9. PF TAB (معامل القدرة)
+/* ============================================ */
 .pf-grid {
   display: grid;
   grid-template-columns: 1fr 300px;
@@ -699,7 +757,9 @@ button:disabled {
   height: auto;
 }
 
-/* ========== TARIFFS TAB - ENHANCED STYLES ========== */
+/* ============================================ */
+/* 10. TARIFFS TAB (الشرائح)
+/* ============================================ */
 .tariffs-input {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
@@ -1024,7 +1084,9 @@ tr:nth-child(even) {
   background: #ffff00 !important;
 }
 
-/* ========== ALERT COLORS ========== */
+/* ============================================ */
+/* 11. ALERTS & MODALS
+/* ============================================ */
 .alert-active {
   background-color: var(--danger) !important;
   color: white !important;
@@ -1039,7 +1101,6 @@ tr:nth-child(even) {
   border: 2px solid var(--danger) !important;
 }
 
-/* ========== MODAL ========== */
 .modal {
   display: none;
   position: fixed;
@@ -1057,7 +1118,9 @@ tr:nth-child(even) {
   box-shadow: var(--shadow);
 }
 
-/* ========== SCROLL BUTTONS ========== */
+/* ============================================ */
+/* 12. SCROLL BUTTONS & UTILITIES
+/* ============================================ */
 .scroll-buttons {
   position: fixed;
   bottom: 20px;
@@ -1088,7 +1151,6 @@ tr:nth-child(even) {
   background: var(--secondary-color);
 }
 
-/* ========== TRANSFORMER INPUT GRID ========== */
 .trans-input-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -1096,7 +1158,6 @@ tr:nth-child(even) {
   margin-bottom: 15px;
 }
 
-/* ========== SPLIT INPUT ========== */
 .split-input {
   display: flex;
   gap: 8px;
@@ -1107,7 +1168,6 @@ tr:nth-child(even) {
   min-width: 0;
 }
 
-/* ========== TOOLTIP ========== */
 .input-item[data-tooltip] {
   position: relative;
 }
@@ -1127,12 +1187,13 @@ tr:nth-child(even) {
   margin-bottom: 5px;
 }
 
-/* ========== RESPONSIVE ========== */
+/* ============================================ */
+/* 13. RESPONSIVE DESIGN
+/* ============================================ */
 @media (max-width: 1200px) {
   .angles-grid {
     grid-template-columns: 1fr;
   }
-
   .pf-grid {
     grid-template-columns: 1fr;
   }
@@ -1143,13 +1204,25 @@ tr:nth-child(even) {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     padding: 20px;
   }
-
   #mainTable {
     min-width: 700px;
   }
-
   #logTable {
     min-width: 900px;
+  }
+
+  .angles-grid {
+    gap: 20px;
+  }
+
+  .angles-controls .input-grid:first-of-type {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .results-grid {
+    gap: 12px;
+    padding: 15px;
   }
 }
 
@@ -1158,68 +1231,72 @@ tr:nth-child(even) {
   .input-dashboard {
     grid-template-columns: 1fr;
   }
-
   .results-dashboard {
     grid-template-columns: 1fr 1fr;
   }
-
   .section-header {
     flex-direction: column;
     gap: 10px;
     align-items: flex-start;
   }
+  .nav-actions {
+    gap: 10px;
+  }
+  .dropdown-btn span {
+    display: none;
+  }
+  .home-btn span {
+    display: none;
+  }
+  .tariffs-input {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
 
-  .angles-controls .input-grid:first-of-type,
-  .angles-controls .input-grid:nth-of-type(2),
+  /* Angles Tab Mobile */
+  .angles-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .angles-controls .input-grid:first-of-type {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .angles-controls .input-grid:nth-of-type(2) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
   .results-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 15px;
   }
 
   .results-grid .full-width {
     grid-column: span 2;
   }
 
-  .nav-actions {
-    gap: 10px;
-  }
-
-  .dropdown-btn span {
-    display: none;
-  }
-
-  .home-btn span {
-    display: none;
-  }
-
-  .tariffs-input {
-    grid-template-columns: 1fr;
-    padding: 18px;
-  }
-
-  .input-item input,
-  .input-item select {
-    padding: 10px 12px;
-    font-size: 0.9rem;
-  }
-
-  #mainTable th,
-  #mainTable td {
-    padding: 10px 12px;
-  }
-
-  .table-input-small {
-    width: 70px;
-    padding: 6px 8px;
-  }
-
-  .table-input-medium {
-    width: 90px;
-    padding: 6px 10px;
-  }
-
-  .btn-group button {
-    padding: 8px 18px;
+  .angles-controls .input-group input,
+  .angles-controls .input-group select {
+    padding: 8px 10px;
     font-size: 0.85rem;
+  }
+
+  .angles-controls h4 {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+
+  .circle-canvas {
+    padding: 15px;
+  }
+
+  .color-indicators {
+    flex-wrap: wrap;
+    gap: 20px;
   }
 }
 
@@ -1227,73 +1304,100 @@ tr:nth-child(even) {
   .results-dashboard {
     grid-template-columns: 1fr;
   }
-
   .btn-group {
     flex-direction: column;
     gap: 8px;
   }
-
   button {
     width: 100%;
   }
+  .tariffs-input {
+    padding: 15px;
+    border-radius: 16px;
+  }
 
-  .angles-controls .input-grid:first-of-type,
-  .angles-controls .input-grid:nth-of-type(2),
+  /* Angles Tab Small Mobile */
+  .angles-controls .input-grid:first-of-type {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .angles-controls .input-grid:nth-of-type(2) {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
   .results-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px;
   }
 
   .results-grid .full-width {
     grid-column: span 1;
   }
 
+  .angles-controls .input-group input,
+  .angles-controls .input-group select {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+
+  .results-grid .input-group input {
+    min-height: 44px;
+  }
+
+  .angles-controls .input-group label {
+    font-size: 0.75rem;
+  }
+
+  .angles-controls h4 {
+    font-size: 0.9rem;
+    padding-right: 6px;
+  }
+
   .color-indicators {
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    padding: 12px;
   }
 
-  .tariffs-input {
-    padding: 15px;
-    border-radius: 16px;
-  }
-
-  .input-item label {
-    font-size: 0.8rem;
-  }
-
-  .input-item input,
-  .input-item select {
-    padding: 10px;
+  .color-item {
     font-size: 0.85rem;
   }
 
-  #mainTable th,
-  #mainTable td {
-    padding: 8px 10px;
-    font-size: 0.75rem;
+  #circlePlot {
+    max-width: 350px;
+  }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .angles-grid {
+    gap: 20px;
   }
 
-  .table-input-small {
-    width: 60px;
-    padding: 5px;
-    font-size: 0.75rem;
+  .angles-controls .input-grid:first-of-type {
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  .table-input-medium {
-    width: 80px;
-    padding: 5px 8px;
-    font-size: 0.8rem;
+  .results-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  .btn-group button {
-    padding: 8px 16px;
-    font-size: 0.8rem;
-    flex: 1;
-    justify-content: center;
+  .results-grid .full-width {
+    grid-column: span 3;
   }
 
-  .subsection h4 {
-    font-size: 1rem;
+  .circle-canvas {
+    max-height: 350px;
+    overflow-y: auto;
+  }
+
+  #circlePlot {
+    max-height: 280px;
+    width: auto;
   }
 }
