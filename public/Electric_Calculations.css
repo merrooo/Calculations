@@ -48,7 +48,7 @@ body {
 }
 
 /* ============================================ */
-/* 3. TOP NAVIGATION & DROPDOWN
+/* 3. TOP NAVIGATION & DROPDOWN - COMPLETE FIX
 /* ============================================ */
 .top-nav {
   background: linear-gradient(
@@ -64,6 +64,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  z-index: 100;
 }
 
 .nav-brand {
@@ -81,6 +83,7 @@ body {
   display: flex;
   align-items: center;
   gap: 15px;
+  position: relative;
 }
 
 /* Dropdown Menu */
@@ -114,7 +117,8 @@ body {
   display: none;
   position: absolute;
   top: 100%;
-  left: 0;
+  right: 0;
+  left: auto;
   background-color: white;
   min-width: 220px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -126,6 +130,18 @@ body {
 
 .dropdown-content.show {
   display: block;
+  animation: dropdownFadeIn 0.2s ease;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .dropdown-item {
@@ -142,6 +158,7 @@ body {
   gap: 12px;
   transition: all 0.3s ease;
   color: var(--text-main);
+  white-space: nowrap;
 }
 
 .dropdown-item ion-icon {
@@ -467,10 +484,9 @@ button:disabled {
 }
 
 /* ============================================ */
-/* 8. ANGLES TAB (تحليل الزوايا) - OPTIMIZED
+/* 8. ANGLES TAB (تحليل الزوايا) - MOBILE OPTIMIZED
 /* ============================================ */
 
-/* Main angles grid layout */
 .angles-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -478,7 +494,6 @@ button:disabled {
   align-items: start;
 }
 
-/* Controls container */
 .angles-controls {
   display: flex;
   flex-direction: column;
@@ -486,16 +501,15 @@ button:disabled {
   width: 100%;
 }
 
-/* Input grid - 3 columns for desktop */
-.angles-controls .input-grid:first-of-type {
+/* Input grid - stacked vertically on mobile */
+.angles-controls .input-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 15px;
   margin-bottom: 10px;
   width: 100%;
 }
 
-/* Input groups styling */
 .angles-controls .input-group {
   display: flex;
   flex-direction: column;
@@ -503,15 +517,12 @@ button:disabled {
   width: 100%;
 }
 
-/* Labels */
 .angles-controls .input-group label {
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-light);
-  margin-bottom: 0;
 }
 
-/* Input fields - fixed width and responsive */
 .angles-controls .input-group input,
 .angles-controls .input-group select {
   width: 100%;
@@ -521,19 +532,10 @@ button:disabled {
   font-size: 0.9rem;
   background: #f8fafc;
   transition: all 0.3s ease;
-  min-width: 0;
-  max-width: 100%;
+  text-align: center;
 }
 
 /* PF input fields specific styling */
-.angles-controls .input-grid:nth-of-type(2) {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin-top: 5px;
-  margin-bottom: 20px;
-}
-
 .angles-controls .input-grid:nth-of-type(2) .input-group input {
   background-color: #f0f7ff;
   border-color: var(--secondary-color);
@@ -542,7 +544,6 @@ button:disabled {
   cursor: default;
   pointer-events: none;
   border-style: solid;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .angles-controls .input-grid:nth-of-type(2) .input-group label {
@@ -553,7 +554,7 @@ button:disabled {
 /* Results grid */
 .results-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 15px;
   margin-top: 10px;
   background: #f8f9fa;
@@ -563,16 +564,15 @@ button:disabled {
   width: 100%;
 }
 
-/* Full width item in results */
 .results-grid .full-width {
   grid-column: 1 / -1;
 }
 
-/* Results input fields */
 .results-grid .input-group input {
   width: 100%;
   padding: 10px 12px;
   font-size: 0.9rem;
+  text-align: center;
 }
 
 .results-grid .input-group input[readonly] {
@@ -580,11 +580,8 @@ button:disabled {
   border-color: #ddd;
   color: #666;
   font-weight: 600;
-  cursor: default;
-  pointer-events: none;
 }
 
-/* Highlighted loss field */
 .results-grid .highlight input {
   background-color: #fff0f0 !important;
   border-color: var(--danger) !important;
@@ -602,6 +599,7 @@ button:disabled {
   border-radius: 12px;
   justify-content: center;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .color-item {
@@ -643,7 +641,6 @@ button:disabled {
   font-size: 1rem;
 }
 
-/* Canvas styling */
 #circlePlot {
   max-width: 100%;
   height: auto;
@@ -653,7 +650,6 @@ button:disabled {
   margin: 0 auto;
 }
 
-/* Headers */
 .angles-controls h4 {
   color: var(--primary-color);
   font-size: 1rem;
@@ -662,7 +658,6 @@ button:disabled {
   border-right: 4px solid var(--secondary-color);
 }
 
-/* PF input specific styling */
 #pf1,
 #pf2,
 #pf3 {
@@ -689,7 +684,6 @@ button:disabled {
   background: linear-gradient(145deg, #fff5f5, #ffe5e5) !important;
   border: 2px solid var(--danger) !important;
   color: var(--danger) !important;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
 }
 
 #Mtheta,
@@ -1210,20 +1204,6 @@ tr:nth-child(even) {
   #logTable {
     min-width: 900px;
   }
-
-  .angles-grid {
-    gap: 20px;
-  }
-
-  .angles-controls .input-grid:first-of-type {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-
-  .results-grid {
-    gap: 12px;
-    padding: 15px;
-  }
 }
 
 @media (max-width: 768px) {
@@ -1253,30 +1233,25 @@ tr:nth-child(even) {
     padding: 18px;
   }
 
-  /* Angles Tab Mobile */
+  /* Angles Tab Mobile - stacked layout */
   .angles-grid {
     grid-template-columns: 1fr;
     gap: 25px;
   }
 
-  .angles-controls .input-grid:first-of-type {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .angles-controls .input-grid:nth-of-type(2) {
-    grid-template-columns: repeat(2, 1fr);
+  .angles-controls .input-grid {
+    grid-template-columns: 1fr;
     gap: 12px;
   }
 
   .results-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: 12px;
     padding: 15px;
   }
 
   .results-grid .full-width {
-    grid-column: span 2;
+    grid-column: span 1;
   }
 
   .angles-controls .input-group input,
@@ -1317,26 +1292,6 @@ tr:nth-child(even) {
   }
 
   /* Angles Tab Small Mobile */
-  .angles-controls .input-grid:first-of-type {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .angles-controls .input-grid:nth-of-type(2) {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .results-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 12px;
-  }
-
-  .results-grid .full-width {
-    grid-column: span 1;
-  }
-
   .angles-controls .input-group input,
   .angles-controls .input-group select {
     padding: 10px 12px;
@@ -1350,11 +1305,6 @@ tr:nth-child(even) {
 
   .angles-controls .input-group label {
     font-size: 0.75rem;
-  }
-
-  .angles-controls h4 {
-    font-size: 0.9rem;
-    padding-right: 6px;
   }
 
   .color-indicators {
@@ -1379,7 +1329,7 @@ tr:nth-child(even) {
     gap: 20px;
   }
 
-  .angles-controls .input-grid:first-of-type {
+  .angles-controls .input-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 
