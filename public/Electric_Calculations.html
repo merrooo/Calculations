@@ -1,1151 +1,789 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>النظام المتكامل للتحليلات الكهربائية</title>
-    <link rel="stylesheet" href="Electric_Calculations.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  </head>
-  <body>
-    <div class="app-wrapper">
-      <!-- Left Sidebar Navigation -->
-      <div class="sidebar">
-        <div class="sidebar-header">
-          <div class="logo">⚡</div>
-          <input type="date" id="currentDate" class="date-input" disabled />
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>النظام المتكامل للتحليلات الكهربائية</title>
+  <link rel="stylesheet" href="Electric_Calculations.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+  <div class="app-wrapper">
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Top Navigation -->
+      <nav class="top-nav">
+        <div class="nav-brand">
+          <span>النظام المتكامل للتحليلات الكهربائية</span>
         </div>
-        <nav class="sidebar-nav">
-          <button class="nav-btn active" onclick="switchTab('angles')">
-            <ion-icon name="analytics-outline"></ion-icon>
-            <span>تحليل الزوايا</span>
-          </button>
-          <button class="nav-btn" onclick="switchTab('calibrations')">
-            <ion-icon name="calculator-outline"></ion-icon>
-            <span>حسابات القدرة</span>
-          </button>
-          <button class="nav-btn" onclick="switchTab('mt')">
-            <ion-icon name="construct-outline"></ion-icon>
-            <span>محولات ومحركات</span>
-          </button>
-          <button class="nav-btn" onclick="switchTab('pf')">
-            <ion-icon name="flash-outline"></ion-icon>
-            <span>معامل القدرة</span>
-          </button>
-          <button class="nav-btn" onclick="switchTab('tariffs')">
-            <ion-icon name="cash-outline"></ion-icon>
-            <span>الشرائح</span>
-          </button>
-        </nav>
-      </div>
-
-      <!-- Main Content Area -->
-      <div class="main-content">
-        <!-- Top Navigation -->
-        <nav class="top-nav">
-          <div class="nav-brand">
-            <div class="menu-toggle" onclick="toggleSidebar()">
-              <i class="fas fa-bars"></i>
-            </div>
-            <span>النظام المتكامل للتحليلات الكهربائية</span>
-          </div>
-          <div class="nav-actions">
-            <button class="home-btn" onclick="window.location.href='index.html'">
-              <ion-icon name="arrow-up-outline"></ion-icon>
-              <span>الصفحة الرئيسية</span>
+        <div class="nav-actions">
+          <!-- Dropdown Menu -->
+          <div class="dropdown">
+            <button class="dropdown-btn" onclick="toggleDropdown()">
+              <ion-icon name="menu-outline"></ion-icon>
+              <span>القائمة</span>
+              <i class="fas fa-chevron-down"></i>
             </button>
+            <div class="dropdown-content" id="dropdownMenu">
+              <button class="dropdown-item active" onclick="switchTab('angles'); closeDropdown()">
+                <ion-icon name="analytics-outline"></ion-icon>
+                <span>تحليل الزوايا</span>
+              </button>
+              <button class="dropdown-item" onclick="switchTab('calibrations'); closeDropdown()">
+                <ion-icon name="calculator-outline"></ion-icon>
+                <span>حسابات القدرة</span>
+              </button>
+              <button class="dropdown-item" onclick="switchTab('mt'); closeDropdown()">
+                <ion-icon name="construct-outline"></ion-icon>
+                <span>محولات ومحركات</span>
+              </button>
+              <button class="dropdown-item" onclick="switchTab('pf'); closeDropdown()">
+                <ion-icon name="flash-outline"></ion-icon>
+                <span>معامل القدرة</span>
+              </button>
+              <button class="dropdown-item" onclick="switchTab('tariffs'); closeDropdown()">
+                <ion-icon name="cash-outline"></ion-icon>
+                <span>الشرائح</span>
+              </button>
+            </div>
           </div>
-        </nav>
+          <button class="home-btn" onclick="window.location.href='index.html'">
+            <ion-icon name="arrow-up-outline"></ion-icon>
+            <span>الصفحة الرئيسية</span>
+          </button>
+        </div>
+      </nav>
 
-        <!-- Tab Content -->
-        <div class="tab-content-wrapper">
-          <!-- Angles Tab -->
-          <div id="tab-angles" class="tab-pane active">
-            <div class="section-container">
-              <h3 class="section-title">
-                <ion-icon name="analytics-outline"></ion-icon> نظام تحليل
-                الزوايا وجيب التمام (3-Phase)
-              </h3>
+      <!-- Tab Content -->
+      <div class="tab-content-wrapper">
+        <!-- Angles Tab -->
+        <div id="tab-angles" class="tab-pane active">
+          <div class="section-container">
+            <h3 class="section-title">
+              <ion-icon name="analytics-outline"></ion-icon> نظام تحليل
+              الزوايا وجيب التمام (3-Phase)
+            </h3>
 
-              <div class="angles-grid">
-                <div class="angles-controls">
-                  <h4>إدخال زوايا التيار (θ)</h4>
-                  <div class="input-grid">
-                    <div class="input-group">
-                      <label>θ1 (Phase 1)</label>
-                      <input
-                        id="theta1"
-                        type="number"
-                        value="10"
-                        oninput="updateAngles()"
-                      />
-                    </div>
-                    <div class="input-group">
-                      <label>θ2 (Phase 2)</label>
-                      <input
-                        id="theta2"
-                        type="number"
-                        value="130"
-                        oninput="updateAngles()"
-                      />
-                    </div>
-                    <div class="input-group">
-                      <label>θ3 (Phase 3)</label>
-                      <input
-                        id="theta3"
-                        type="number"
-                        value="250"
-                        oninput="updateAngles()"
-                      />
-                    </div>
-                    <div class="input-group">
-                      <label>Pf1 (cos θ1)</label>
-                      <input id="pf1" type="text" readonly />
-                    </div>
-                    <div class="input-group">
-                      <label>Pf2 (cos θ2)</label>
-                      <input id="pf2" type="text" readonly />
-                    </div>
-                    <div class="input-group">
-                      <label>Pf3 (cos θ3)</label>
-                      <input id="pf3" type="text" readonly />
-                    </div>
+            <div class="angles-grid">
+              <div class="angles-controls">
+                <h4>إدخال زوايا التيار (θ)</h4>
+                <div class="input-grid">
+                  <div class="input-group">
+                    <label>θ1 (Phase 1)</label>
+                    <input id="theta1" type="number" value="10" oninput="updateAngles()" />
                   </div>
-
-                  <hr class="divider" />
-
-                  <h4>تحليل الخطأ والفقد</h4>
-                  <div class="results-grid">
-                    <div class="input-group full-width">
-                      <label>زاوية الحمل المرجعية (Correct θ)</label>
-                      <input
-                        id="correcttheta"
-                        type="number"
-                        value="10"
-                        oninput="updateAngles()"
-                      />
-                    </div>
-                    <div class="input-group">
-                      <label>المسجل [kWH]</label>
-                      <input
-                        id="EXkwh"
-                        type="number"
-                        value="100"
-                        step="0.1"
-                        oninput="updateAngles()"
-                      />
-                    </div>
-                    <div class="input-group">
-                      <label>خطأ المقدار (M%)</label>
-                      <input id="Mtheta" type="text" readonly />
-                    </div>
-                    <div class="input-group">
-                      <label>خطأ الاستيراد (IM%)</label>
-                      <input id="IMtheta" type="text" readonly />
-                    </div>
-                    <div class="input-group highlight">
-                      <label>الفقد المحسوب [kWH]</label>
-                      <input id="Losses" type="text" readonly />
-                    </div>
+                  <div class="input-group">
+                    <label>θ2 (Phase 2)</label>
+                    <input id="theta2" type="number" value="130" oninput="updateAngles()" />
                   </div>
-
-                  <div class="color-indicators">
-                    <div class="color-item">
-                      <div class="color-box v-color"></div>
-                      <span>الجهد (V)</span>
-                    </div>
-                    <div class="color-item">
-                      <div class="color-box i-color"></div>
-                      <span>التيار (I)</span>
-                    </div>
+                  <div class="input-group">
+                    <label>θ3 (Phase 3)</label>
+                    <input id="theta3" type="number" value="250" oninput="updateAngles()" />
+                  </div>
+                  <div class="input-group">
+                    <label>Pf1 (cos θ1)</label>
+                    <input id="pf1" type="text" readonly />
+                  </div>
+                  <div class="input-group">
+                    <label>Pf2 (cos θ2)</label>
+                    <input id="pf2" type="text" readonly />
+                  </div>
+                  <div class="input-group">
+                    <label>Pf3 (cos θ3)</label>
+                    <input id="pf3" type="text" readonly />
                   </div>
                 </div>
 
-                <div class="circle-canvas">
-                  <h4>المخطط الطوري (Phasor Diagram)</h4>
-                  <canvas id="circlePlot" width="500" height="500"></canvas>
+                <hr class="divider" />
+
+                <h4>تحليل الخطأ والفقد</h4>
+                <div class="results-grid">
+                  <div class="input-group full-width">
+                    <label>زاوية الحمل المرجعية (Correct θ)</label>
+                    <input id="correcttheta" type="number" value="10" oninput="updateAngles()" />
+                  </div>
+                  <div class="input-group">
+                    <label>المسجل [kWH]</label>
+                    <input id="EXkwh" type="number" value="100" step="0.1" oninput="updateAngles()" />
+                  </div>
+                  <div class="input-group">
+                    <label>خطأ المقدار (M%)</label>
+                    <input id="Mtheta" type="text" readonly />
+                  </div>
+                  <div class="input-group">
+                    <label>خطأ الاستيراد (IM%)</label>
+                    <input id="IMtheta" type="text" readonly />
+                  </div>
+                  <div class="input-group highlight">
+                    <label>الفقد المحسوب [kWH]</label>
+                    <input id="Losses" type="text" readonly />
+                  </div>
+                </div>
+
+                <div class="color-indicators">
+                  <div class="color-item">
+                    <div class="color-box v-color"></div>
+                    <span>الجهد (V)</span>
+                  </div>
+                  <div class="color-item">
+                    <div class="color-box i-color"></div>
+                    <span>التيار (I)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="circle-canvas">
+                <h4>المخطط الطوري (Phasor Diagram)</h4>
+                <canvas id="circlePlot" width="500" height="500"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calibrations Tab -->
+        <div id="tab-calibrations" class="tab-pane">
+          <div class="section-container">
+            <div class="section-header">
+              <h3 class="section-title">
+                <ion-icon name="calculator-outline"></ion-icon> حسابات القدرة
+              </h3>
+              <button class="btn-reset" onclick="resetCalibrations()">
+                Reset All
+              </button>
+            </div>
+
+            <!-- Phase Parameters -->
+            <div class="subsection">
+              <h4>📊 Phase Parameters (البيانات الكهربائية)</h4>
+              <div class="input-dashboard">
+                <div class="input-group">
+                  <label>System Mode</label>
+                  <select id="phase_mode" onchange="handlePhaseModeChange()">
+                    <option value="3">Three Phase (3Φ)</option>
+                    <option value="1">Single Phase (1Φ)</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label>Voltage (V)</label>
+                  <input type="number" id="v" value="380" oninput="calculatePhase()" />
+                </div>
+                <div class="input-group">
+                  <label>Current (A)</label>
+                  <input type="number" id="i" value="10" oninput="calculatePhase()" />
+                </div>
+                <div class="input-group">
+                  <label>Angle θ (°)</label>
+                  <input type="number" id="theta_phase" value="0" oninput="calculatePhase()" />
+                </div>
+              </div>
+              <div class="results-dashboard">
+                <div class="result-item grey-box">
+                  <span class="result-label">P.F</span>
+                  <input id="res_pf" class="res-val editable" type="text" inputmode="decimal" value="0.866" />
+                </div>
+                <div class="result-item grey-box">
+                  <span class="result-label">Active (kW)</span>
+                  <span id="res_kw" class="res-val" contenteditable="true">5.70</span>
+                </div>
+                <div class="result-item grey-box">
+                  <span class="result-label">H.P</span>
+                  <span id="res_hp" class="res-val" contenteditable="true">7.64</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Calibration Setup -->
+            <div class="subsection">
+              <h4>🛠️ Calibration Setup</h4>
+              <div class="input-dashboard">
+                <div class="input-group">
+                  <label>kWh Const</label>
+                  <input type="number" id="kwh_c" value="0" oninput="calculatePhase()" />
+                </div>
+                <div class="input-group">
+                  <label>kVARH Const</label>
+                  <input type="number" id="kvar_c" value="0" oninput="calculatePhase()" />
+                </div>
+                <div class="input-group">
+                  <label>Time (Min)</label>
+                  <input type="number" id="t_c" value="1" oninput="calculatePhase()" />
+                </div>
+              </div>
+              <div class="results-dashboard">
+                <div class="result-item blue-box">
+                  <span class="result-label">Required Current (kWh)</span>
+                  <span id="cal_kw" class="res-val">0.0</span>
+                </div>
+                <div class="result-item blue-box">
+                  <span class="result-label">Required Current (kVAR)</span>
+                  <span id="cal_kv" class="res-val">0.0</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- AC Calculation -->
+            <div class="subsection">
+              <h4>❄️ A.C Calculation (حسابات التكييف)</h4>
+              <div class="input-dashboard">
+                <div class="input-group">
+                  <label>BTU/H</label>
+                  <input type="number" id="btu" value="12000" oninput="calcAC()" />
+                </div>
+                <div class="input-group">
+                  <label>Tons/Reg</label>
+                  <input type="number" id="tons" value="1" oninput="calcAC()" />
+                </div>
+                <div class="input-group">
+                  <label>Room L (m)</label>
+                  <input type="number" id="l" value="4" oninput="calcAC()" />
+                </div>
+                <div class="input-group">
+                  <label>Room W (m)</label>
+                  <input type="number" id="w" value="5" oninput="calcAC()" />
+                </div>
+                <div class="input-group">
+                  <label>Room H (m)</label>
+                  <input type="number" id="h" value="3" oninput="calcAC()" />
+                </div>
+              </div>
+              <div class="results-dashboard">
+                <div class="result-item grey-box">
+                  <span class="result-label">Result H.P</span>
+                  <span id="ac_hp_res" class="res-val">1.50</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Meter Balance -->
+            <div class="subsection">
+              <h4>📟 فرق الأرصدة (قوى محركة)</h4>
+              <div class="input-group full-width">
+                <label>التعريفة</label>
+                <input type="number" id="m_tariff" value="2.34" oninput="calcMeter()" />
+              </div>
+              <div class="input-dashboard">
+                <div class="input-group">
+                  <label>الاستهلاك الحالي</label>
+                  <input type="number" id="m_kwh_curr" value="56651" oninput="calcMeter()" />
+                </div>
+                <div class="input-group">
+                  <label>إجمالي الشحنات الحالية</label>
+                  <input type="number" id="m_tt_curr" value="5974" oninput="calcMeter()" />
+                </div>
+                <div class="input-group">
+                  <label>الرصيد الحالى بالعداد</label>
+                  <input type="number" id="m_t_curr" value="7657.52" oninput="calcMeter()" />
+                </div>
+              </div>
+              <div class="input-dashboard">
+                <div class="input-group">
+                  <label>الاستهلاك السابق</label>
+                  <input type="number" id="m_kwh_prev" value="42856" oninput="calcMeter()" />
+                </div>
+                <div class="input-group">
+                  <label>إجمالي الشحنات السابقة</label>
+                  <input type="number" id="m_tt_prev_val" value="2400" oninput="calcMeter()" />
+                </div>
+                <div class="input-group">
+                  <label>الرصيد السابق بالعداد</label>
+                  <input type="number" id="m_t_prev" value="14757.57" oninput="calcMeter()" />
+                </div>
+              </div>
+              <div class="results-dashboard">
+                <div id="box_tt_sdiff" class="result-item blue-box">
+                  <span class="result-label">إجمالي الشحنات (S)</span>
+                  <span id="out_tt_sdiff" class="res-val">0</span>
+                </div>
+                <div id="box_tt_kdiff" class="result-item blue-box">
+                  <span class="result-label">إجمالي الشحنات (K)</span>
+                  <span id="out_tt_kdiff" class="res-val">0</span>
+                </div>
+                <div id="box_tttdiff" class="result-item blue-box">
+                  <span class="result-label">الفرق (الشحنات)</span>
+                  <span id="out_tttdiff" class="res-val">0</span>
+                </div>
+                <div id="box_kwh_sdiff" class="result-item red-box">
+                  <span class="result-label">فرق الاستهلاك (S)</span>
+                  <span id="out_kwh_sdiff" class="res-val">0</span>
+                </div>
+                <div id="box_kwh_tts" class="result-item red-box">
+                  <span class="result-label">فرق الاستهلاك (T)</span>
+                  <span id="out_kwh_tts" class="res-val">0</span>
+                </div>
+                <div id="box_kwhtdiff" class="result-item red-box">
+                  <span class="result-label">الفرق (kWh)</span>
+                  <span id="out_kwhtdiff" class="res-val">0</span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
+        <!-- M&T Tab -->
+        <div id="tab-mt" class="tab-pane">
+          <div class="section-container">
+            <div class="section-header">
+              <h3 class="section-title">
+                <ion-icon name="construct-outline"></ion-icon> محولات ومحركات
+              </h3>
+              <button class="btn-reset" onclick="resetMT()">Reset All</button>
+            </div>
 
+            <!-- Load & Loss Factors -->
+            <div class="subsection">
+              <h4>Load & Loss Factors (معاملات الحمل والفقد)</h4>
+              <div class="input-dashboard">
+                <div class="input-group">
+                  <label>Avg Power (kW)</label>
+                  <input type="number" id="avg_p" value="880" oninput="calculateMT()" />
+                </div>
+                <div class="input-group">
+                  <label>Max Demand (kW)</label>
+                  <input type="number" id="max_d" value="978" oninput="calculateMT()" />
+                </div>
+              </div>
+              <div class="results-dashboard">
+                <div class="result-item lf-border">
+                  <h3>Load Factor (LF)</h3>
+                  <input type="text" id="lf_res" class="val-display" readonly />
+                </div>
+                <div class="result-item loss-border">
+                  <h3>Loss Factor</h3>
+                  <input type="text" id="loss_res" class="val-display" readonly />
+                </div>
+              </div>
+            </div>
 
+            <!-- Motor Mechanics -->
+            <div class="subsection">
+              <h4>Motor Mechanics (ميكانيكا المحرك)</h4>
+              <div class="input-dashboard">
+                <div class="input-group">
+                  <label>Frequency (Hz)</label>
+                  <input type="number" id="freq" value="50" oninput="calculateMT()" />
+                </div>
+                <div class="input-group">
+                  <label>No. of Poles</label>
+                  <input type="number" id="poles" value="4" oninput="calculateMT()" />
+                </div>
+                <div class="input-group">
+                  <label>Power (kW)</label>
+                  <input type="number" id="motor_kw" value="100" oninput="calculateMT()" />
+                </div>
+              </div>
+              <div class="results-dashboard">
+                <div class="result-item speed-border">
+                  <h3>Speed (RPM)</h3>
+                  <input type="text" id="speed_res" class="val-display" readonly />
+                </div>
+                <div class="result-item torque-border">
+                  <h3>Torque (N.m)</h3>
+                  <input type="text" id="torque_res" class="val-display" readonly />
+                </div>
+              </div>
+            </div>
 
+            <!-- Transformer Analysis -->
+            <div class="subsection">
+              <h4>Transformer Analysis (تحليل المحول)</h4>
+              <div class="trans-input-grid">
+                <div class="input-group">
+                  <label>Rating (kVA)</label>
+                  <input type="number" id="KVATR" value="1000" oninput="calculateMT()" />
+                </div>
+                <div class="input-group">
+                  <label>Impedance (%Z)</label>
+                  <input type="number" id="impd" value="5" oninput="calculateMT()" />
+                </div>
+                <div class="input-group">
+                  <label>V1 Primary (V)</label>
+                  <input type="number" id="VPR" value="11000" oninput="calculateMT()" />
+                </div>
+                <div class="input-group">
+                  <label>V2 FL (V)</label>
+                  <input type="number" id="VSECFL" value="380" oninput="calculateMT()" />
+                </div>
+                <div class="input-group">
+                  <label>V2 NL (V)</label>
+                  <input type="number" id="VSECNL" value="400" oninput="calculateMT()" />
+                </div>
+              </div>
+              <div class="results-dashboard">
+                <div class="result-item trans-border">
+                  <h3>I-Primary (A)</h3>
+                  <input type="text" id="IPR" class="val-display" readonly />
+                </div>
+                <div class="result-item trans-border">
+                  <h3>I-Sec (A)</h3>
+                  <input type="text" id="ISEC" class="val-display" readonly />
+                </div>
+                <div class="result-item trans-border">
+                  <h3>I-sc (kA)</h3>
+                  <input type="text" id="isc_res" class="val-display" readonly />
+                </div>
+                <div class="result-item trans-border">
+                  <h3>Turns Ratio (n)</h3>
+                  <input type="text" id="tr_res" class="val-display" readonly />
+                </div>
+                <div class="result-item trans-border">
+                  <h3>VR %</h3>
+                  <input type="text" id="vr_perc" class="val-display" readonly />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <!-- PF Tab -->
+        <div id="tab-pf" class="tab-pane">
+          <div class="section-container">
+            <div class="section-header">
+              <h3 class="section-title">
+                <ion-icon name="flash-outline"></ion-icon> معامل القدرة
+              </h3>
+              <button class="btn-reset" onclick="resetPF()">Reset All</button>
+            </div>
 
+            <!-- PF Correction -->
+            <div class="subsection">
+              <div class="pf-header">
+                <h4>⚙️ P.F Correction & Visualization</h4>
+                <button class="btn-equations" onclick="toggleEquations()">
+                  Formula Reference
+                </button>
+              </div>
+              <div class="pf-grid">
+                <div class="pf-controls">
+                  <div class="input-dashboard">
+                    <div class="input-group">
+                      <label>System Mode:</label>
+                      <select id="phase_mode_pf" onchange="calculateCorrection()">
+                        <option value="1">Single Phase (1Φ)</option>
+                        <option value="3" selected>Three Phase (3Φ)</option>
+                      </select>
+                    </div>
+                    <div class="input-group">
+                      <label>MD.KW (Load)</label>
+                      <input type="number" id="kwh_in" placeholder="100" oninput="calculateCorrection()" />
+                    </div>
+                    <div class="input-group">
+                      <label>Eff %</label>
+                      <input type="number" id="eff_in" value="90" oninput="calculateCorrection()" />
+                    </div>
+                    <div class="input-group">
+                      <label>Voltage (V)</label>
+                      <input type="number" id="v_in" value="400" oninput="calculateCorrection()" />
+                    </div>
+                    <div class="input-group">
+                      <label>Freq (Hz)</label>
+                      <input type="number" id="hz_in" value="50" oninput="calculateCorrection()" />
+                    </div>
+                    <div class="input-group">
+                      <label>COS(φ) Current</label>
+                      <input type="number" step="0.01" id="cos_old_in" placeholder="0.75"
+                        oninput="calculateCorrection()" />
+                    </div>
+                    <div class="input-group">
+                      <label>COS(φ) Target</label>
+                      <input type="number" step="0.01" id="cos_new_in" value="0.95" oninput="calculateCorrection()" />
+                    </div>
+                  </div>
+                </div>
 
+                <div class="pf-results">
+                  <div class="result-mini">
+                    <span>kVA (Old)</span>
+                    <input type="text" id="s_old_res" readonly />
+                  </div>
+                  <div class="result-mini highlight">
+                    <span>kVA (New)</span>
+                    <input type="text" id="s_new_res" readonly />
+                  </div>
+                  <div class="result-mini">
+                    <span>Amps (Old)</span>
+                    <input type="text" id="amp_old_res" readonly />
+                  </div>
+                  <div class="result-mini highlight">
+                    <span>Amps (New)</span>
+                    <input type="text" id="amp_new_res" readonly />
+                  </div>
+                  <div class="result-mini penalty-border">
+                    <span>Qcomp (kVAR)</span>
+                    <input type="text" id="q_cap_res" readonly />
+                  </div>
+                  <div class="result-mini active-power-border">
+                    <span>µF / Phase</span>
+                    <input type="text" id="farad_ph_res" readonly />
+                  </div>
+                </div>
+              </div>
 
-          <!-- Calibrations Tab -->
-          <div id="tab-calibrations" class="tab-pane">
-            <div class="section-container">
-              <div class="section-header">
-                <h3 class="section-title">
-                  <ion-icon name="calculator-outline"></ion-icon> حسابات القدرة
-                </h3>
-                <button class="btn-reset" onclick="resetCalibrations()">
-                  Reset All
+              <!-- Power Triangle -->
+              <div class="plot-container">
+                <svg id="powerTriangle" viewBox="0 0 500 400">
+                  <defs>
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#f0f0f0" stroke-width="1" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#grid)" />
+                  <line x1="60" y1="340" x2="460" y2="340" stroke="#95a5a6" stroke-width="2" />
+                  <line x1="60" y1="40" x2="60" y2="340" stroke="#95a5a6" stroke-width="2" />
+                  <polygon id="polyOld" points="60,340 60,340 60,340" fill="rgba(44,62,80,0.08)" stroke="#2c3e50"
+                    stroke-width="2" />
+                  <polygon id="polyNew" points="60,340 60,340 60,340" fill="rgba(52,152,219,0.15)" stroke="#3498db"
+                    stroke-width="2" stroke-dasharray="5" />
+                  <line id="qCapLine" x1="0" y1="0" x2="0" y2="0" stroke="#e74c3c" stroke-width="5" />
+                  <text id="txtKW" class="svg-text-bold" fill="#2c3e50" text-anchor="middle"></text>
+                  <text id="txtKVAOld" class="svg-text-small" fill="#2c3e50"></text>
+                  <text id="txtKVANew" class="svg-text-small" fill="#3498db"></text>
+                  <text id="txtQC" class="svg-text-bold" fill="#e74c3c"></text>
+                  <text x="460" y="360" class="svg-text-small" text-anchor="end">
+                    Active Power (P)
+                  </text>
+                  <text x="50" y="40" class="svg-text-small" transform="rotate(-90 50,40)">
+                    Reactive Power (Q)
+                  </text>
+                </svg>
+              </div>
+            </div>
+
+            <!-- PF Penalty -->
+            <div class="subsection">
+              <h4>📟 P.F Penalty</h4>
+              <div class="input-dashboard">
+                <div class="input-group">
+                  <label>Active Energy (kWh)</label>
+                  <div class="split-input">
+                    <input type="number" id="kwh_curr" placeholder="الحالى" oninput="calculatePenalty()" />
+                    <input type="number" id="kwh_prev" placeholder="السابق" oninput="calculatePenalty()" />
+                  </div>
+                </div>
+                <div class="input-group">
+                  <label>Reactive Energy (kVARh)</label>
+                  <div class="split-input">
+                    <input type="number" id="kvarh_curr" placeholder="الحالى" oninput="calculatePenalty()" />
+                    <input type="number" id="kvarh_prev" placeholder="السابق" oninput="calculatePenalty()" />
+                  </div>
+                </div>
+                <div class="input-group">
+                  <label>Tariff (EGP/kWh)</label>
+                  <select id="tariffpf" onchange="calculatePenalty()">
+                    <option value="2.34">قوى محركة (2.34)</option>
+                    <option value="2.0">ري (2.0)</option>
+                    <option value="1.5">كبار مشتركين (1.5)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="results-dashboard">
+                <div class="result-item">
+                  <h3>متوسط معامل القدرة</h3>
+                  <input type="text" id="pf_penalty" class="val-large" readonly />
+                </div>
+                <div class="result-item penalty-border">
+                  <h3 class="text-accent">غرامة معامل القدرة</h3>
+                  <input type="text" id="pf_charge" class="val-large text-accent" readonly />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tariffs Tab -->
+        <div id="tab-tariffs" class="tab-pane">
+          <div class="section-container">
+            <div class="section-header">
+              <h3 class="section-title">
+                <ion-icon name="cash-outline"></ion-icon> الشرائح
+              </h3>
+            </div>
+
+            <!-- Input Section -->
+            <div class="input-dashboard tariffs-input">
+              <div class="input-item">
+                <label>رقم العداد</label>
+                <input type="text" id="meterNo" value="0803083177-41963763" />
+              </div>
+              <div class="input-item">
+                <label>من تاريخ</label>
+                <input type="date" id="fromDate" />
+              </div>
+              <div class="input-item">
+                <label>إلى تاريخ</label>
+                <input type="date" id="toDate" />
+              </div>
+              <div class="input-item">
+                <label>الاستهلاك (ك.و.س)</label>
+                <input type="number" id="tkwh" value="13795" oninput="calculateTariffs()" />
+              </div>
+              <div class="input-item">
+                <label>رصيد دخول الشهر</label>
+                <input type="number" id="balmoney1" value="14757.57" oninput="calculateTariffs()" />
+              </div>
+              <div class="input-item">
+                <label>ماتم شحنه</label>
+                <input type="number" id="charge" value="5484" oninput="calculateTariffs()" />
+              </div>
+              <div class="input-item">
+                <label>رصيد خروج الشهر</label>
+                <input type="number" id="balmoney2" value="7657.52" oninput="calculateTariffs()" />
+              </div>
+              <div class="input-item">
+                <label>نوع النشاط</label>
+                <select id="tariffType" onchange="initTariffTable()">
+                  <option value="factory">قوى محركة</option>
+                  <option value="residential">منزلي</option>
+                  <option value="commercial">تجاري</option>
+                  <option value="farmer">الري</option>
+                  <option value="lighting">انارة عامة</option>
+                  <option value="balance_cst">باقى المشتركين</option>
+                </select>
+              </div>
+              <div class="input-item">
+                <label>فترة التعرفة</label>
+                <select id="periodSelect" onchange="onPeriodChange()">
+                  <option value="Aug-2024">Aug-2024</option>
+                  <option value="Jan2024-Jul2024">Jan2024-Jul2024</option>
+                  <option value="2021-2023">2021-2023</option>
+                  <option value="2019-2020">2019-2020</option>
+                </select>
+              </div>
+              <div class="input-item">
+                <label>إجمالي التشريح</label>
+                <input type="number" id="totmoney" value="0" readonly />
+              </div>
+            </div>
+
+            <!-- Main Tariff Table -->
+            <div class="table-responsive">
+              <table id="mainTable">
+                <thead>
+                  <tr>
+                    <th>الشريحة</th>
+                    <th>الاستهلاك</th>
+                    <th>السعر</th>
+                    <th>خدمة العملاء</th>
+                    <th>فرق تشريح</th>
+                    <th>الإجمالي</th>
+                  </tr>
+                </thead>
+                <tbody id="tariffTableBody"></tbody>
+              </table>
+            </div>
+
+            <!-- Comparison Section -->
+            <div class="subsection">
+              <h4>
+                <i class="fas fa-balance-scale"></i> سجل التشريح التعريفة
+              </h4>
+              <div class="btn-group">
+                <button class="btn-save" onclick="addToComparison()">
+                  <i class="fas fa-plus"></i> إضافة التشريح
+                </button>
+                <button class="btn-export" onclick="exportComparison()">
+                  <i class="fas fa-file-excel"></i> تصدير البيانات
                 </button>
               </div>
 
-              <!-- Phase Parameters -->
-              <div class="subsection">
-                <h4>📊 Phase Parameters (البيانات الكهربائية)</h4>
-                <div class="input-dashboard">
-                  <div class="input-group">
-                    <label>System Mode</label>
-                    <select id="phase_mode" onchange="handlePhaseModeChange()">
-                      <option value="3">Three Phase (3Φ)</option>
-                      <option value="1">Single Phase (1Φ)</option>
-                    </select>
-                  </div>
-                  <div class="input-group">
-                    <label>Voltage (V)</label>
-                    <input
-                      type="number"
-                      id="v"
-                      value="380"
-                      oninput="calculatePhase()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>Current (A)</label>
-                    <input
-                      type="number"
-                      id="i"
-                      value="10"
-                      oninput="calculatePhase()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>Angle θ (°)</label>
-                    <input
-                      type="number"
-                      id="theta_phase"
-                      value="0"
-                      oninput="calculatePhase()"
-                    />
-                  </div>
-                </div>
-                <div class="results-dashboard">
-                  <div class="result-item grey-box">
-                    <span class="result-label">P.F</span>
-                    <input
-                      id="res_pf"
-                      class="res-val editable"
-                      type="text"
-                      inputmode="decimal"
-                      value="0.866"
-                    />
-                  </div>
-                  <div class="result-item grey-box">
-                    <span class="result-label">Active (kW)</span>
-                    <span id="res_kw" class="res-val" contenteditable="true">5.70</span>
-                  </div>
-                  <div class="result-item grey-box">
-                    <span class="result-label">H.P</span>
-                    <span id="res_hp" class="res-val" contenteditable="true">7.64</span>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Calibration Setup -->
-              <div class="subsection">
-                <h4>🛠️ Calibration Setup</h4>
-                <div class="input-dashboard">
-                  <div class="input-group">
-                    <label>kWh Const</label>
-                    <input
-                      type="number"
-                      id="kwh_c"
-                      value="0"
-                      oninput="calculatePhase()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>kVARH Const</label>
-                    <input
-                      type="number"
-                      id="kvar_c"
-                      value="0"
-                      oninput="calculatePhase()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>Time (Min)</label>
-                    <input
-                      type="number"
-                      id="t_c"
-                      value="1"
-                      oninput="calculatePhase()"
-                    />
-                  </div>
-                </div>
-                <div class="results-dashboard">
-                  <div class="result-item blue-box">
-                    <span class="result-label">Required Current (kWh)</span>
-                    <span id="cal_kw" class="res-val">0.0</span>
-                  </div>
-                  <div class="result-item blue-box">
-                    <span class="result-label">Required Current (kVAR)</span>
-                    <span id="cal_kv" class="res-val">0.0</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- AC Calculation -->
-              <div class="subsection">
-                <h4>❄️ A.C Calculation (حسابات التكييف)</h4>
-                <div class="input-dashboard">
-                  <div class="input-group">
-                    <label>BTU/H</label>
-                    <input
-                      type="number"
-                      id="btu"
-                      value="12000"
-                      oninput="calcAC()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>Tons/Reg</label>
-                    <input
-                      type="number"
-                      id="tons"
-                      value="1"
-                      oninput="calcAC()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>Room L (m)</label>
-                    <input type="number" id="l" value="4" oninput="calcAC()" />
-                  </div>
-                  <div class="input-group">
-                    <label>Room W (m)</label>
-                    <input type="number" id="w" value="5" oninput="calcAC()" />
-                  </div>
-                  <div class="input-group">
-                    <label>Room H (m)</label>
-                    <input type="number" id="h" value="3" oninput="calcAC()" />
-                  </div>
-                </div>
-                <div class="results-dashboard">
-                  <div class="result-item grey-box">
-                    <span class="result-label">Result H.P</span>
-                    <span id="ac_hp_res" class="res-val">1.50</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Meter Balance -->
-              <div class="subsection">
-                <h4>📟 فرق الأرصدة (قوى محركة)</h4>
-                <div class="input-group full-width">
-                  <label>التعريفة</label>
-                  <input
-                    type="number"
-                    id="m_tariff"
-                    value="2.34"
-                    oninput="calcMeter()"
-                  />
-                </div>
-                <div class="input-dashboard">
-                  <div class="input-group">
-                    <label>الاستهلاك الحالي</label>
-                    <input
-                      type="number"
-                      id="m_kwh_curr"
-                      value="56651"
-                      oninput="calcMeter()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>إجمالي الشحنات الحالية</label>
-                    <input
-                      type="number"
-                      id="m_tt_curr"
-                      value="5974"
-                      oninput="calcMeter()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>الرصيد الحالى بالعداد</label>
-                    <input
-                      type="number"
-                      id="m_t_curr"
-                      value="7657.52"
-                      oninput="calcMeter()"
-                    />
-                  </div>
-                </div>
-                <div class="input-dashboard">
-                  <div class="input-group">
-                    <label>الاستهلاك السابق</label>
-                    <input
-                      type="number"
-                      id="m_kwh_prev"
-                      value="42856"
-                      oninput="calcMeter()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>إجمالي الشحنات السابقة</label>
-                    <input
-                      type="number"
-                      id="m_tt_prev_val"
-                      value="2400"
-                      oninput="calcMeter()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>الرصيد السابق بالعداد</label>
-                    <input
-                      type="number"
-                      id="m_t_prev"
-                      value="14757.57"
-                      oninput="calcMeter()"
-                    />
-                  </div>
-                </div>
-                <div class="results-dashboard">
-                  <div id="box_tt_sdiff" class="result-item blue-box">
-                    <span class="result-label">إجمالي الشحنات (S)</span>
-                    <span id="out_tt_sdiff" class="res-val">0</span>
-                  </div>
-                  <div id="box_tt_kdiff" class="result-item blue-box">
-                    <span class="result-label">إجمالي الشحنات (K)</span>
-                    <span id="out_tt_kdiff" class="res-val">0</span>
-                  </div>
-                  <div id="box_tttdiff" class="result-item blue-box">
-                    <span class="result-label">الفرق (الشحنات)</span>
-                    <span id="out_tttdiff" class="res-val">0</span>
-                  </div>
-                  <div id="box_kwh_sdiff" class="result-item red-box">
-                    <span class="result-label">فرق الاستهلاك (S)</span>
-                    <span id="out_kwh_sdiff" class="res-val">0</span>
-                  </div>
-                  <div id="box_kwh_tts" class="result-item red-box">
-                    <span class="result-label">فرق الاستهلاك (T)</span>
-                    <span id="out_kwh_tts" class="res-val">0</span>
-                  </div>
-                  <div id="box_kwhtdiff" class="result-item red-box">
-                    <span class="result-label">الفرق (kWh)</span>
-                    <span id="out_kwhtdiff" class="res-val">0</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- M&T Tab -->
-          <div id="tab-mt" class="tab-pane">
-            <div class="section-container">
-              <div class="section-header">
-                <h3 class="section-title">
-                  <ion-icon name="construct-outline"></ion-icon> محولات ومحركات
-                </h3>
-                <button class="btn-reset" onclick="resetMT()">Reset All</button>
-              </div>
-
-              <!-- Load & Loss Factors -->
-              <div class="subsection">
-                <h4>Load & Loss Factors (معاملات الحمل والفقد)</h4>
-                <div class="input-dashboard">
-                  <div class="input-group">
-                    <label>Avg Power (kW)</label>
-                    <input
-                      type="number"
-                      id="avg_p"
-                      value="880"
-                      oninput="calculateMT()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>Max Demand (kW)</label>
-                    <input
-                      type="number"
-                      id="max_d"
-                      value="978"
-                      oninput="calculateMT()"
-                    />
-                  </div>
-                </div>
-                <div class="results-dashboard">
-                  <div class="result-item lf-border">
-                    <h3>Load Factor (LF)</h3>
-                    <input
-                      type="text"
-                      id="lf_res"
-                      class="val-display"
-                      readonly
-                    />
-                  </div>
-                  <div class="result-item loss-border">
-                    <h3>Loss Factor</h3>
-                    <input
-                      type="text"
-                      id="loss_res"
-                      class="val-display"
-                      readonly
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Motor Mechanics -->
-              <div class="subsection">
-                <h4>Motor Mechanics (ميكانيكا المحرك)</h4>
-                <div class="input-dashboard">
-                  <div class="input-group">
-                    <label>Frequency (Hz)</label>
-                    <input
-                      type="number"
-                      id="freq"
-                      value="50"
-                      oninput="calculateMT()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>No. of Poles</label>
-                    <input
-                      type="number"
-                      id="poles"
-                      value="4"
-                      oninput="calculateMT()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>Power (kW)</label>
-                    <input
-                      type="number"
-                      id="motor_kw"
-                      value="100"
-                      oninput="calculateMT()"
-                    />
-                  </div>
-                </div>
-                <div class="results-dashboard">
-                  <div class="result-item speed-border">
-                    <h3>Speed (RPM)</h3>
-                    <input
-                      type="text"
-                      id="speed_res"
-                      class="val-display"
-                      readonly
-                    />
-                  </div>
-                  <div class="result-item torque-border">
-                    <h3>Torque (N.m)</h3>
-                    <input
-                      type="text"
-                      id="torque_res"
-                      class="val-display"
-                      readonly
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Transformer Analysis -->
-              <div class="subsection">
-                <h4>Transformer Analysis (تحليل المحول)</h4>
-                <div class="trans-input-grid">
-                  <div class="input-group">
-                    <label>Rating (kVA)</label>
-                    <input
-                      type="number"
-                      id="KVATR"
-                      value="1000"
-                      oninput="calculateMT()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>Impedance (%Z)</label>
-                    <input
-                      type="number"
-                      id="impd"
-                      value="5"
-                      oninput="calculateMT()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>V1 Primary (V)</label>
-                    <input
-                      type="number"
-                      id="VPR"
-                      value="11000"
-                      oninput="calculateMT()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>V2 FL (V)</label>
-                    <input
-                      type="number"
-                      id="VSECFL"
-                      value="380"
-                      oninput="calculateMT()"
-                    />
-                  </div>
-                  <div class="input-group">
-                    <label>V2 NL (V)</label>
-                    <input
-                      type="number"
-                      id="VSECNL"
-                      value="400"
-                      oninput="calculateMT()"
-                    />
-                  </div>
-                </div>
-                <div class="results-dashboard">
-                  <div class="result-item trans-border">
-                    <h3>I-Primary (A)</h3>
-                    <input type="text" id="IPR" class="val-display" readonly />
-                  </div>
-                  <div class="result-item trans-border">
-                    <h3>I-Sec (A)</h3>
-                    <input type="text" id="ISEC" class="val-display" readonly />
-                  </div>
-                  <div class="result-item trans-border">
-                    <h3>I-sc (kA)</h3>
-                    <input
-                      type="text"
-                      id="isc_res"
-                      class="val-display"
-                      readonly
-                    />
-                  </div>
-                  <div class="result-item trans-border">
-                    <h3>Turns Ratio (n)</h3>
-                    <input
-                      type="text"
-                      id="tr_res"
-                      class="val-display"
-                      readonly
-                    />
-                  </div>
-                  <div class="result-item trans-border">
-                    <h3>VR %</h3>
-                    <input
-                      type="text"
-                      id="vr_perc"
-                      class="val-display"
-                      readonly
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- PF Tab -->
-          <div id="tab-pf" class="tab-pane">
-            <div class="section-container">
-              <div class="section-header">
-                <h3 class="section-title">
-                  <ion-icon name="flash-outline"></ion-icon> معامل القدرة
-                </h3>
-                <button class="btn-reset" onclick="resetPF()">Reset All</button>
-              </div>
-
-              <!-- PF Correction -->
-              <div class="subsection">
-                <div class="pf-header">
-                  <h4>⚙️ P.F Correction & Visualization</h4>
-                  <button class="btn-equations" onclick="toggleEquations()">
-                    Formula Reference
-                  </button>
-                </div>
-                <div class="pf-grid">
-                  <div class="pf-controls">
-                    <div class="input-dashboard">
-                      <div class="input-group">
-                        <label>System Mode:</label>
-                        <select
-                          id="phase_mode_pf"
-                          onchange="calculateCorrection()"
-                        >
-                          <option value="1">Single Phase (1Φ)</option>
-                          <option value="3" selected>Three Phase (3Φ)</option>
-                        </select>
-                      </div>
-                      <div class="input-group">
-                        <label>MD.KW (Load)</label>
-                        <input
-                          type="number"
-                          id="kwh_in"
-                          placeholder="100"
-                          oninput="calculateCorrection()"
-                        />
-                      </div>
-                      <div class="input-group">
-                        <label>Eff %</label>
-                        <input
-                          type="number"
-                          id="eff_in"
-                          value="90"
-                          oninput="calculateCorrection()"
-                        />
-                      </div>
-                      <div class="input-group">
-                        <label>Voltage (V)</label>
-                        <input
-                          type="number"
-                          id="v_in"
-                          value="400"
-                          oninput="calculateCorrection()"
-                        />
-                      </div>
-                      <div class="input-group">
-                        <label>Freq (Hz)</label>
-                        <input
-                          type="number"
-                          id="hz_in"
-                          value="50"
-                          oninput="calculateCorrection()"
-                        />
-                      </div>
-                      <div class="input-group">
-                        <label>COS(φ) Current</label>
-                        <input
-                          type="number"
-                          step="0.01"
-                          id="cos_old_in"
-                          placeholder="0.75"
-                          oninput="calculateCorrection()"
-                        />
-                      </div>
-                      <div class="input-group">
-                        <label>COS(φ) Target</label>
-                        <input
-                          type="number"
-                          step="0.01"
-                          id="cos_new_in"
-                          value="0.95"
-                          oninput="calculateCorrection()"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="pf-results">
-                    <div class="result-mini">
-                      <span>kVA (Old)</span>
-                      <input type="text" id="s_old_res" readonly />
-                    </div>
-                    <div class="result-mini highlight">
-                      <span>kVA (New)</span>
-                      <input type="text" id="s_new_res" readonly />
-                    </div>
-                    <div class="result-mini">
-                      <span>Amps (Old)</span>
-                      <input type="text" id="amp_old_res" readonly />
-                    </div>
-                    <div class="result-mini highlight">
-                      <span>Amps (New)</span>
-                      <input type="text" id="amp_new_res" readonly />
-                    </div>
-                    <div class="result-mini penalty-border">
-                      <span>Qcomp (kVAR)</span>
-                      <input type="text" id="q_cap_res" readonly />
-                    </div>
-                    <div class="result-mini active-power-border">
-                      <span>µF / Phase</span>
-                      <input type="text" id="farad_ph_res" readonly />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Power Triangle -->
-                <div class="plot-container">
-                  <svg id="powerTriangle" viewBox="0 0 500 400">
-                    <defs>
-                      <pattern
-                        id="grid"
-                        width="40"
-                        height="40"
-                        patternUnits="userSpaceOnUse"
-                      >
-                        <path
-                          d="M 40 0 L 0 0 0 40"
-                          fill="none"
-                          stroke="#f0f0f0"
-                          stroke-width="1"
-                        />
-                      </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#grid)" />
-                    <line
-                      x1="60"
-                      y1="340"
-                      x2="460"
-                      y2="340"
-                      stroke="#95a5a6"
-                      stroke-width="2"
-                    />
-                    <line
-                      x1="60"
-                      y1="40"
-                      x2="60"
-                      y2="340"
-                      stroke="#95a5a6"
-                      stroke-width="2"
-                    />
-                    <polygon
-                      id="polyOld"
-                      points="60,340 60,340 60,340"
-                      fill="rgba(44,62,80,0.08)"
-                      stroke="#2c3e50"
-                      stroke-width="2"
-                    />
-                    <polygon
-                      id="polyNew"
-                      points="60,340 60,340 60,340"
-                      fill="rgba(52,152,219,0.15)"
-                      stroke="#3498db"
-                      stroke-width="2"
-                      stroke-dasharray="5"
-                    />
-                    <line
-                      id="qCapLine"
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="0"
-                      stroke="#e74c3c"
-                      stroke-width="5"
-                    />
-                    <text
-                      id="txtKW"
-                      class="svg-text-bold"
-                      fill="#2c3e50"
-                      text-anchor="middle"
-                    ></text>
-                    <text
-                      id="txtKVAOld"
-                      class="svg-text-small"
-                      fill="#2c3e50"
-                    ></text>
-                    <text
-                      id="txtKVANew"
-                      class="svg-text-small"
-                      fill="#3498db"
-                    ></text>
-                    <text
-                      id="txtQC"
-                      class="svg-text-bold"
-                      fill="#e74c3c"
-                    ></text>
-                    <text
-                      x="460"
-                      y="360"
-                      class="svg-text-small"
-                      text-anchor="end"
-                    >
-                      Active Power (P)
-                    </text>
-                    <text
-                      x="50"
-                      y="40"
-                      class="svg-text-small"
-                      transform="rotate(-90 50,40)"
-                    >
-                      Reactive Power (Q)
-                    </text>
-                  </svg>
-                </div>
-              </div>
-
-              <!-- PF Penalty -->
-              <div class="subsection">
-                <h4>📟 P.F Penalty</h4>
-                <div class="input-dashboard">
-                  <div class="input-group">
-                    <label>Active Energy (kWh)</label>
-                    <div class="split-input">
-                      <input
-                        type="number"
-                        id="kwh_curr"
-                        placeholder="الحالى"
-                        oninput="calculatePenalty()"
-                      />
-                      <input
-                        type="number"
-                        id="kwh_prev"
-                        placeholder="السابق"
-                        oninput="calculatePenalty()"
-                      />
-                    </div>
-                  </div>
-                  <div class="input-group">
-                    <label>Reactive Energy (kVARh)</label>
-                    <div class="split-input">
-                      <input
-                        type="number"
-                        id="kvarh_curr"
-                        placeholder="الحالى"
-                        oninput="calculatePenalty()"
-                      />
-                      <input
-                        type="number"
-                        id="kvarh_prev"
-                        placeholder="السابق"
-                        oninput="calculatePenalty()"
-                      />
-                    </div>
-                  </div>
-                  <div class="input-group">
-                    <label>Tariff (EGP/kWh)</label>
-                    <select id="tariffpf" onchange="calculatePenalty()">
-                      <option value="2.34">قوى محركة (2.34)</option>
-                      <option value="2.0">ري (2.0)</option>
-                      <option value="1.5">كبار مشتركين (1.5)</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="results-dashboard">
-                  <div class="result-item">
-                    <h3>متوسط معامل القدرة</h3>
-                    <input
-                      type="text"
-                      id="pf_penalty"
-                      class="val-large"
-                      readonly
-                    />
-                  </div>
-                  <div class="result-item penalty-border">
-                    <h3 class="text-accent">غرامة معامل القدرة</h3>
-                    <input
-                      type="text"
-                      id="pf_charge"
-                      class="val-large text-accent"
-                      readonly
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tariffs Tab -->
-          <div id="tab-tariffs" class="tab-pane">
-            <div class="section-container">
-              <div class="section-header">
-                <h3 class="section-title">
-                  <ion-icon name="cash-outline"></ion-icon> الشرائح
-                </h3>
-              </div>
-
-              <!-- Input Section -->
-              <div class="input-dashboard tariffs-input">
-                <div class="input-item">
-                  <label>رقم العداد</label>
-                  <input type="text" id="meterNo" value="0803083177-41963763" />
-                </div>
-                <div class="input-item">
-                  <label>من تاريخ</label>
-                  <input type="date" id="fromDate" />
-                </div>
-                <div class="input-item">
-                  <label>إلى تاريخ</label>
-                  <input type="date" id="toDate" />
-                </div>
-                <div class="input-item">
-                  <label>الاستهلاك (ك.و.س)</label>
-                  <input
-                    type="number"
-                    id="tkwh"
-                    value="13795"
-                    oninput="calculateTariffs()"
-                  />
-                </div>
-                <div class="input-item">
-                  <label>رصيد دخول الشهر</label>
-                  <input
-                    type="number"
-                    id="balmoney1"
-                    value="14757.57"
-                    oninput="calculateTariffs()"
-                  />
-                </div>
-                <div class="input-item">
-                  <label>ماتم شحنه</label>
-                  <input
-                    type="number"
-                    id="charge"
-                    value="5484"
-                    oninput="calculateTariffs()"
-                  />
-                </div>
-                <div class="input-item">
-                  <label>رصيد خروج الشهر</label>
-                  <input
-                    type="number"
-                    id="balmoney2"
-                    value="7657.52"
-                    oninput="calculateTariffs()"
-                  />
-                </div>
-                <div class="input-item">
-                  <label>نوع النشاط</label>
-                  <select id="tariffType" onchange="initTariffTable()">
-                    <option value="factory">قوى محركة</option>
-                    <option value="residential">منزلي</option>
-                    <option value="commercial">تجاري</option>
-                    <option value="farmer">الري</option>
-                    <option value="lighting">انارة عامة</option>
-                    <option value="balance_cst">باقى المشتركين</option>
-                  </select>
-                </div>
-                <div class="input-item">
-                  <label>فترة التعرفة</label>
-                  <select id="periodSelect" onchange="onPeriodChange()">
-                    <option value="Aug-2024">Aug-2024</option>
-                    <option value="Jan2024-Jul2024">Jan2024-Jul2024</option>
-                    <option value="2021-2023">2021-2023</option>
-                    <option value="2019-2020">2019-2020</option>
-                  </select>
-                </div>
-                <div class="input-item">
-                  <label>إجمالي التشريح</label>
-                  <input type="number" id="totmoney" value="0" readonly />
-                </div>
-              </div>
-
-              <!-- Main Tariff Table -->
               <div class="table-responsive">
-                <table id="mainTable">
+                <table id="comparisonTable">
                   <thead>
                     <tr>
-                      <th>الشريحة</th>
+                      <th>السنة</th>
+                      <th>الشهر</th>
                       <th>الاستهلاك</th>
-                      <th>السعر</th>
-                      <th>خدمة العملاء</th>
-                      <th>فرق تشريح</th>
-                      <th>الإجمالي</th>
+                      <th id="currentPeriodHeader">التشريح (المختار)</th>
+                      <th>إجراء</th>
                     </tr>
                   </thead>
-                  <tbody id="tariffTableBody"></tbody>
+                  <tbody id="comparisonTableBody"></tbody>
+                  <tfoot>
+                    <tr class="summary-yellow">
+                      <td colspan="2">الإجمالي</td>
+                      <td id="compSumKwh">0</td>
+                      <td id="compSumNew">0</td>
+                      <td></td>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
+            </div>
 
-              <!-- Comparison Section -->
-              <div class="subsection">
-                <h4>
-                  <i class="fas fa-balance-scale"></i> سجل التشريح التعريفة
-                </h4>
-                <div class="btn-group">
-                  <button class="btn-save" onclick="addToComparison()">
-                    <i class="fas fa-plus"></i> إضافة التشريح
-                  </button>
-                  <button class="btn-export" onclick="exportComparison()">
-                    <i class="fas fa-file-excel"></i> تصدير البيانات
-                  </button>
-                </div>
-
-                <div class="table-responsive">
-                  <table id="comparisonTable">
-                    <thead>
-                      <tr>
-                        <th>السنة</th>
-                        <th>الشهر</th>
-                        <th>الاستهلاك</th>
-                        <th id="currentPeriodHeader">التشريح (المختار)</th>
-                        <th>إجراء</th>
-                      </tr>
-                    </thead>
-                    <tbody id="comparisonTableBody"></tbody>
-                    <tfoot>
-                      <tr class="summary-yellow">
-                        <td colspan="2">الإجمالي</td>
-                        <td id="compSumKwh">0</td>
-                        <td id="compSumNew">0</td>
-                        <td></td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
+            <!-- Log Section -->
+            <div class="subsection">
+              <div class="btn-group">
+                <button class="btn-save" onclick="addToLog()">
+                  <i class="fas fa-plus"></i> إضافة للسجل
+                </button>
+                <button class="btn-clear" onclick="clearLog()">
+                  <i class="fas fa-trash"></i> مسح السجل
+                </button>
               </div>
 
-              <!-- Log Section -->
-              <div class="subsection">
-                <div class="btn-group">
-                  <button class="btn-save" onclick="addToLog()">
-                    <i class="fas fa-plus"></i> إضافة للسجل
-                  </button>
-                  <button class="btn-clear" onclick="clearLog()">
-                    <i class="fas fa-trash"></i> مسح السجل
-                  </button>
-                </div>
-
-                <div class="table-responsive">
-                  <table id="logTable">
-                    <thead>
-                      <tr>
-                        <th>العداد</th>
-                        <th>من</th>
-                        <th>إلى</th>
-                        <th>الاستهلاك</th>
-                        <th>دخول</th>
-                        <th>شحن</th>
-                        <th>خروج</th>
-                        <th>التشريح</th>
-                        <th class="actual-col">الفعلي</th>
-                        <th>الفرق</th>
-                        <th>إجراء</th>
-                      </tr>
-                    </thead>
-                    <tbody id="logTableBody"></tbody>
-                    <tfoot>
-                      <tr class="summary-row">
-                        <td colspan="3">الإجمالي العام</td>
-                        <td id="sumKwh">0</td>
-                        <td>---</td>
-                        <td id="sumCharge">0.00</td>
-                        <td>---</td>
-                        <td id="sumMoney">0.00</td>
-                        <td id="sumActual" class="actual-col">0.00</td>
-                        <td id="sumDiff">0.00</td>
-                        <td></td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
+              <div class="table-responsive">
+                <table id="logTable">
+                  <thead>
+                    <tr>
+                      <th>العداد</th>
+                      <th>من</th>
+                      <th>إلى</th>
+                      <th>الاستهلاك</th>
+                      <th>دخول</th>
+                      <th>شحن</th>
+                      <th>خروج</th>
+                      <th>التشريح</th>
+                      <th class="actual-col">الفعلي</th>
+                      <th>الفرق</th>
+                      <th>إجراء</th>
+                    </tr>
+                  </thead>
+                  <tbody id="logTableBody"></tbody>
+                  <tfoot>
+                    <tr class="summary-row">
+                      <td colspan="3">الإجمالي العام</td>
+                      <td id="sumKwh">0</td>
+                      <td>---</td>
+                      <td id="sumCharge">0.00</td>
+                      <td>---</td>
+                      <td id="sumMoney">0.00</td>
+                      <td id="sumActual" class="actual-col">0.00</td>
+                      <td id="sumDiff">0.00</td>
+                      <td></td>
+                    </tr>
+                  </tfoot>
+                </table>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Modal for Equations -->
-    <div id="equationModal" class="modal">
-      <div class="modal-content">
-        <h3>Technical Equations</h3>
-        <p><b>1. Active Power:</b> P = √3 × V × I × Cos(φ) / 1000 [kW]</p>
-        <p><b>2. Compensation:</b> Qc = P × [tan(φ1) - tan(φ2)] [kVAR]</p>
-        <p><b>3. Capacitance:</b> C = (Qc × 10⁹) / (2π × f × V²) [µF]</p>
-        <p><b>4. Avg P.F:</b> Cos(φ) = kWh / √(kWh² + kVARh²)</p>
-        <button class="btn-close" onclick="closeModal()">إغلاق</button>
-      </div>
+  <!-- Modal for Equations -->
+  <div id="equationModal" class="modal">
+    <div class="modal-content">
+      <h3>Technical Equations</h3>
+      <p><b>1. Active Power:</b> P = √3 × V × I × Cos(φ) / 1000 [kW]</p>
+      <p><b>2. Compensation:</b> Qc = P × [tan(φ1) - tan(φ2)] [kVAR]</p>
+      <p><b>3. Capacitance:</b> C = (Qc × 10⁹) / (2π × f × V²) [µF]</p>
+      <p><b>4. Avg P.F:</b> Cos(φ) = kWh / √(kWh² + kVARh²)</p>
+      <button class="btn-close" onclick="closeModal()">إغلاق</button>
     </div>
+  </div>
 
-    <!-- Scroll Buttons -->
-    <div class="scroll-buttons">
-      <button class="scroll-btn" onclick="scrollToTop()">▲</button>
-      <button class="scroll-btn" onclick="scrollToBottom()">▼</button>
-    </div>
+  <!-- Scroll Buttons -->
+  <div class="scroll-buttons">
+    <button class="scroll-btn" onclick="scrollToTop()">▲</button>
+    <button class="scroll-btn" onclick="scrollToBottom()">▼</button>
+  </div>
 
-    <script src="Electric_Calculations.js"></script>
-  </body>
+  <script src="Electric_Calculations.js"></script>
+</body>
+
 </html>

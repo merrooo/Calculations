@@ -6,8 +6,6 @@
   --card-bg: #ffffff;
   --text-main: #2c3e50;
   --text-light: #7f8c8d;
-  --sidebar-bg: #1e2b3a;
-  --sidebar-hover: #2c3e50;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   --border-radius: 12px;
   --success: #27ae60;
@@ -15,6 +13,7 @@
   --warning: #f39c12;
   --info: #3498db;
   --border: #e2e8f0;
+  --gold-color: #f59e0b;
 }
 
 /* ========== RESET & BASE ========== */
@@ -38,93 +37,12 @@ body {
   min-height: 100vh;
 }
 
-/* ========== SIDEBAR STYLES ========== */
-.sidebar {
-  width: 280px;
-  background: var(--sidebar-bg);
-  color: white;
-  position: fixed;
-  height: 100vh;
-  overflow-y: auto;
-  transition: all 0.3s ease;
-  z-index: 1000;
-}
-
-.sidebar-header {
-  padding: 20px;
-  text-align: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.sidebar-header .logo {
-  font-size: 3rem;
-  margin-bottom: 10px;
-}
-
-.sidebar-header h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.sidebar-nav {
-  padding: 20px 0;
-}
-
-.nav-btn {
-  width: 100%;
-  padding: 15px 25px;
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.8);
-  text-align: right;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: all 0.3s ease;
-  border-right: 4px solid transparent;
-}
-
-.nav-btn ion-icon {
-  font-size: 1.3rem;
-}
-
-.nav-btn:hover {
-  background: var(--sidebar-hover);
-  color: white;
-}
-
-.nav-btn.active {
-  background: var(--sidebar-hover);
-  color: white;
-  border-right-color: var(--secondary-color);
-}
-
-.sidebar-footer {
-  padding: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-
-.sidebar-footer .date-input {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 8px;
-  border-radius: 6px;
-  width: 100%;
-}
-
 /* ========== MAIN CONTENT ========== */
 .main-content {
   flex: 1;
-  margin-right: 280px;
   padding: 20px;
   transition: all 0.3s ease;
+  width: 100%;
 }
 
 /* ========== TOP NAVIGATION ========== */
@@ -150,10 +68,89 @@ body {
   gap: 15px;
 }
 
-.menu-toggle {
-  display: none;
+.nav-brand span {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* ========== DROPDOWN MENU ========== */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.dropdown-btn:hover {
+  background: white;
+  color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  min-width: 220px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  z-index: 1000;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.dropdown-content.show {
+  display: block;
+}
+
+.dropdown-item {
+  width: 100%;
+  padding: 12px 20px;
+  background: white;
+  border: none;
+  text-align: right;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  color: var(--text-main);
+}
+
+.dropdown-item ion-icon {
+  font-size: 1.2rem;
+}
+
+.dropdown-item:hover {
+  background: #f0f0f0;
+}
+
+.dropdown-item.active {
+  background: var(--primary-color);
+  color: white;
 }
 
 .home-btn {
@@ -231,6 +228,14 @@ body {
   margin-bottom: 15px;
   font-size: 1rem;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subsection h4 i {
+  color: var(--secondary-color);
+  font-size: 1.2rem;
 }
 
 /* ========== GRID SYSTEMS ========== */
@@ -387,9 +392,9 @@ body {
 /* ========== BUTTONS ========== */
 .btn-group {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
-  margin: 15px 0;
+  margin: 20px 0;
 }
 
 button {
@@ -404,16 +409,19 @@ button {
 }
 
 .btn-save {
-  background: var(--success);
+  background: linear-gradient(135deg, var(--success), #219653);
   color: white;
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
 }
 .btn-export {
-  background: var(--info);
+  background: linear-gradient(135deg, var(--info), #2980b9);
   color: white;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
 }
 .btn-clear {
-  background: var(--danger);
+  background: linear-gradient(135deg, var(--danger), #c0392b);
   color: white;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
 }
 .btn-reset {
   background: #ff4757;
@@ -427,6 +435,14 @@ button {
   background: var(--danger);
   color: white;
   margin-top: 15px;
+}
+
+.btn-group button {
+  padding: 10px 24px;
+  border-radius: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 button:hover {
@@ -452,7 +468,6 @@ button:disabled {
   gap: 15px;
 }
 
-/* Input grid for theta angles - 3 columns */
 .angles-controls .input-grid:first-of-type {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -460,7 +475,6 @@ button:disabled {
   margin-bottom: 20px;
 }
 
-/* Input grid for PF values - directly under theta inputs */
 .angles-controls .input-grid:nth-of-type(2) {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -469,7 +483,6 @@ button:disabled {
   margin-bottom: 20px;
 }
 
-/* Style for PF input fields */
 .angles-controls .input-grid:nth-of-type(2) .input-group input {
   background-color: #f0f7ff;
   border-color: var(--secondary-color);
@@ -481,13 +494,11 @@ button:disabled {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Style for PF labels */
 .angles-controls .input-grid:nth-of-type(2) .input-group label {
   color: var(--primary-color);
   font-weight: 700;
 }
 
-/* Results grid for loss analysis - make non-adjustable inputs */
 .results-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -499,13 +510,11 @@ button:disabled {
   border: 1px solid var(--border);
 }
 
-/* Full width for reference angle */
 .results-grid .full-width {
   grid-column: 1 / -1;
   margin-bottom: 10px;
 }
 
-/* Style for readonly/loss inputs */
 .results-grid .input-group input[readonly],
 .results-grid .input-group input:read-only {
   background-color: #f5f5f5;
@@ -518,7 +527,6 @@ button:disabled {
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-/* Special style for الفقد المحسوب (highlighted loss) */
 .results-grid .highlight input {
   background-color: #fff0f0 !important;
   border-color: var(--danger) !important;
@@ -529,20 +537,17 @@ button:disabled {
   pointer-events: none;
 }
 
-/* Make sure all loss inputs are non-interactive */
 .results-grid input {
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
 }
 
-/* Remove any hover effects on readonly inputs */
 .results-grid .input-group input:hover {
   border-color: #ddd;
   box-shadow: none;
 }
 
-/* Style for the M% and IM% inputs specifically */
 #Mtheta,
 #IMtheta,
 #Losses {
@@ -551,7 +556,6 @@ button:disabled {
   letter-spacing: 0.5px;
 }
 
-/* Headers alignment */
 .angles-controls h4 {
   color: var(--primary-color);
   font-size: 1rem;
@@ -560,19 +564,16 @@ button:disabled {
   border-right: 4px solid var(--secondary-color);
 }
 
-/* First header (إدخال زوايا التيار) */
 .angles-controls h4:first-of-type {
   margin-top: 0;
 }
 
-/* Divider styling */
 .divider {
   margin: 25px 0 15px 0;
   border: none;
   border-top: 2px dashed var(--border);
 }
 
-/* Color indicators positioning */
 .color-indicators {
   display: flex;
   gap: 30px;
@@ -606,14 +607,12 @@ button:disabled {
   background: linear-gradient(135deg, #0011ff, #4169e1);
 }
 
-/* Ensure PF inputs show proper color coding */
 #pf1,
 #pf2,
 #pf3 {
   transition: all 0.3s ease;
 }
 
-/* Style for PF values based on their color (red/green) */
 #pf1[style*="color: red"],
 #pf2[style*="color: red"],
 #pf3[style*="color: red"] {
@@ -628,7 +627,6 @@ button:disabled {
   border-color: #99cc99 !important;
 }
 
-/* Make sure the loss value stands out */
 #Losses {
   font-size: 1.2rem !important;
   font-weight: 800 !important;
@@ -638,7 +636,6 @@ button:disabled {
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
 }
 
-/* Style for M% and IM% */
 #Mtheta,
 #IMtheta {
   background-color: #f0f0f0 !important;
@@ -702,38 +699,89 @@ button:disabled {
   height: auto;
 }
 
-/* ========== TARIFFS TAB ========== */
+/* ========== TARIFFS TAB - ENHANCED STYLES ========== */
 .tariffs-input {
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  background: #f8fafc;
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  padding: 24px;
+  border-radius: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 74, 153, 0.1);
 }
 
 .input-item {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
 }
 
 .input-item label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-light);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* ========== TABLES ========== */
+.input-item label::before {
+  content: "📌";
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.input-item input,
+.input-item select {
+  padding: 12px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  background: white;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-family: "Cairo", sans-serif;
+}
+
+.input-item input:focus,
+.input-item select:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.15);
+}
+
+/* Tables */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
-  margin: 20px 0;
+  margin: 25px 0;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: var(--secondary-color);
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
 }
 
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 0.85rem;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 th,
@@ -753,20 +801,217 @@ tr:nth-child(even) {
   background: #f9f9f9;
 }
 
+/* Main Tariff Table */
+#mainTable {
+  min-width: 800px;
+}
+
+#mainTable thead tr {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+}
+
+#mainTable th {
+  background: transparent;
+  padding: 14px 16px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+#mainTable th:first-child {
+  text-align: right;
+}
+
+#mainTable td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eef2f6;
+  border-right: none;
+  border-left: none;
+  background: white;
+}
+
+#mainTable tr:hover td {
+  background: #f8fafc;
+}
+
+#mainTable tr:last-child td {
+  border-bottom: none;
+}
+
+#mainTable tr.highlight {
+  background: linear-gradient(90deg, #fef9e6, #fff8e7);
+  position: relative;
+}
+
+#mainTable tr.highlight td {
+  background: transparent;
+  border-bottom-color: #fcd34d;
+}
+
+#mainTable tr.highlight td:first-child {
+  border-right: 3px solid var(--gold-color);
+}
+
+/* Comparison Table */
+#comparisonTable {
+  min-width: 600px;
+}
+
+#comparisonTable th {
+  background: linear-gradient(135deg, #2c3e50, #3a5a78);
+  padding: 12px 15px;
+}
+
+#comparisonTable td {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eef2f6;
+}
+
+#comparisonTable .summary-yellow td {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+/* Log Table */
+#logTable {
+  min-width: 1100px;
+}
+
+#logTable th {
+  background: linear-gradient(135deg, #1e2b3a, #2c3e50);
+  padding: 12px 10px;
+  white-space: nowrap;
+}
+
+#logTable td {
+  padding: 10px 10px;
+  border-bottom: 1px solid #eef2f6;
+}
+
+#logTable tfoot tr {
+  background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+  font-weight: 700;
+}
+
+#logTable tfoot td {
+  padding: 12px 10px;
+  border-top: 2px solid var(--primary-color);
+}
+
+/* Table Input Fields */
+.table-input-small {
+  width: 85px;
+  padding: 8px 10px;
+  text-align: center;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-family: monospace;
+  font-weight: 600;
+  background: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+.table-input-small:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  background: white;
+  box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.1);
+}
+
+.table-input-small[readonly] {
+  background: #f1f5f9;
+  border-style: dashed;
+  color: #475569;
+}
+
+.table-input-medium {
+  width: 110px;
+  padding: 8px 12px;
+  text-align: center;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: monospace;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fef9e6, #fff);
+  color: var(--primary-color);
+  transition: all 0.2s ease;
+}
+
+.table-input-medium:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  background: white;
+  box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.1);
+}
+
+.table-input-medium[readonly] {
+  background: #f1f5f9;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+/* Log Table Specific Styling */
+.log-kwh,
+.log-cost,
+.log-actual,
+.log-diff {
+  font-family: monospace;
+  font-weight: 600;
+}
+
+.actual-col {
+  background-color: #e8f5e9 !important;
+  font-weight: 700;
+}
+
+.diff-col {
+  font-weight: 700;
+}
+
+.negative-diff {
+  background-color: #fee2e2 !important;
+}
+
+.negative-diff td {
+  background-color: #fee2e2;
+}
+
+/* Summary Totals */
+#compSumKwh,
+#compSumNew {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
+
 .pass {
   color: var(--success);
   font-weight: bold;
 }
+
 .fail {
   color: var(--danger);
   font-weight: bold;
 }
 
 .delete-btn {
-  background: var(--danger);
-  padding: 5px 10px;
-  font-size: 0.8rem;
+  background: linear-gradient(135deg, var(--danger), #c0392b);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
   color: white;
+  transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 6px rgba(231, 76, 60, 0.4);
 }
 
 .summary-row,
@@ -777,27 +1022,6 @@ tr:nth-child(even) {
 
 .summary-yellow {
   background: #ffff00 !important;
-}
-.actual-col {
-  background-color: #e8f5e9 !important;
-  font-weight: bold;
-}
-.diff-col {
-  font-weight: bold;
-  color: #c0392b;
-}
-.negative-diff {
-  background-color: var(--danger) !important;
-  color: white !important;
-}
-
-.table-input-small {
-  width: 60px;
-  padding: 5px;
-}
-.table-input-medium {
-  width: 80px;
-  padding: 5px;
 }
 
 /* ========== ALERT COLORS ========== */
@@ -813,13 +1037,6 @@ tr:nth-child(even) {
 .alert-threshold {
   background-color: #ffcccc !important;
   border: 2px solid var(--danger) !important;
-}
-
-/* ========== DIVIDER ========== */
-.divider {
-  margin: 20px 0;
-  border: none;
-  border-top: 1px solid var(--border);
 }
 
 /* ========== MODAL ========== */
@@ -879,6 +1096,37 @@ tr:nth-child(even) {
   margin-bottom: 15px;
 }
 
+/* ========== SPLIT INPUT ========== */
+.split-input {
+  display: flex;
+  gap: 8px;
+}
+
+.split-input input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ========== TOOLTIP ========== */
+.input-item[data-tooltip] {
+  position: relative;
+}
+
+.input-item[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  background: var(--primary-color);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  z-index: 10;
+  margin-bottom: 5px;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 1200px) {
   .angles-grid {
@@ -891,20 +1139,17 @@ tr:nth-child(even) {
 }
 
 @media (max-width: 992px) {
-  .sidebar {
-    right: -280px;
+  .tariffs-input {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    padding: 20px;
   }
 
-  .sidebar.active {
-    right: 0;
+  #mainTable {
+    min-width: 700px;
   }
 
-  .main-content {
-    margin-right: 0;
-  }
-
-  .menu-toggle {
-    display: block;
+  #logTable {
+    min-width: 900px;
   }
 }
 
@@ -933,15 +1178,59 @@ tr:nth-child(even) {
   .results-grid .full-width {
     grid-column: span 2;
   }
+
+  .nav-actions {
+    gap: 10px;
+  }
+
+  .dropdown-btn span {
+    display: none;
+  }
+
+  .home-btn span {
+    display: none;
+  }
+
+  .tariffs-input {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+
+  .input-item input,
+  .input-item select {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  #mainTable th,
+  #mainTable td {
+    padding: 10px 12px;
+  }
+
+  .table-input-small {
+    width: 70px;
+    padding: 6px 8px;
+  }
+
+  .table-input-medium {
+    width: 90px;
+    padding: 6px 10px;
+  }
+
+  .btn-group button {
+    padding: 8px 18px;
+    font-size: 0.85rem;
+  }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 576px) {
   .results-dashboard {
     grid-template-columns: 1fr;
   }
 
   .btn-group {
     flex-direction: column;
+    gap: 8px;
   }
 
   button {
@@ -963,48 +1252,48 @@ tr:nth-child(even) {
     align-items: center;
     gap: 10px;
   }
-}
-.results-dashboard {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 15px;
-  padding: 20px;
-}
 
-.grey-box {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-}
+  .tariffs-input {
+    padding: 15px;
+    border-radius: 16px;
+  }
 
-.result-label {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
+  .input-item label {
+    font-size: 0.8rem;
+  }
 
-.res-val {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
-  padding: 4px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
+  .input-item input,
+  .input-item select {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
 
-/* UI feedback for editability */
-.res-val[contenteditable="true"]:hover {
-  background: #e9e9e9;
-  cursor: text;
-}
+  #mainTable th,
+  #mainTable td {
+    padding: 8px 10px;
+    font-size: 0.75rem;
+  }
 
-.res-val[contenteditable="true"]:focus {
-  background: #fff;
-  outline: 2px solid #007bff;
-  box-shadow: 0 0 5px rgba(0,123,255,0.5);
+  .table-input-small {
+    width: 60px;
+    padding: 5px;
+    font-size: 0.75rem;
+  }
+
+  .table-input-medium {
+    width: 80px;
+    padding: 5px 8px;
+    font-size: 0.8rem;
+  }
+
+  .btn-group button {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .subsection h4 {
+    font-size: 1rem;
+  }
 }
