@@ -347,19 +347,19 @@
             </select>
           </div>
           <div class="input-group">
-            <label>Voltage (V)</label>
-            <input type="number" id="V" value="220" disabled />
+            <label>AVG-Voltage (V)</label>
+            <input type="number" id="V" value="220"/>
           </div>
         </div>
 
         <div class="flex-row">
           <div class="input-group">
-            <label>Current (I)</label>
+            <label>AVG-Current (I)</label>
             <input type="number" id="I" value="5" />
           </div>
           <div class="input-group">
-            <label>Angle (Φ°)</label>
-            <input type="number" id="angle" value="0" />
+            <label>AVG-P.F</label>
+            <input type="number" id="pf" value="1" />
           </div>
         </div>
 
@@ -485,7 +485,7 @@
       function handlePhaseChange() {
         const phase = document.getElementById("phases").value;
         const voltageInput = document.getElementById("V");
-        voltageInput.value = phase === "3" ? 380 : 220;
+        voltageInput.value = phase === "3" ? 220 : 220;
       }
 
       function toggleUI() {
@@ -499,16 +499,15 @@
       function runTest() {
         const V = +document.getElementById("V").value,
           I = +document.getElementById("I").value,
-          angleDeg = +document.getElementById("angle").value,
           phaseType = +document.getElementById("phases").value,
           type = document.getElementById("type").value,
           C = +document.getElementById("constant").value,
           count = +document.getElementById("countInput").value,
           limit = +document.getElementById("limit").value;
+           pf = +document.getElementById("pf").value;
 
-        const pf = Math.cos(angleDeg * (Math.PI / 180));
         // Power calculation: P = sqrt(3) * V_line * I * pf for 3-phase, else V*I*pf
-        const power = phaseType == 3 ? Math.sqrt(3) * V * I * pf : V * I * pf;
+        const power = phaseType == 3 ? 3 * V * I * pf : V * I * pf;
 
         document.getElementById("startBtn").disabled = true;
         document.getElementById("stopBtn").disabled = false;
