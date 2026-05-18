@@ -1,0 +1,1045 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الشرائح - النظام المتكامل للحسابات الكهربائية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #004a99;
+            --secondary-color: #0099ff;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-light: #7f8c8d;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --border: #e2e8f0;
+            --gold-color: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Cairo", sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .app-wrapper {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .top-nav {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .home-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: "Cairo", sans-serif;
+        }
+
+        .home-btn:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .section-container {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title ion-icon {
+            font-size: 1.4rem;
+        }
+
+        .subsection {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .subsection:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .subsection h4 {
+            color: var(--text-main);
+            margin-bottom: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .tariffs-input {
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            padding: 24px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 74, 153, 0.1);
+            display: grid;
+            gap: 20px;
+        }
+
+        .input-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-item label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .input-item input,
+        .input-item select {
+            padding: 12px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            background: white;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-family: "Cairo", sans-serif;
+        }
+
+        .input-item input:focus,
+        .input-item select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.15);
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin: 25px 0;
+            border-radius: 16px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.85rem;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        #mainTable th {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 14px 16px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        #mainTable th:first-child {
+            text-align: right;
+        }
+
+        #mainTable td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eef2f6;
+            border-right: none;
+            border-left: none;
+            background: white;
+        }
+
+        #mainTable tr:hover td {
+            background: #f8fafc;
+        }
+
+        #mainTable tr.highlight {
+            background: linear-gradient(90deg, #fef9e6, #fff8e7);
+        }
+
+        #mainTable tr.highlight td {
+            background: transparent;
+            border-bottom-color: #fcd34d;
+        }
+
+        #mainTable tr.highlight td:first-child {
+            border-right: 3px solid var(--gold-color);
+        }
+
+        #comparisonTable th {
+            background: linear-gradient(135deg, #2c3e50, #3a5a78);
+            padding: 12px 15px;
+        }
+
+        #comparisonTable td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        #comparisonTable .summary-yellow td {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            font-weight: 800;
+            font-size: 0.95rem;
+        }
+
+        #logTable th {
+            background: linear-gradient(135deg, #1e2b3a, #2c3e50);
+            padding: 12px 10px;
+            white-space: nowrap;
+        }
+
+        #logTable td {
+            padding: 10px 10px;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        #logTable tfoot tr {
+            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+            font-weight: 700;
+        }
+
+        #logTable tfoot td {
+            padding: 12px 10px;
+            border-top: 2px solid var(--primary-color);
+        }
+
+        .table-input-small {
+            width: 85px;
+            padding: 8px 10px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-family: monospace;
+            font-weight: 600;
+            background: #f8fafc;
+            transition: all 0.2s ease;
+        }
+
+        .table-input-small:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            background: white;
+            box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.1);
+        }
+
+        .table-input-small[readonly] {
+            background: #f1f5f9;
+            border-style: dashed;
+            color: #475569;
+        }
+
+        .table-input-medium {
+            width: 110px;
+            padding: 8px 12px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: monospace;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fef9e6, #fff);
+            color: var(--primary-color);
+            transition: all 0.2s ease;
+        }
+
+        .table-input-medium:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            background: white;
+            box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.1);
+        }
+
+        .table-input-medium[readonly] {
+            background: #f1f5f9;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .actual-col {
+            background-color: #e8f5e9 !important;
+            font-weight: 700;
+        }
+
+        .negative-diff {
+            background-color: #fee2e2 !important;
+        }
+
+        .negative-diff td {
+            background-color: #fee2e2;
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, var(--danger), #c0392b);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: "Cairo", sans-serif;
+        }
+
+        .delete-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 6px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-family: "Cairo", sans-serif;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, var(--success), #219653);
+            color: white;
+        }
+
+        .btn-export {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, var(--danger), #c0392b);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .scroll-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .scroll-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-btn:hover {
+            transform: scale(1.1);
+            background: var(--secondary-color);
+        }
+
+        .summary-row,
+        .summary-yellow {
+            background: #ecf0f1 !important;
+            font-weight: bold;
+        }
+
+        .summary-yellow {
+            background: #ffff00 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-wrapper">
+        <div class="main-content">
+            <nav class="top-nav">
+                <div class="nav-brand">الشرائح (Tariffs)</div>
+                <button class="home-btn" onclick="window.location.href='index.html'">
+                    <ion-icon name="arrow-up-outline"></ion-icon>
+                    <span>الصفحة الرئيسية</span>
+                </button>
+            </nav>
+
+            <div class="section-container">
+                <div class="section-header">
+                    <h3 class="section-title">
+                        <ion-icon name="cash-outline"></ion-icon> الشرائح
+                    </h3>
+                </div>
+
+                <!-- Input Section -->
+                <div class="tariffs-input">
+                    <div class="input-item">
+                        <label>رقم العداد</label>
+                        <input type="text" id="meterNo" value="0803083177-41963763" />
+                    </div>
+                    <div class="input-item">
+                        <label>من تاريخ</label>
+                        <input type="date" id="fromDate" />
+                    </div>
+                    <div class="input-item">
+                        <label>إلى تاريخ</label>
+                        <input type="date" id="toDate" />
+                    </div>
+                    <div class="input-item">
+                        <label>الاستهلاك (ك.و.س)</label>
+                        <input type="number" id="tkwh" value="13795" oninput="calculateTariffs()" />
+                    </div>
+                    <div class="input-item">
+                        <label>رصيد دخول الشهر</label>
+                        <input type="number" id="balmoney1" value="14757.57" oninput="calculateTariffs()" />
+                    </div>
+                    <div class="input-item">
+                        <label>ماتم شحنه</label>
+                        <input type="number" id="charge" value="5484" oninput="calculateTariffs()" />
+                    </div>
+                    <div class="input-item">
+                        <label>رصيد خروج الشهر</label>
+                        <input type="number" id="balmoney2" value="7657.52" oninput="calculateTariffs()" />
+                    </div>
+                    <div class="input-item">
+                        <label>نوع النشاط</label>
+                        <select id="tariffType" onchange="initTariffTable()">
+                            <option value="factory">قوى محركة</option>
+                            <option value="residential">منزلي</option>
+                            <option value="commercial">تجاري</option>
+                             <option value="Randomly">كودي</option>
+                            <option value="farmer">الري</option>
+                            <option value="lighting">انارة عامة</option>
+                            <option value="balance_cst">باقى المشتركين</option>
+                        </select>
+                    </div>
+                    <div class="input-item">
+                        <label>فترة التعرفة</label>
+                        <select id="periodSelect" onchange="onPeriodChange()">
+                             <option value="Apr-2026">Apr-2026</option>
+                            <option value="Aug-2024">Aug-2024</option>
+                            <option value="Jan2024-Jul2024">Jan2024-Jul2024</option>
+                            <option value="2021-2023">2021-2023</option>
+                            <option value="2019-2020">2019-2020</option>
+                        </select>
+                    </div>
+                    <div class="input-item">
+                        <label>إجمالي التشريح</label>
+                        <input type="number" id="totmoney" value="0" readonly />
+                    </div>
+                </div>
+
+                <!-- Main Tariff Table -->
+                <div class="table-responsive">
+                    <table id="mainTable">
+                        <thead>
+                            <tr>
+                                <th>الشريحة</th>
+                                <th>الاستهلاك</th>
+                                <th>السعر</th>
+                                <th>خدمة العملاء</th>
+                                <th>فرق تشريح</th>
+                                <th>الإجمالي</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tariffTableBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Comparison Section -->
+                <div class="subsection">
+                    <h4>
+                        <i class="fas fa-balance-scale"></i> سجل التشريح التعريفة
+                    </h4>
+                    <div class="btn-group">
+                        <button class="btn-save" onclick="addToComparison()">
+                            <i class="fas fa-plus"></i> إضافة التشريح
+                        </button>
+                        <button class="btn-export" onclick="exportComparison()">
+                            <i class="fas fa-file-excel"></i> تصدير البيانات
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="comparisonTable">
+                            <thead>
+                                <tr>
+                                    <th>السنة</th>
+                                    <th>الشهر</th>
+                                    <th>الاستهلاك</th>
+                                    <th id="currentPeriodHeader">التشريح (المختار)</th>
+                                    <th>إجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody id="comparisonTableBody"></tbody>
+                            <tfoot>
+                                <tr class="summary-yellow">
+                                    <td colspan="2">الإجمالي</td>
+                                    <td id="compSumKwh">0</td>
+                                    <td id="compSumNew">0</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Log Section -->
+                <div class="subsection">
+                    <div class="btn-group">
+                        <button class="btn-save" onclick="addToLog()">
+                            <i class="fas fa-plus"></i> إضافة للسجل
+                        </button>
+                        <button class="btn-clear" onclick="clearLog()">
+                            <i class="fas fa-trash"></i> مسح السجل
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="logTable">
+                            <thead>
+                                <tr>
+                                    <th>العداد</th>
+                                    <th>من</th>
+                                    <th>إلى</th>
+                                    <th>الاستهلاك</th>
+                                    <th>دخول</th>
+                                    <th>شحن</th>
+                                    <th>خروج</th>
+                                    <th>التشريح</th>
+                                    <th class="actual-col">الفعلي</th>
+                                    <th>الفرق</th>
+                                    <th>إجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logTableBody"></tbody>
+                            <tfoot>
+                                <tr class="summary-row">
+                                    <td colspan="3">الإجمالي العام</td>
+                                    <td id="sumKwh">0</td>
+                                    <td>---</td>
+                                    <td id="sumCharge">0.00</td>
+                                    <td>---</td>
+                                    <td id="sumMoney">0.00</td>
+                                    <td id="sumActual" class="actual-col">0.00</td>
+                                    <td id="sumDiff">0.00</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-buttons">
+        <button class="scroll-btn" onclick="scrollToTop()">▲</button>
+        <button class="scroll-btn" onclick="scrollToBottom()">▼</button>
+    </div>
+
+    <script>
+        let selectedPeriod = "Aug-2024";
+
+        const allConfigs = {
+            "Apr-2026": {
+                residential: [
+                    { label: "ش1 (0-50)", p: 0.68, s: 1 },
+                    { label: "ش2 (51-100)", p: 0.78, s: 2 },
+                    { label: "ش3 (0-200)", p: 0.95, s: 6 },
+                    { label: "ش4 (201-350)", p: 1.55, s: 11 },
+                    { label: "ش5 (351-650)", p: 1.65, s: 15 },
+                    { label: "ش6 (651-1000)", p: 2.1, s: 25 },
+                    { label: "ش7 (1001+)", p: 2.23, s: 40 },
+                ],
+                commercial: [
+                    { label: "ش1 (0-100)", p: 1.62, s: 5 },
+                    { label: "ش2 (0-250)", p: 2.16, s: 15 },
+                    { label: "ش3 (0-600)", p: 2.64, s: 20 },
+                    { label: "ش4 (601-1000)", p: 2.74, s: 25 },
+                    { label: "ش5 (1001+)", p: 2.79, s: 40 },
+                ],
+                Randomly: [{ label: "كودى", p: 2.74, s: 15 }],
+                farmer: [{ label: "الري", p: 2.15, s: 4 }],
+                factory: [{ label: "قوى محركة", p: 2.74, s: 15 }],
+                lighting: [{ label: "انارة عامة", p: 2.34, s: 4 }],
+                balance_cst: [{ label: "باقى المشتركين", p: 2.34, s: 15 }],
+            },
+
+            "Aug-2024": {
+                residential: [
+                    { label: "ش1 (0-50)", p: 0.68, s: 1 },
+                    { label: "ش2 (51-100)", p: 0.78, s: 2 },
+                    { label: "ش3 (0-200)", p: 0.95, s: 6 },
+                    { label: "ش4 (201-350)", p: 1.55, s: 11 },
+                    { label: "ش5 (351-650)", p: 1.65, s: 15 },
+                    { label: "ش6 (651-1000)", p: 2.1, s: 25 },
+                    { label: "ش7 (1001+)", p: 2.23, s: 40 },
+                ],
+                commercial: [
+                    { label: "ش1 (0-100)", p: 0.85, s: 5 },
+                    { label: "ش2 (0-250)", p: 1.68, s: 15 },
+                    { label: "ش3 (0-600)", p: 2.2, s: 20 },
+                    { label: "ش4 (601-1000)", p: 2.27, s: 25 },
+                    { label: "ش5 (1001+)", p: 2.33, s: 40 },
+                ],
+                farmer: [{ label: "الري", p: 2.0, s: 4 }],
+                factory: [{ label: "قوى محركة", p: 2.34, s: 15 }],
+                lighting: [{ label: "انارة عامة", p: 2.34, s: 4 }],
+                balance_cst: [{ label: "باقى المشتركين", p: 2.34, s: 15 }],
+            },
+            "Jan2024-Jul2024": {
+                residential: [
+                    { label: "ش1 (0-50)", p: 0.58, s: 1 },
+                    { label: "ش2 (51-100)", p: 0.68, s: 2 },
+                    { label: "ش3 (0-200)", p: 0.83, s: 6 },
+                    { label: "ش4 (201-350)", p: 1.25, s: 11 },
+                    { label: "ش5 (351-650)", p: 1.4, s: 15 },
+                    { label: "ش6 (651-1000)", p: 1.5, s: 25 },
+                    { label: "ش7 (1001+)", p: 1.65, s: 40 },
+                ],
+                commercial: [
+                    { label: "ش1 (0-100)", p: 0.65, s: 5 },
+                    { label: "ش2 (0-250)", p: 1.36, s: 15 },
+                    { label: "ش3 (0-600)", p: 1.5, s: 20 },
+                    { label: "ش4 (601-1000)", p: 1.65, s: 25 },
+                    { label: "ش5 (1001+)", p: 1.8, s: 40 },
+                ],
+                farmer: [{ label: "الري", p: 1.1, s: 4 }],
+                factory: [{ label: "قوى محركة", p: 1.5, s: 15 }],
+                lighting: [{ label: "انارة عامة", p: 1.5, s: 4 }],
+                balance_cst: [{ label: "باقى المشتركين", p: 1.5, s: 15 }],
+            },
+            "2021-2023": {
+                residential: [
+                    { label: "ش1 (0-50)", p: 0.48, s: 1 },
+                    { label: "ش2 (51-100)", p: 0.58, s: 2 },
+                    { label: "ش3 (0-200)", p: 0.77, s: 6 },
+                    { label: "ش4 (201-350)", p: 1.06, s: 11 },
+                    { label: "ش5 (351-650)", p: 1.28, s: 15 },
+                    { label: "ش6 (651-1000)", p: 1.28, s: 25 },
+                    { label: "ش7 (1001+)", p: 1.45, s: 40 },
+                ],
+                commercial: [
+                    { label: "ش1 (0-100)", p: 0.65, s: 5 },
+                    { label: "ش2 (0-250)", p: 1.2, s: 15 },
+                    { label: "ش3 (0-600)", p: 1.4, s: 20 },
+                    { label: "ش4 (601-1000)", p: 1.55, s: 25 },
+                    { label: "ش5 (1001+)", p: 1.6, s: 40 },
+                ],
+                farmer: [{ label: "الري (موحد)", p: 0.95, s: 4 }],
+                factory: [{ label: "قوى محركة", p: 1.25, s: 15 }],
+                lighting: [{ label: "انارة عامة", p: 1.25, s: 4 }],
+                balance_cst: [{ label: "باقى المشتركين", p: 1.25, s: 15 }],
+            },
+            "2019-2020": {
+                residential: [
+                    { label: "ش1 (0-50)", p: 0.3, s: 1 },
+                    { label: "ش2 (51-100)", p: 0.4, s: 2 },
+                    { label: "ش3 (0-200)", p: 0.5, s: 6 },
+                    { label: "ش4 (201-350)", p: 0.82, s: 11 },
+                    { label: "ش5 (351-650)", p: 1.0, s: 15 },
+                    { label: "ش6 (651-1000)", p: 1.4, s: 25 },
+                    { label: "ش7 (1001+)", p: 1.45, s: 40 },
+                ],
+                commercial: [
+                    { label: "ش1 (0-100)", p: 0.65, s: 5 },
+                    { label: "ش2 (0-250)", p: 1.2, s: 15 },
+                    { label: "ش3 (0-600)", p: 1.4, s: 20 },
+                    { label: "ش4 (601-1000)", p: 1.55, s: 25 },
+                    { label: "ش5 (1001+)", p: 1.6, s: 40 },
+                ],
+                farmer: [{ label: "الري (موحد)", p: 0.75, s: 4 }],
+                factory: [{ label: "قوى محركة", p: 1.25, s: 15 }],
+                lighting: [{ label: "انارة عامة", p: 1.25, s: 4 }],
+                balance_cst: [{ label: "باقى المشتركين", p: 1.25, s: 15 }],
+            },
+        };
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function scrollToBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+        }
+
+        function onPeriodChange() {
+            selectedPeriod = document.getElementById("periodSelect").value;
+            document.getElementById("currentPeriodHeader").innerText =
+                "تشريح " + selectedPeriod;
+            initTariffTable();
+        }
+
+        function initTariffTable() {
+            const type = document.getElementById("tariffType").value;
+            const tbody = document.getElementById("tariffTableBody");
+            tbody.innerHTML = "";
+            const cfg = allConfigs[selectedPeriod];
+            const list = cfg[type] || [];
+
+            list.forEach((item, index) => {
+                const i = index + 1;
+                tbody.innerHTML += `<tr id="row${i}">
+            <td>${item.label}</td>
+            <td><input id="q${i}" readonly value="0" class="table-input-small"></td>
+            <td><input id="p${i}" value="${item.p}" oninput="calculateTariffs()" class="table-input-small"></td>
+            <td><input id="s${i}" value="${item.s}" oninput="calculateTariffs()" class="table-input-small"></td>
+            <td><input id="r${i}" value="0" readonly class="table-input-small"></td>
+            <td><input id="t${i}" readonly value="0" class="table-input-medium"></td>
+        </tr>`;
+            });
+            calculateTariffs();
+        }
+
+        function calculateTariffs() {
+            const type = document.getElementById("tariffType").value;
+            const totalKwh = Number(document.getElementById("tkwh").value) || 0;
+            const cfg = allConfigs[selectedPeriod];
+            const rowsCount = (cfg[type] || []).length;
+
+            for (let i = 1; i <= 7; i++) {
+                if (document.getElementById(`q${i}`)) {
+                    document.getElementById(`q${i}`).value = 0;
+                    document.getElementById(`r${i}`).value = 0;
+                    document.getElementById(`t${i}`).value = 0;
+                    document.getElementById(`row${i}`).classList.remove("highlight");
+                }
+            }
+
+            if (type === "residential") {
+                if (totalKwh >= 1001) {
+                    document.getElementById("q7").value = totalKwh;
+                    document.getElementById("r7").value = 170;
+                    document.getElementById("row7").classList.add("highlight");
+                } else if (totalKwh >= 651) {
+                    document.getElementById("q6").value = totalKwh;
+                    document.getElementById("r6").value = 135;
+                    document.getElementById("row6").classList.add("highlight");
+                } else if (totalKwh > 200) {
+                    document.getElementById("q3").value = 200;
+                    document.getElementById("r3").value = 24;
+                    let rem = totalKwh - 200;
+                    if (rem <= 150) {
+                        document.getElementById("q4").value = rem;
+                        document.getElementById("row4").classList.add("highlight");
+                    } else {
+                        document.getElementById("q4").value = 150;
+                        document.getElementById("q5").value = (rem - 150).toFixed(2);
+                        document.getElementById("row5").classList.add("highlight");
+                    }
+                } else {
+                    let q1 = Math.min(50, totalKwh);
+                    document.getElementById("q1").value = q1;
+                    if (totalKwh > 50) {
+                        document.getElementById("q2").value = Math.min(50, totalKwh - 50);
+                        if (totalKwh > 100) {
+                            document.getElementById("q3").value = (totalKwh - 100).toFixed(2);
+                            document.getElementById("row3").classList.add("highlight");
+                        } else {
+                            document.getElementById("row2").classList.add("highlight");
+                        }
+                    } else {
+                        document.getElementById("row1").classList.add("highlight");
+                    }
+                }
+            } else if (type === "commercial") {
+                if (totalKwh >= 1001) {
+                    document.getElementById("q5").value = totalKwh;
+                    document.getElementById("r5").value = 140;
+                    document.getElementById("row5").classList.add("highlight");
+                } else if (totalKwh >= 601) {
+                    document.getElementById("q4").value = totalKwh;
+                    document.getElementById("row4").classList.add("highlight");
+                } else if (totalKwh >= 251) {
+                    document.getElementById("q3").value = totalKwh;
+                    document.getElementById("r3").value = 50;
+                    document.getElementById("row3").classList.add("highlight");
+                } else if (totalKwh >= 101) {
+                    document.getElementById("q2").value = totalKwh;
+                    document.getElementById("r2").value = 55;
+                    document.getElementById("row2").classList.add("highlight");
+                } else {
+                    document.getElementById("q1").value = totalKwh;
+                    document.getElementById("row1").classList.add("highlight");
+                }
+            } else {
+                if (document.getElementById("q1")) {
+                    document.getElementById("q1").value = totalKwh;
+                    document.getElementById("row1").classList.add("highlight");
+                }
+            }
+
+            let grandTotal = 0;
+            for (let i = 1; i <= rowsCount; i++) {
+                let q = Number((document.getElementById(`q${i}`) || {}).value) || 0;
+                let p = Number((document.getElementById(`p${i}`) || {}).value) || 0;
+                let s = Number((document.getElementById(`s${i}`) || {}).value) || 0;
+                let r = Number((document.getElementById(`r${i}`) || {}).value) || 0;
+                if (q > 0 || r > 0) {
+                    let rowT = q * p + s + r;
+                    const tEl = document.getElementById(`t${i}`);
+                    if (tEl) tEl.value = rowT.toFixed(2);
+                    grandTotal += rowT;
+                }
+            }
+            document.getElementById("totmoney").value = grandTotal.toFixed(2);
+        }
+
+        function addToLog() {
+            const meter = document.getElementById("meterNo").value || "N/A";
+            const fromD = document.getElementById("fromDate").value || "-";
+            const toD = document.getElementById("toDate").value || "-";
+            const kwh = Number(document.getElementById("tkwh").value);
+            const bal1 = Number(document.getElementById("balmoney1").value);
+            const charge = Number(document.getElementById("charge").value);
+            const bal2 = Number(document.getElementById("balmoney2").value);
+            const cost = Number(document.getElementById("totmoney").value);
+
+            const actualCost = bal1 + charge - bal2;
+            const diff = actualCost - cost;
+
+            const logBody = document.getElementById("logTableBody");
+            const row = document.createElement("tr");
+            if (diff < 0) row.classList.add("negative-diff");
+
+            row.innerHTML = `
+        <td>${meter}</td><td>${fromD}</td><td>${toD}</td>
+        <td class="log-kwh">${kwh}</td><td>${bal1.toFixed(2)}</td>
+        <td class="log-charge">${charge.toFixed(2)}</td><td>${bal2.toFixed(2)}</td>
+        <td class="log-cost">${cost.toFixed(2)}</td>
+        <td class="log-actual actual-col">${actualCost.toFixed(2)}</td>
+        <td class="log-diff">${diff.toFixed(2)}</td>
+        <td><button class="delete-btn" onclick="deleteRow(this)"><i class="fas fa-trash-alt"></i></button></td>
+    `;
+            logBody.appendChild(row);
+            updateLogTotals();
+        }
+
+        function addToComparison() {
+            const kwh = Number(document.getElementById("tkwh").value) || 0;
+            const type = document.getElementById("tariffType").value;
+            const toDateStr = document.getElementById("toDate").value;
+
+            const dateObj = toDateStr ? new Date(toDateStr) : new Date();
+            const year = dateObj.getFullYear();
+            const month = dateObj.getMonth() + 1;
+
+            const cfg = allConfigs[selectedPeriod];
+            const list = cfg[type] || [];
+            let costCurrent = 0;
+
+            if (type === "residential") {
+                if (kwh >= 1001) costCurrent = kwh * list[6].p + list[6].s + 170;
+                else if (kwh >= 651) costCurrent = kwh * list[5].p + list[5].s + 135;
+                else if (kwh > 200) {
+                    let rem = kwh - 200;
+                    costCurrent = 200 * list[2].p + list[2].s + 24;
+                    if (rem <= 150) costCurrent += rem * list[3].p + list[3].s;
+                    else costCurrent += 150 * list[3].p + list[3].s + (rem - 150) * list[4].p + list[4].s;
+                } else {
+                    if (kwh <= 50) costCurrent = kwh * list[0].p + list[0].s;
+                    else if (kwh <= 100) costCurrent = 50 * list[0].p + list[0].s + (kwh - 50) * list[1].p + list[1].s;
+                    else costCurrent = 100 * list[1].p + list[1].s + (kwh - 100) * list[2].p + list[2].s;
+                }
+            } else if (type === "commercial") {
+                if (kwh >= 1001) costCurrent = kwh * list[4].p + list[4].s + 140;
+                else if (kwh >= 601) costCurrent = kwh * list[3].p + list[3].s + 25;
+                else if (kwh >= 251) costCurrent = kwh * list[2].p + list[2].s + 70;
+                else if (kwh >= 101) costCurrent = kwh * list[1].p + list[1].s + 70;
+                else costCurrent = kwh * list[0].p + list[0].s;
+            } else {
+                costCurrent = kwh * list[0].p + list[0].s;
+            }
+
+            const tableBody = document.getElementById("comparisonTableBody");
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+        <td contenteditable="true" style="background-color: #fffde7;">${year}</td>
+        <td contenteditable="true" style="background-color: #fffde7;">${month}</td>
+        <td class="comp-kwh">${kwh}</td>
+        <td class="comp-new">${costCurrent.toFixed(2)}</td>
+        <td><button class="delete-btn" onclick="this.closest('tr').remove(); updateComparisonTotals();"><i class="fas fa-trash-alt"></i></button></td>
+    `;
+
+            tableBody.appendChild(row);
+            updateComparisonTotals();
+        }
+
+        function updateLogTotals() {
+            let tk = 0, tm = 0, ta = 0, td = 0, tc = 0;
+            document.querySelectorAll(".log-kwh").forEach((el) => (tk += Number(el.innerText)));
+            document.querySelectorAll(".log-cost").forEach((el) => (tm += Number(el.innerText)));
+            document.querySelectorAll(".log-actual").forEach((el) => (ta += Number(el.innerText)));
+            document.querySelectorAll(".log-diff").forEach((el) => (td += Number(el.innerText)));
+            document.querySelectorAll(".log-charge").forEach((el) => (tc += Number(el.innerText)));
+
+            document.getElementById("sumKwh").innerText = tk.toFixed(2);
+            document.getElementById("sumMoney").innerText = tm.toFixed(2);
+            document.getElementById("sumActual").innerText = ta.toFixed(2);
+            document.getElementById("sumCharge").innerText = tc.toFixed(2);
+            document.getElementById("sumDiff").innerText = td.toFixed(2);
+        }
+
+        function updateComparisonTotals() {
+            let totalKwh = 0, totalMoney = 0;
+            document.querySelectorAll(".comp-kwh").forEach((el) => (totalKwh += parseFloat(el.innerText) || 0));
+            document.querySelectorAll(".comp-new").forEach((el) => (totalMoney += parseFloat(el.innerText) || 0));
+            document.getElementById("compSumKwh").innerText = totalKwh;
+            document.getElementById("compSumNew").innerText = totalMoney.toFixed(2);
+        }
+
+        function deleteRow(btn) {
+            if (confirm("حذف هذا السجل؟")) {
+                btn.closest("tr").remove();
+                updateLogTotals();
+            }
+        }
+
+        function clearLog() {
+            if (confirm("سيتم مسح كافة السجلات؟")) {
+                document.getElementById("logTableBody").innerHTML = "";
+                document.getElementById("comparisonTableBody").innerHTML = "";
+                updateLogTotals();
+                updateComparisonTotals();
+            }
+        }
+
+        function exportComparison() {
+            let csv = [];
+            csv.push("تقرير استهلاك الكهرباء");
+            csv.push("سجل التشريح المختار");
+
+            document.querySelectorAll("#comparisonTable tr").forEach((row) => {
+                let data = [];
+                const cells = row.querySelectorAll("th, td");
+
+                if (row.classList.contains("summary-yellow")) {
+                    data.push(cells[0].innerText);
+                    data.push("");
+                    data.push(cells[1].innerText);
+                    data.push(cells[2].innerText);
+                } else {
+                    for (let i = 0; i < 4; i++) {
+                        if (cells[i]) {
+                            data.push(cells[i].innerText.replace(/,/g, ""));
+                        }
+                    }
+                }
+                csv.push(data.join(","));
+            });
+
+            const blob = new Blob(["\ufeff" + csv.join("\n")], {
+                type: "text/csv;charset=utf-8;",
+            });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "تقرير_التشريح.csv";
+            link.click();
+        }
+
+        window.onload = function () {
+            initTariffTable();
+        };
+    </script>
+</body>
+
+</html>

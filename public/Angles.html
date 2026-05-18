@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تحليل الزوايا - النظام المتكامل للحسابات الكهربائية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    :root {
+      --primary-color: #004a99;
+      --secondary-color: #0099ff;
+      --bg-color: #f4f7f6;
+      --card-bg: #ffffff;
+      --text-main: #2c3e50;
+      --text-light: #7f8c8d;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --border-radius: 12px;
+      --success: #27ae60;
+      --danger: #e74c3c;
+      --warning: #f39c12;
+      --info: #3498db;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Cairo", sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .app-wrapper {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .top-nav {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 100;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .home-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: "Cairo", sans-serif;
+    }
+
+    .home-btn:hover {
+      background: white;
+      color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+
+    .section-container {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title ion-icon {
+      font-size: 1.4rem;
+    }
+
+    .angles-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .angles-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .input-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      background: #f8fafc;
+      transition: all 0.3s ease;
+      text-align: center;
+      font-family: "Cairo", sans-serif;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.1);
+    }
+
+    .angles-controls h4 {
+      color: var(--primary-color);
+      font-size: 1rem;
+      margin: 0 0 12px 0;
+      padding-right: 8px;
+      border-right: 4px solid var(--secondary-color);
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 2px solid var(--border);
+      margin: 15px 0;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-top: 10px;
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      width: 100%;
+    }
+
+    .results-grid .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .results-grid .input-group input {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .results-grid .input-group input[readonly] {
+      background-color: #f5f5f5;
+      border-color: #ddd;
+      color: #666;
+      font-weight: 600;
+    }
+
+    .results-grid .highlight input {
+      background-color: #fff0f0 !important;
+      border-color: var(--danger) !important;
+      color: var(--danger) !important;
+      font-weight: 700;
+    }
+
+    .color-indicators {
+      display: flex;
+      gap: 30px;
+      margin-top: 20px;
+      padding: 15px 20px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      justify-content: center;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .color-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .color-box {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .v-color {
+      background: linear-gradient(135deg, #ffd700, #ffb347);
+    }
+
+    .i-color {
+      background: linear-gradient(135deg, #0011ff, #4169e1);
+    }
+
+    .circle-canvas {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid var(--border);
+      width: 100%;
+    }
+
+    .circle-canvas h4 {
+      margin-bottom: 15px;
+      color: var(--primary-color);
+      font-size: 1rem;
+    }
+
+    #circlePlot {
+      max-width: 100%;
+      height: auto;
+      background: white;
+      border-radius: 8px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    #pf1,
+    #pf2,
+    #pf3 {
+      transition: all 0.3s ease;
+    }
+
+    #pf1[style*="color: red"],
+    #pf2[style*="color: red"],
+    #pf3[style*="color: red"] {
+      background-color: #fff0f0 !important;
+      border-color: #ff9999 !important;
+    }
+
+    #pf1[style*="color: green"],
+    #pf2[style*="color: green"],
+    #pf3[style*="color: green"] {
+      background-color: #f0fff0 !important;
+      border-color: #99cc99 !important;
+    }
+
+    #Losses {
+      font-size: 1.2rem !important;
+      font-weight: 800 !important;
+      background: linear-gradient(145deg, #fff5f5, #ffe5e5) !important;
+      border: 2px solid var(--danger) !important;
+      color: var(--danger) !important;
+    }
+
+    #Mtheta,
+    #IMtheta {
+      background-color: #f0f0f0 !important;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .scroll-buttons {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .scroll-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: none;
+      background: var(--primary-color);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      font-family: "Cairo", sans-serif;
+    }
+
+    .scroll-btn:hover {
+      transform: scale(1.1);
+      background: var(--secondary-color);
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      font-family: "Cairo", sans-serif;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    @media (max-width: 1024px) {
+      .angles-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-wrapper">
+    <div class="main-content">
+      <nav class="top-nav">
+        <div class="nav-brand">
+          <span>تحليل الزوايا (Angles)</span>
+        </div>
+        <div class="nav-actions">
+          <button class="home-btn" onclick="window.location.href='index.html'">
+            <ion-icon name="arrow-up-outline"></ion-icon>
+            <span>الصفحة الرئيسية</span>
+          </button>
+        </div>
+      </nav>
+
+      <div class="section-container">
+        <h3 class="section-title">
+          <ion-icon name="analytics-outline"></ion-icon> نظام تحليل الزوايا وجيب
+          التمام (3-Phase)
+        </h3>
+
+        <div class="angles-grid">
+          <div class="angles-controls">
+            <h4>إدخال زوايا التيار (θ)</h4>
+            <div class="input-grid">
+              <div class="input-group">
+                <label>θ1 (Phase 1)</label>
+                <input id="theta1" type="number" value="10" oninput="updateAngles()" />
+              </div>
+              <div class="input-group">
+                <label>θ2 (Phase 2)</label>
+                <input id="theta2" type="number" value="130" oninput="updateAngles()" />
+              </div>
+              <div class="input-group">
+                <label>θ3 (Phase 3)</label>
+                <input id="theta3" type="number" value="250" oninput="updateAngles()" />
+              </div>
+              <div class="input-group">
+                <label>Pf1 (cos θ1)</label>
+                <input id="pf1" type="text" readonly />
+              </div>
+              <div class="input-group">
+                <label>Pf2 (cos θ2)</label>
+                <input id="pf2" type="text" readonly />
+              </div>
+              <div class="input-group">
+                <label>Pf3 (cos θ3)</label>
+                <input id="pf3" type="text" readonly />
+              </div>
+            </div>
+
+            <hr class="divider" />
+
+            <h4>تحليل الخطأ والفقد</h4>
+            <div class="results-grid">
+              <div class="input-group full-width">
+                <label>زاوية الحمل المرجعية (Correct θ)</label>
+                <input id="correcttheta" type="number" value="10" oninput="updateAngles()" />
+              </div>
+              <div class="input-group">
+                <label>المسجل [kWH]</label>
+                <input id="EXkwh" type="number" value="100" step="0.1" oninput="updateAngles()" />
+              </div>
+              <div class="input-group">
+                <label>خطأ المقدار (M%)</label>
+                <input id="Mtheta" type="text" readonly />
+              </div>
+              <div class="input-group">
+                <label>خطأ الاستيراد (IM%)</label>
+                <input id="IMtheta" type="text" readonly />
+              </div>
+              <div class="input-group highlight">
+                <label>الفقد المحسوب [kWH]</label>
+                <input id="Losses" type="text" readonly />
+              </div>
+            </div>
+
+            <div class="color-indicators">
+              <div class="color-item">
+                <div class="color-box v-color"></div>
+                <span>الجهد (V)</span>
+              </div>
+              <div class="color-item">
+                <div class="color-box i-color"></div>
+                <span>التيار (I)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="circle-canvas">
+            <h4>المخطط الطوري (Phasor Diagram)</h4>
+            <canvas id="circlePlot" width="500" height="500"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-buttons">
+    <button class="scroll-btn" onclick="scrollToTop()">▲</button>
+    <button class="scroll-btn" onclick="scrollToBottom()">▼</button>
+  </div>
+
+  <script>
+    // ========== SCROLL FUNCTIONS ==========
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function scrollToBottom() {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+
+    // ========== ANGLES TAB FUNCTIONS ==========
+    const canvas = document.getElementById("circlePlot");
+    const ctx = canvas.getContext("2d");
+    const circleRadius = 200;
+
+    function drawArrow(cx, cy, angleDeg, r, color, label, isCurrent = false) {
+      const rad = ((angleDeg - 90) * Math.PI) / 180;
+      const x = cx + r * Math.cos(rad);
+      const y = cy + r * Math.sin(rad);
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(x, y);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = isCurrent ? 3 : 2;
+      ctx.stroke();
+
+      const headlen = 10;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(
+        x - headlen * Math.cos(rad - Math.PI / 6),
+        y - headlen * Math.sin(rad - Math.PI / 6)
+      );
+      ctx.lineTo(
+        x - headlen * Math.cos(rad + Math.PI / 6),
+        y - headlen * Math.sin(rad + Math.PI / 6)
+      );
+      ctx.fillStyle = color;
+      ctx.fill();
+
+      ctx.font = "bold 14px Cairo";
+      ctx.fillStyle = color;
+      ctx.fillText(label, x + 12 * Math.cos(rad), y + 12 * Math.sin(rad));
+    }
+
+    function updateAngles() {
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, circleRadius, 0, 2 * Math.PI);
+      ctx.strokeStyle = "#eee";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      const theta = [
+        parseFloat(document.getElementById("theta1").value) || 0,
+        parseFloat(document.getElementById("theta2").value) || 0,
+        parseFloat(document.getElementById("theta3").value) || 0,
+      ];
+
+      const pfs = theta.map((t, i) => {
+        const val = Math.cos((t * Math.PI) / 180);
+        const input = document.getElementById(`pf${i + 1}`);
+        input.value = val.toFixed(3);
+        input.style.color = val < 0.5 ? "red" : "green";
+        input.setAttribute("readonly", true);
+        input.setAttribute("aria-readonly", "true");
+        return val;
+      });
+
+      const vAngles = [0, 120, 240];
+      vAngles.forEach((ang, i) => {
+        drawArrow(cx, cy, ang, circleRadius - 10, "#ffd700", `V${i + 1}`);
+        drawArrow(
+          cx,
+          cy,
+          ang + theta[i],
+          circleRadius - 40,
+          "#0011ff",
+          `I${i + 1}`,
+          true
+        );
+      });
+
+      const correctAngle =
+        parseFloat(document.getElementById("correcttheta").value) || 0;
+      const pfCorrectTotal = Math.cos((correctAngle * Math.PI) / 180) * 3;
+
+      const sumAbs = pfs.reduce((a, b) => a + Math.abs(b), 0);
+      const mErr = pfCorrectTotal === 0 ? 0 : (1 - sumAbs / pfCorrectTotal) * 100;
+
+      const sumPos = pfs.filter((v) => v > 0).reduce((a, b) => a + b, 0);
+      const imErr = pfCorrectTotal === 0 ? 0 : (1 - sumPos / pfCorrectTotal) * 100;
+
+      document.getElementById("Mtheta").value = mErr.toFixed(2) + " %";
+      document.getElementById("IMtheta").value = imErr.toFixed(2) + " %";
+
+      document.getElementById("Mtheta").setAttribute("readonly", true);
+      document.getElementById("IMtheta").setAttribute("readonly", true);
+
+      const kwh = parseFloat(document.getElementById("EXkwh").value) || 0;
+      const losses = (kwh * Math.abs(mErr)) / 100;
+      document.getElementById("Losses").value = losses.toFixed(2) + " kWh";
+      document.getElementById("Losses").setAttribute("readonly", true);
+    }
+
+    // Initialize on page load
+    window.onload = function () {
+      updateAngles();
+    };
+  </script>
+</body>
+
+</html>
