@@ -11,10 +11,10 @@
 
   <style>
     :root {
-      --primary-green: #2ecc71;
+      --primary-green: #2e68cc;
       --light-bg: #f9fbf9;
-      --border-color: #e0e6e0;
-      --dark-green: #27ae60;
+      --border-color: #0c2de8;
+      --dark-green: #041136;
       --text-dark: #2c3e50;
       --text-light: #7f8c8d;
       --white: #ffffff;
@@ -109,7 +109,7 @@
       box-shadow: var(--shadow);
       overflow: hidden;
       border: 1px solid var(--border-color);
-      max-width: 500px;
+      max-width: 800px; /* تم زيادة العرض الأقصى ليتناسب مع توزيع الشبكة الجديد */
       margin: 0 auto;
     }
 
@@ -129,8 +129,12 @@
       font-size: 1.3rem;
     }
 
+    /* تحويل الجسم ليعمل بنظام الشبكة المتجاوبة Grid */
     .card-body {
-      padding: 1rem;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.8rem;
     }
 
     /* Links */
@@ -139,7 +143,6 @@
       align-items: center;
       gap: 1rem;
       padding: 0.9rem 1.2rem;
-      margin-bottom: 0.6rem;
       background: var(--light-bg);
       border-radius: 10px;
       text-decoration: none;
@@ -153,13 +156,14 @@
       background: white;
       color: var(--dark-green);
       border-color: var(--primary-green);
-      transform: translateX(-5px);
+      transform: translateX(5px); /* تعديل الحركة لتناسب اتجاه الـ RTL */
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     }
 
     .menu-link ion-icon {
       color: var(--primary-green);
       font-size: 1.3rem;
+      flex-shrink: 0;
     }
 
     /* Responsive */
@@ -172,6 +176,10 @@
 
       .nav-brand {
         flex-direction: column;
+      }
+
+      .card-body {
+        grid-template-columns: 1fr; /* العودة لنظام العمود الواحد على الشاشات الصغيرة */
       }
     }
   </style>
@@ -205,27 +213,27 @@
       <div class="card-body">
         <a href="Angles.html" class="menu-link">
           <ion-icon name="analytics-outline"></ion-icon>
-          <span>تحليل الزوايا (Angles)</span>
+          <span>تحليل الزوايا</span>
         </a>
         <a href="Power.html" class="menu-link">
           <ion-icon name="calculator-outline"></ion-icon>
-          <span>حسابات القدرة (Power)</span>
+          <span>حسابات القدرة</span>
         </a>
         <a href="Trf-Motor.html" class="menu-link">
           <ion-icon name="construct-outline"></ion-icon>
-          <span>محولات ومحركات (Transformers & Motors)</span>
+          <span>محولات ومحركات</span>
         </a>
         <a href="P.F.html" class="menu-link">
           <ion-icon name="flash-outline"></ion-icon>
-          <span>معامل القدرة (Power Factor)</span>
+          <span>معامل القدرة</span>
         </a>
         <a href="Tariffs.html" class="menu-link">
           <ion-icon name="cash-outline"></ion-icon>
-          <span>الشرائح (Tariffs)</span>
+          <span>الشرائح</span>
         </a>
         <a href="Distance_Relay.html" class="menu-link">
           <ion-icon name="trail-sign-outline"></ion-icon>
-          <span>حاسبة الحماية الخطية(Distance Relay)</span>
+          <span>الحماية الخطية</span>
         </a>
         <a href="Cables_V.D_Calculator.html" class="menu-link">
           <ion-icon name="flash-outline"></ion-icon>
