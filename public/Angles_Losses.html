@@ -325,6 +325,21 @@
             border-radius: 0.5rem;
             border: 1px solid #cbd5e1;
         }
+
+        .calc-btn {
+            border: none;
+            width: 170px;
+            padding: 14px 0;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1.2rem;
+            transition: all 0.2s;
+            color: rgb(255, 255, 255);
+            background-color: var(--primary-blue);
+
+        }
     </style>
 </head>
 
@@ -333,6 +348,9 @@
         <div class="analytics-panel">
             <div class="panel-header">
                 <h2>⚡ تحليل الزوايا </h2>
+                <button class="calc-btn" onclick="window.location.href = 'index.html'">
+                    ⬅️ الصفحة الرئيسية
+                </button>
             </div>
 
             <div class="section-title">📐 زوايا الجهد المرجعي (VR / VT / VS)</div>
@@ -375,15 +393,18 @@
             <div class="result-module" id="currentErrorBox">
                 <div class="status-chip optimal" id="currentStatus">📊 الوضع الحالي</div>
                 <div class="comparison-box">
-                    <div class="result-item" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <div class="result-item"
+                        style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                         <span>📐 متوسط PF المقاس:</span>
                         <span id="current_pf" style="font-weight:700;">0.8660</span>
                     </div>
-                    <div class="result-item" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <div class="result-item"
+                        style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                         <span>⚠️ نسبة الخطأ:</span>
                         <span id="current_error" style="font-weight:700;">0.00%</span>
                     </div>
-                    <div class="result-item" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <div class="result-item"
+                        style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                         <span>📤 الطاقة المفقودة (Export):</span>
                         <span id="current_export" style="font-weight:700;">0.00 kWh</span>
                     </div>
@@ -399,11 +420,13 @@
             <div id="resultContainer" class="result-module">
                 <div id="dynamicStatus" class="status-chip optimal">✅ بدأ فحص اتجاه التيار</div>
                 <div id="remediationSteps" class="remedy-list">
-                    <div class="action-step" style="border-right-color: var(--primary-blue);">🔍 اضغط على زر "فحص اتجاه التيار" أولاً.</div>
+                    <div class="action-step" style="border-right-color: var(--primary-blue);">🔍 اضغط على زر "فحص اتجاه
+                        التيار" أولاً.</div>
                 </div>
             </div>
 
-            <button id="actionButton" class="action-button btn-polarity" onclick="handleClick()">🔍 فحص اتجاه التيار </button>
+            <button id="actionButton" class="action-button btn-polarity" onclick="handleClick()">🔍 فحص اتجاه التيار
+            </button>
         </div>
 
         <div class="phasor-panel">
@@ -589,7 +612,7 @@
                 ctx.fillStyle = "#9ca3af";
                 let angleText = i + "°";
                 let textX, textY;
-                
+
                 if (i === 0) {
                     textX = centerX + radiusVec + 10;
                     textY = centerY - 4;
@@ -629,18 +652,18 @@
                 } else {
                     continue;
                 }
-                
+
                 ctx.fillText(angleText, textX, textY);
             }
 
             const vR = (parseFloat(document.getElementById("thetaVR").value) || 0) % 360;
             const vT = (parseFloat(document.getElementById("thetaVT").value) || 0) % 360;
             const vS = (parseFloat(document.getElementById("thetaVS").value) || 0) % 360;
-            
+
             const lagIR = (parseFloat(document.getElementById("thetaIR").value) || 0) % 360;
             const lagIS = (parseFloat(document.getElementById("thetaIS").value) || 0) % 360;
             const lagIT = (parseFloat(document.getElementById("thetaIT").value) || 0) % 360;
-            
+
             const iRActual = (vR + lagIR) % 360;
             const iSActual = (vS + lagIS) % 360;
             const iTActual = (vT + lagIT) % 360;
@@ -681,7 +704,7 @@
             const lagIR = (parseFloat(document.getElementById("thetaIR").value) || 0) % 360;
             const lagIS = (parseFloat(document.getElementById("thetaIS").value) || 0) % 360;
             const lagIT = (parseFloat(document.getElementById("thetaIT").value) || 0) % 360;
-            
+
             return {
                 IR: ((vR + lagIR) % 360 + 360) % 360,
                 IS: ((vS + lagIS) % 360 + 360) % 360,
@@ -692,7 +715,7 @@
 
         function checkPolarity() {
             const angles = getAbsoluteAngles();
-            
+
             function isReversed(angle) {
                 return (angle >= 60 && angle <= 120) || (angle >= 180 && angle <= 240) || (angle >= 300 && angle <= 360);
             }
@@ -725,13 +748,13 @@
             } else {
                 statusDiv.className = "status-chip optimal";
                 statusDiv.innerHTML = "✅ اتجاهات التيارات سليمة تماماً!";
-                
+
                 const lagIR = angles.lagIR;
                 const lagIS = angles.lagIS;
                 const lagIT = angles.lagIT;
                 const importKwh = parseFloat(document.getElementById("importKwh").value) || 0;
                 const { errorPercent, exportMissing } = calculateError(lagIR, lagIS, lagIT, importKwh);
-                
+
                 stepsDiv.innerHTML = `
                     <div class="action-step" style="border-right-color: var(--success-emerald);">
                         ✔️ جميع اتجاهات التيارات صحيحة.<br>
@@ -759,7 +782,7 @@
                 { name: "IS", voltage: "VS", lag: lagIS },
                 { name: "IT", voltage: "VT", lag: lagIT }
             ];
-            
+
             for (let i = 0; i < currents.length; i++) {
                 for (let j = i + 1; j < currents.length; j++) {
                     const c1 = currents[i];
@@ -769,12 +792,12 @@
                     }
                 }
             }
-            
+
             const allAbove120 = lagIR >= 120 && lagIS >= 120 && lagIT >= 120;
             if (allAbove120) {
                 return { swap1: "VR", swap2: "VS", c1Name: "IR", c2Name: "IS", val1: lagIR, val2: lagIS, isThreePhase: true };
             }
-            
+
             return null;
         }
 
@@ -783,27 +806,27 @@
             let lagIR = angles.lagIR;
             let lagIS = angles.lagIS;
             let lagIT = angles.lagIT;
-            
+
             const nextSwap = findNextSwap(lagIR, lagIS, lagIT);
-            
+
             const statusDiv = document.getElementById("dynamicStatus");
             const stepsDiv = document.getElementById("remediationSteps");
             const btn = document.getElementById("actionButton");
-            
+
             if (!nextSwap) {
                 statusDiv.className = "status-chip optimal";
                 statusDiv.innerHTML = "✅ ✅ ✅ تم الانتهاء بنجاح! جميع الزوايا طبيعية.";
-                
+
                 const importKwh = parseFloat(document.getElementById("importKwh").value) || 0;
                 const { errorPercent, exportMissing, trueEnergy } = calculateError(lagIR, lagIS, lagIT, importKwh);
-                
+
                 updateCorrectedDisplay(lagIR, lagIS, lagIT, importKwh);
-                
+
                 let historyText = "";
                 if (swapHistory.length > 0) {
                     historyText = `<div class="action-step" style="border-right-color: var(--success-emerald);">📋 <strong>ملخص التبديلات التي تمت:</strong><br>${swapHistory.map(s => `• ${s}`).join("<br>")}</div>`;
                 }
-                
+
                 stepsDiv.innerHTML = `
                     <div class="action-step" style="border-right-color: var(--success-emerald);">
                         🎯 <strong>اكتمل التصحيح!</strong><br>
@@ -825,7 +848,7 @@
                 btn.innerHTML = "🔍 فحص اتجاه التيار ";
                 return;
             }
-            
+
             let swapMessage = "";
             if (nextSwap.isThreePhase) {
                 swapMessage = `
@@ -865,49 +888,49 @@
                     </div>
                 `;
             }
-            
+
             statusDiv.className = "status-chip warning-swap";
             statusDiv.innerHTML = `⚠️ الخطوة ${swapHistory.length + 1}: مطلوب تبديل ${nextSwap.swap1} ↔ ${nextSwap.swap2}`;
             stepsDiv.innerHTML = swapMessage;
-            
+
             btn.className = "action-button btn-next";
             btn.innerHTML = "✅ تأكيد التبديل وتحديث القياسات ";
-            
+
             window.pendingSwap = nextSwap;
         }
-        
+
         function confirmSwapAndContinue() {
             if (!window.pendingSwap) {
                 checkVoltageSwap();
                 return;
             }
-            
+
             const newIR = parseFloat(document.getElementById("newIR")?.value);
             const newIS = parseFloat(document.getElementById("newIS")?.value);
             const newIT = parseFloat(document.getElementById("newIT")?.value);
-            
+
             if (!isNaN(newIR)) document.getElementById("thetaIR").value = newIR;
             if (!isNaN(newIS)) document.getElementById("thetaIS").value = newIS;
             if (!isNaN(newIT)) document.getElementById("thetaIT").value = newIT;
-            
+
             swapHistory.push(`تم تبديل ${window.pendingSwap.swap1} مع ${window.pendingSwap.swap2}`);
-            
+
             const vR = document.getElementById("thetaVR");
             const vS = document.getElementById("thetaVS");
             const vT = document.getElementById("thetaVT");
-            
+
             const swap1 = window.pendingSwap.swap1;
             const swap2 = window.pendingSwap.swap2;
-            
+
             let val1, val2;
             if (swap1 === "VR") val1 = parseFloat(vR.value) || 0;
             else if (swap1 === "VS") val1 = parseFloat(vS.value) || 0;
             else val1 = parseFloat(vT.value) || 0;
-            
+
             if (swap2 === "VR") val2 = parseFloat(vR.value) || 0;
             else if (swap2 === "VS") val2 = parseFloat(vS.value) || 0;
             else val2 = parseFloat(vT.value) || 0;
-            
+
             if (swap1 === "VR" && swap2 === "VS") {
                 vR.value = val2;
                 vS.value = val1;
@@ -927,19 +950,19 @@
                 vT.value = val2;
                 vS.value = val1;
             }
-            
+
             updatePhasorCanvas();
             window.pendingSwap = null;
-            
+
             const lagIR = (parseFloat(document.getElementById("thetaIR").value) || 0) % 360;
             const lagIS = (parseFloat(document.getElementById("thetaIS").value) || 0) % 360;
             const lagIT = (parseFloat(document.getElementById("thetaIT").value) || 0) % 360;
             const importKwh = parseFloat(document.getElementById("importKwh").value) || 0;
             updateCorrectedDisplay(lagIR, lagIS, lagIT, importKwh);
-            
+
             checkVoltageSwap();
         }
-        
+
         function handleClick() {
             if (currentStep === 1) {
                 checkPolarity();
@@ -951,9 +974,9 @@
                 }
             }
         }
-        
+
         document.getElementById("snapshotBtn").addEventListener("click", takeSnapshot);
-        
+
         window.onload = () => {
             updatePhasorCanvas();
             const allInputs = ['thetaVR', 'thetaVS', 'thetaVT', 'thetaIR', 'thetaIS', 'thetaIT'];
