@@ -1,4 +1,4 @@
-﻿<!doctype html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
 <head>
@@ -109,7 +109,7 @@
       box-shadow: var(--shadow);
       overflow: hidden;
       border: 1px solid var(--border-color);
-      max-width: 800px; /* تم زيادة العرض الأقصى ليتناسب مع توزيع الشبكة الجديد */
+      max-width: 900px;
       margin: 0 auto;
     }
 
@@ -156,7 +156,7 @@
       background: white;
       color: var(--dark-green);
       border-color: var(--primary-green);
-      transform: translateX(5px); /* تعديل الحركة لتناسب اتجاه الـ RTL */
+      transform: translateX(5px);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     }
 
@@ -164,6 +164,16 @@
       color: var(--primary-green);
       font-size: 1.3rem;
       flex-shrink: 0;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      margin-top: 2rem;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border-color);
     }
 
     /* Responsive */
@@ -179,7 +189,11 @@
       }
 
       .card-body {
-        grid-template-columns: 1fr; /* العودة لنظام العمود الواحد على الشاشات الصغيرة */
+        grid-template-columns: 1fr;
+      }
+
+      .main-container {
+        padding: 1rem;
       }
     }
   </style>
@@ -211,51 +225,55 @@
         <h3>الحسابات الكهربية</h3>
       </div>
       <div class="card-body">
-        <a href="Angles_Losses.html" class="menu-link">
+        <a href="#" class="menu-link" onclick="openPage('Angles_Losses.html')">
           <ion-icon name="tv-outline"></ion-icon>
-          <span>تحليل وتصحيح الزوايا - نسبة خطأالزوايا</span>
+          <span>تحليل وتصحيح الزوايا - نسبة خطأ الزوايا</span>
         </a>
-        <a href="Power.html" class="menu-link">
+        <a href="#" class="menu-link" onclick="openPage('Power.html')">
           <ion-icon name="calculator-outline"></ion-icon>
           <span>حسابات القدرة</span>
         </a>
-        <a href="Trf-Motor.html" class="menu-link">
+        <a href="#" class="menu-link" onclick="openPage('Trf-Motor.html')">
           <ion-icon name="construct-outline"></ion-icon>
           <span>محولات ومحركات</span>
         </a>
-        <a href="P.F.html" class="menu-link">
+        <a href="#" class="menu-link" onclick="openPage('P.F.html')">
           <ion-icon name="flash-outline"></ion-icon>
           <span>معامل القدرة</span>
         </a>
-        <a href="Tariffs.html" class="menu-link">
+        <a href="#" class="menu-link" onclick="openPage('Tariffs.html')">
           <ion-icon name="cash-outline"></ion-icon>
           <span>الشرائح</span>
         </a>
-        <a href="Distance_Relay.html" class="menu-link">
+        <a href="#" class="menu-link" onclick="openPage('Tarriff_Charging.html')">
+          <ion-icon name="cash-outline"></ion-icon>
+          <span>مطابقة الأرصدة</span>
+        </a>
+        <a href="#" class="menu-link" onclick="openPage('Distance_Relay.html')">
           <ion-icon name="trail-sign-outline"></ion-icon>
           <span>الحماية الخطية</span>
         </a>
-        <a href="Cables_V.D_Calculator.html" class="menu-link">
+        <a href="#" class="menu-link" onclick="openPage('Cables_V.D_Calculator.html')">
           <ion-icon name="flash-outline"></ion-icon>
           <span>الكابلات والفقد في الجهد</span>
         </a>
-        <a href="Research.html" class="menu-link">
+        <a href="#" class="menu-link" onclick="openPage('Research.html')">
           <ion-icon name="book-outline"></ion-icon>
           <span>المادة العلمية للعدادات الذكية</span>
         </a>
-          <a href="Meter.html" class="menu-link">
+        <a href="#" class="menu-link" onclick="openPage('Meter.html')">
           <ion-icon name="book-outline"></ion-icon>
-          <span>المادة العلمية للعدادات الميكانيكة-الألكترونية-المعايرة</span>
+          <span>المادة العلمية للعدادات الميكانيكة-الإلكترونية-المعايرة</span>
         </a>
-        <a href="Spex.html" class="menu-link">
+        <a href="#" class="menu-link" onclick="openPage('Spex.html')">
           <ion-icon name="document-text-outline"></ion-icon>
           <span>المواصفات الفنية</span>
         </a>
-        <a href="TVJ.html" class="menu-link">
+        <a href="#" class="menu-link" onclick="openPage('TVJ.html')">
           <ion-icon name="tv-outline"></ion-icon>
           <span>نظام TVJ</span>
         </a>
-        <a href="SMART_Help.html" class="menu-link">
+        <a href="#" class="menu-link" onclick="openPage('SMART_Help.html')">
           <ion-icon name="information-circle-outline"></ion-icon>
           <span>المساعدة</span>
         </a>
@@ -263,7 +281,12 @@
     </div>
   </main>
 
+  <footer class="footer">
+    <p>© 2024 شركة شمال الدلتا لتوزيع الكهرباء - جميع الحقوق محفوظة</p>
+  </footer>
+
   <script>
+    // تحديث الوقت
     function updateTime() {
       const now = new Date();
       const options = {
@@ -275,13 +298,71 @@
         minute: "2-digit",
         second: "2-digit",
       };
-      document.getElementById("currentTime").textContent =
-        now.toLocaleDateString("ar-EG", options);
+      const timeElement = document.getElementById("currentTime");
+      if (timeElement) {
+        timeElement.textContent = now.toLocaleDateString("ar-EG", options);
+      }
     }
 
+    // فتح الصفحات
+    function openPage(pageName) {
+      // محاولة فتح الصفحة
+      window.location.href = pageName;
+    }
+
+    // التحقق من وجود الصفحات وإنشاءها إذا لم تكن موجودة
+    function checkAndCreatePages() {
+      const pages = [
+        'Angles_Losses.html',
+        'Power.html', 
+        'Trf-Motor.html',
+        'P.F.html',
+        'Tariffs.html',
+        'Tarriff_Charging.html',
+        'Distance_Relay.html',
+        'Cables_V.D_Calculator.html',
+        'Research.html',
+        'Meter.html',
+        'Spex.html',
+        'TVJ.html',
+        'SMART_Help.html'
+      ];
+
+      // ملاحظة: لا يمكن إنشاء ملفات فعلياً من المتصفح لأسباب أمنية
+      // هذه مجرد رسالة توجيهية
+      console.log('سيتم فتح الصفحة المطلوبة. تأكد من وجود جميع الملفات في نفس المجلد.');
+    }
+
+    // إظهار رسالة ترحيب
+    function showWelcomeMessage() {
+      const now = new Date();
+      const hour = now.getHours();
+      let greeting = "";
+      
+      if (hour >= 5 && hour < 12) {
+        greeting = "صباح الخير";
+      } else if (hour >= 12 && hour < 17) {
+        greeting = "مساء الخير";
+      } else {
+        greeting = "مساء الخير";
+      }
+      
+      console.log(`${greeting}! مرحباً بك في نظام الحسابات الكهربية`);
+    }
+
+    // تشغيل عند تحميل الصفحة
     document.addEventListener("DOMContentLoaded", () => {
       updateTime();
       setInterval(updateTime, 1000);
+      showWelcomeMessage();
+      checkAndCreatePages();
+    });
+
+    // منع فقدان البيانات عند محاولة إغلاق الصفحة
+    window.addEventListener("beforeunload", (e) => {
+      // يمكن تفعيل هذا إذا كان هناك بيانات غير محفوظة
+      // e.preventDefault();
+      // e.returnValue = '';
     });
   </script>
 </body>
