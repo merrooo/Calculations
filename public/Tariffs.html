@@ -5,8 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>التشريح</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
@@ -19,633 +18,368 @@
             --card-bg: #ffffff;
             --text-main: #2c3e50;
             --text-light: #7f8c8d;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             --border-radius: 12px;
             --danger: #e74c3c;
-            --success: #27ae60;
-            --border: #e2e8f0;
-            --gold-color: #f59e0b;
+            --success: #2ecc71;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: "Cairo", sans-serif;
+            font-family: 'Cairo', sans-serif;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .app-wrapper {
-            display: flex;
-            min-height: 100vh;
-            flex-direction: column;
-        }
-
-        .main-content {
-            flex: 1;
             padding: 20px;
-            width: 100%;
         }
 
-        .top-nav {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .nav-brand {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .home-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: "Cairo", sans-serif;
-        }
-
-        .home-btn:hover {
-            background: white;
-            color: var(--primary-color);
-        }
-
-        .section-container {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 25px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title ion-icon {
-            font-size: 1.4rem;
-        }
-
-        .mode-selector {
-            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            display: flex;
-            gap: 30px;
-            align-items: center;
-            flex-wrap: wrap;
-            border: 1px solid rgba(0, 74, 153, 0.1);
-        }
-
-        .mode-option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            padding: 10px 20px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            background: white;
-            border: 2px solid var(--border);
-        }
-
-        .mode-option:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-2px);
-        }
-
-        .mode-option input {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .mode-option label {
-            font-weight: 600;
-            cursor: pointer;
-            color: var(--text-main);
-        }
-
-        .mode-option.selected {
-            background: linear-gradient(135deg, #e6f3ff, #d9effa);
-            border-color: var(--primary-color);
-        }
-
-        .tariffs-input {
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-            padding: 24px;
-            border-radius: 20px;
             margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(0, 74, 153, 0.1);
+            background: var(--card-bg);
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border-right: 5px solid var(--primary-color);
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .main-layout {
             display: grid;
+            grid-template-columns: 320px 1fr;
             gap: 20px;
         }
 
-        .upload-area {
-            background: linear-gradient(135deg, #f0f9ff, #e6f3ff);
-            padding: 20px;
-            border-radius: 16px;
-            border: 2px dashed var(--primary-color);
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        @media (max-width: 992px) {
+            .main-layout { grid-template-columns: 1fr; }
         }
 
-        .upload-area:hover {
-            background: linear-gradient(135deg, #e6f3ff, #d9effa);
-            transform: translateY(-2px);
-        }
-
-        .upload-label {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 12px 24px;
-            border-radius: 48px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.9rem;
-        }
-
-        .upload-label:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
-
-        .file-badge {
-            margin-top: 12px;
-            font-size: 0.8rem;
-            background: #e9f4ff;
-            padding: 6px 14px;
-            border-radius: 40px;
-            display: inline-block;
-        }
-
-        .input-item {
+        .sidebar {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 20px;
         }
 
-        .input-item label {
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 8px;
+        }
+
+        .mode-switch {
+            display: flex;
+            background: #e2e8f0;
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: 0.2s;
             font-size: 0.85rem;
+        }
+
+        .mode-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            background: #fff;
+        }
+
+        .form-control:focus { border-color: var(--secondary-color); }
+
+        .upload-box {
+            border: 2px dashed #cbd5e1;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #f8fafc;
+            transition: 0.2s;
+        }
+
+        .upload-box:hover {
+            border-color: var(--primary-color);
+            background: #f1f5f9;
+        }
+
+        .upload-box i {
+            font-size: 2rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .result-view {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-info h3 {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .stat-info p {
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--primary-color);
         }
 
-        .input-item input,
-        .input-item select {
-            padding: 12px 14px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            background: white;
-            transition: all 0.3s ease;
-            width: 100%;
-            font-family: "Cairo", sans-serif;
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50px;
+            background: #e6f0fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.2rem;
         }
 
-        .input-item input:focus,
-        .input-item select:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.15);
-        }
-
-        .input-item input[readonly] {
-            background: #f1f5f9;
-            color: #475569;
-            font-weight: 600;
-        }
-
-        .table-responsive {
-            width: 100%;
+        .table-container {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
             overflow-x: auto;
-            margin: 25px 0;
-            border-radius: 16px;
-            background: white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 15px;
         }
 
         table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
+            border-collapse: collapse;
             font-size: 0.85rem;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        th,
-        td {
-            border: 1px solid var(--border);
-            padding: 10px;
-            text-align: center;
-        }
-
-        th {
-            background: var(--primary-color);
-            color: white;
-            font-weight: 600;
-        }
-
-        tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-
-        #mainTable th {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            padding: 14px 16px;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
-
-        #mainTable th:first-child {
             text-align: right;
         }
 
-        #mainTable td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #eef2f6;
-            border-right: none;
-            border-left: none;
-            background: white;
-        }
-
-        #mainTable tr:hover td {
+        th {
             background: #f8fafc;
-        }
-
-        #mainTable tr.highlight {
-            background: linear-gradient(90deg, #fef9e6, #fff8e7);
-        }
-
-        #mainTable tr.highlight td {
-            background: transparent;
-            border-bottom-color: #fcd34d;
-        }
-
-        #mainTable tr.highlight td:first-child {
-            border-right: 3px solid var(--gold-color);
-        }
-
-        .table-input-small {
-            width: 85px;
-            padding: 8px 10px;
-            text-align: center;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-family: monospace;
-            font-weight: 600;
-            background: #f8fafc;
-            transition: all 0.2s ease;
-        }
-
-        .table-input-small:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-            background: white;
-            box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.1);
-        }
-
-        .table-input-small[readonly] {
-            background: #f1f5f9;
-            border-style: dashed;
-            color: #475569;
-        }
-
-        .table-input-medium {
-            width: 110px;
-            padding: 8px 12px;
-            text-align: center;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-family: monospace;
+            color: var(--text-main);
             font-weight: 700;
-            background: linear-gradient(135deg, #fef9e6, #fff);
-            color: var(--primary-color);
-            transition: all 0.2s ease;
+            padding: 12px;
+            border-bottom: 2px solid #e2e8f0;
         }
 
-        .table-input-medium:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-            background: white;
-            box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.1);
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #edf2f7;
+            color: #4a5568;
         }
 
-        .table-input-medium[readonly] {
-            background: #f1f5f9;
-            color: #1e293b;
-            font-weight: 600;
+        tr:hover td { background-color: #f8fafc; }
+
+        /* لتمييز بداية ونهاية حسابات كل مشترك ملون داخل جدول الـ Excel المدمج */
+        .record-separator {
+            border-top: 2px solid var(--primary-color) !important;
+            background-color: #f1f5f9 !important;
+            font-weight: bold;
         }
 
-        .scroll-buttons {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        .scroll-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            border: none;
-            background: var(--primary-color);
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-
-        .scroll-btn:hover {
-            transform: scale(1.1);
-            background: var(--secondary-color);
-        }
-
-        .summary-data {
-            background: linear-gradient(135deg, #e8f4fd, #d9effa);
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .summary-data h4 {
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-
-        .summary-data .total-value {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary-color);
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin: 20px 0;
-            justify-content: center;
-        }
-
-        button {
+        .btn {
             padding: 10px 20px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            font-family: "Cairo", sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            transition: 0.2s;
         }
 
-        .btn-save {
-            background: linear-gradient(135deg, var(--success), #219653);
-            color: white;
-        }
-
-        .btn-export {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #f39c12, #e67e22);
-            color: white;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .tariffs-input {
-                grid-template-columns: 1fr;
-            }
-            
-            .table-input-small,
-            .table-input-medium {
-                width: 70px;
-                font-size: 0.75rem;
-            }
-            
-            .mode-selector {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-primary:hover { background: #003d80; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #27ae60; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+        .badge-info { background: #e0f2fe; color: #0369a1; }
+        .badge-dark { background: #1e293b; color: #f8fafc; }
     </style>
 </head>
 
 <body>
-    <div class="app-wrapper">
-        <div class="main-content">
-            <nav class="top-nav">
-                <div class="nav-brand">الشرائح (Tariffs)</div>
-                <button class="home-btn" onclick="window.location.href='index.html'">
-                    <ion-icon name="arrow-up-outline"></ion-icon>
-                    <span>الصفحة الرئيسية</span>
-                </button>
-            </nav>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> التشريح</h1>
+            <button class="btn btn-primary" onclick="window.location.href='index.html'">
+                <i class="fas fa-home"></i> الرئيسية
+            </button>
+        </header>
 
-            <div class="section-container">
-                <div class="section-header">
-                    <h3 class="section-title">
-                        <ion-icon name="cash-outline"></ion-icon> الشرائح
-                    </h3>
-                </div>
+        <div class="main-layout">
+            <div class="sidebar">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-sliders-h"></i> خيارات الإدخال</div>
+                    <div class="mode-switch">
+                        <button class="mode-btn active" id="manualModeBtn" onclick="selectMode('manual')">يدوي</button>
+                        <button class="mode-btn" id="excelModeBtn" onclick="selectMode('excel')">رفع Excel</button>
+                    </div>
 
-                <!-- Mode Selection -->
-                <div class="mode-selector">
-                    <div class="mode-option" id="manualMode" onclick="selectMode('manual')">
-                        <input type="radio" name="inputMode" id="manualRadio" checked>
-                        <label for="manualRadio">
-                            <i class="fas fa-keyboard"></i> إدخال يدوي - قيمة واحدة
-                        </label>
-                    </div>
-                    <div class="mode-option" id="excelMode" onclick="selectMode('excel')">
-                        <input type="radio" name="inputMode" id="excelRadio">
-                        <label for="excelRadio">
-                            <i class="fas fa-file-excel"></i> رفع ملف Excel - قيم متعددة
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Manual Input Section -->
-                <div id="manualSection" class="tariffs-input">
-                    <div class="input-item">
-                        <label>الاستهلاك (ك.و.س)</label>
-                        <input type="number" id="tkwh" value="13795" oninput="calculateTariffs()" />
-                    </div>
-                    <div class="input-item">
-                        <label>نوع النشاط</label>
-                        <select id="tariffType" onchange="calculateTariffs()">
+                    <div class="form-group">
+                        <label for="tariffType">نوع النشاط / المشترك</label>
+                        <select id="tariffType" class="form-control">
                             <option value="residential">🏠 منزلي</option>
                             <option value="commercial">🏢 تجاري</option>
-                            <option value="factory">⚙️ قوى محركة</option>
-                            <option value="Randomly">🎲 كودي</option>
+                            <option value="Randomly">🎲 عداد كودى</option>
                             <option value="farmer">🌾 الري</option>
+                            <option value="factory">⚙️ قوى محركة</option>
                             <option value="lighting">💡 انارة عامة</option>
                             <option value="balance_cst">🧾 باقى المشتركين</option>
                         </select>
                     </div>
-                    <div class="input-item">
-                        <label>فترة التعرفة</label>
-                        <select id="periodSelect" onchange="calculateTariffs()">
-                            <option value="Apr-2026">التعريفة 2026/4 بداية من (1/4/2026)</option>
-                            <option value="Aug-2024" selected>التعريفة 2024/8-2026/3 بداية من (1/8/2024-31/3/2026)</option>
-                            <option value="Jan2024-Jul2024">التعريفة 2024/1-2024/7 بداية من (1/1/2024-31/7/2024)</option>
-                            <option value="2021-2023">التعريفة 2021-2024 بداية من (1/1/2021-31/1/2023)</option>
-                            <option value="2019-2020">التعريفة 2020-2021 بداية من (1/1/2020-31/1/2020)</option>
+
+                    <div class="form-group">
+                        <label for="periodSelect">الفترة الزمنية للتعريفة</label>
+                        <select id="periodSelect" class="form-control">
+                            <option value="auto_map">🔄 توزيع ذكي تلقائي (حسب تاريخ الشهر)</option>
+                            <option value="Apr-2026">التعريفة الجديدة من (Apr-2026)</option>
+                            <option value="Aug-2024">تعريفة أغسطس (Aug-2024)</option>
+                            <option value="Jan2024-Jul2024">تعريفة يناير (Jan2024-Jul2024)</option>
+                            <option value="2021-2023">تعريفة الفترة (2021-2023)</option>
+                            <option value="2019-2020">تعريفة الفترة (2019-2020)</option>
                         </select>
                     </div>
-                    <div class="input-item">
-                        <label>إجمالي التشريح</label>
-                        <input type="number" id="totmoney" value="0" readonly />
-                    </div>
-                </div>
 
-                <!-- Excel Upload Section -->
-                <div id="excelSection" class="hidden">
-                    <div class="upload-area" onclick="document.getElementById('excelFile').click()">
-                        <input type="file" id="excelFile" accept=".xlsx, .xls, .csv" style="display: none;" onchange="handleExcelUpload(this)">
-                        <i class="fas fa-file-excel" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 10px; display: block;"></i>
-                        <label class="upload-label">
-                            <i class="fas fa-upload"></i> رفع ملف استهلاك
-                        </label>
-                        <div id="fileInfo" class="file-badge">📄 لم يتم رفع ملف بعد</div>
-                        <div class="info-text" style="font-size: 0.7rem; margin-top: 10px; color: #666;">
-                            يفضل أن يحتوي الملف على أعمدة: "كميه ك و س", "الشهر", "العام"
+                    <div id="manualInputs">
+                        <div class="form-group">
+                            <label for="manualKwh">كمية الاستهلاك (ك.و.س)</label>
+                            <input type="number" id="manualKwh" class="form-control" placeholder="أدخل الكمية..." value="250" oninput="calculateTariffs()" />
                         </div>
                     </div>
 
-                    <!-- Navigation for Excel records -->
-                    <div id="excelNav" class="btn-group hidden">
-                        <button onclick="previousRecord()" class="btn-secondary">
-                            <i class="fas fa-arrow-right"></i> السابق
-                        </button>
-                        <span id="recordCounter" style="align-self: center; font-weight: 600;">السجل 0 من 0</span>
-                        <button onclick="nextRecord()" class="btn-secondary">
-                            التالي <i class="fas fa-arrow-left"></i>
-                        </button>
-                    </div>
-
-                    <!-- Summary Section -->
-                    <div id="summarySection" class="summary-data hidden">
-                        <h4><i class="fas fa-chart-bar"></i> ملخص البيانات المرفوعة</h4>
-                        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px;">
-                            <div>
-                                <strong>عدد السجلات:</strong>
-                                <span id="recordCount" class="total-value" style="font-size: 1.2rem;">0</span>
-                            </div>
-                            <div>
-                                <strong>إجمالي الاستهلاك:</strong>
-                                <span id="totalConsumption" class="total-value" style="font-size: 1.2rem;">0</span>
-                                <span>ك.و.س</span>
-                            </div>
-                            <div>
-                                <strong>إجمالي التشريح:</strong>
-                                <span id="totalTariff" class="total-value" style="font-size: 1.2rem;">0</span>
-                                <span>جنيه</span>
-                            </div>
+                    <div id="excelInputs" style="display: none;">
+                        <div class="upload-box" onclick="document.getElementById('excelFile').click()">
+                            <i class="fas fa-file-excel"></i>
+                            <p>اضغط لرفع ملف الإستهلاك</p>
+                            <small style="color:var(--text-light); display:block; margin-top:5px;">يجب أن يحتوي الحقل على "الاستهلاك" أو "كمية ك و س"</small>
+                            <input type="file" id="excelFile" accept=".xlsx, .xls" style="display: none;" onchange="handleExcelUpload(event)" />
                         </div>
+                        <div id="fileStatus" style="margin-top: 10px; font-size: 0.8rem; font-weight: 600; color: var(--success); text-align: center;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-view">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>إجمالي الاستهلاك </h3>
+                            <p id="totalKwh">0</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-bolt"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>إجمالي الحساب (بالجنيه)</h3>
+                            <p id="totalTariff">0.00</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    </div>
+                    <div class="stat-card" id="recordsCountCard" style="display: none;">
+                        <div class="stat-info">
+                            <h3>عدد السجلات المرفوعة</h3>
+                            <p id="recordsCount">0</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-file-invoice"></i></div>
                     </div>
                 </div>
 
-                <!-- Main Tariff Table -->
-                <div class="table-responsive">
-                    <table id="mainTable">
+                <div class="table-container">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h2 style="font-size: 1rem; color: var(--primary-color);" id="tableHeaderTitle"><i class="fas fa-list-ol"></i> تشريح ملف اكسيل</h2>
+                        <button id="exportExcelBtn" class="btn btn-success" style="display: none;" onclick="exportAllToExcel()">
+                            <i class="fas fa-download"></i> تصدير التقرير  (Excel)
+                        </button>
+                    </div>
+
+                    <table id="detailsTable">
                         <thead>
-                            <tr>
-                                <th>الشريحة</th>
-                                <th>الاستهلاك</th>
-                                <th>السعر</th>
-                                <th>خدمة العملاء</th>
-                                <th>فرق تشريح</th>
-                                <th>الإجمالي</th>
-                            </tr>
+                            <tr id="tableHeadRow"></tr>
                         </thead>
-                        <tbody id="tariffTableBody"></tbody>
-                    </div>
-                </div>
-
-                <!-- Download Buttons -->
-                <div class="btn-group">
-                    <button onclick="downloadCurrentTable()" class="btn-export">
-                        <i class="fas fa-download"></i> تحميل الجدول الحالي (Excel)
-                    </button>
-                    <button id="downloadAllBtn" onclick="downloadAllRecords()" class="btn-save" style="display: none;">
-                        <i class="fas fa-file-excel"></i> تحميل جميع السجلات (Excel)
-                    </button>
+                        <tbody id="detailsBody"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="scroll-buttons">
-        <button class="scroll-btn" onclick="scrollToTop()">▲</button>
-        <button class="scroll-btn" onclick="scrollToBottom()">▼</button>
-    </div>
-
     <script>
-        let selectedPeriod = "Aug-2024";
-        let uploadedData = [];
-        let currentIndex = 0;
-        let currentMode = "manual"; // manual or excel
-
-        // Complete tariff configurations
         const allConfigs = {
             "Apr-2026": {
                 residential: [
@@ -764,399 +498,211 @@
             }
         };
 
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-
-        function scrollToBottom() {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-        }
+        let currentMode = 'manual';
+        let uploadedData = [];
 
         function selectMode(mode) {
             currentMode = mode;
-            
-            // Update UI
-            document.getElementById('manualMode').classList.remove('selected');
-            document.getElementById('excelMode').classList.remove('selected');
-            document.getElementById(`${mode}Mode`).classList.add('selected');
-            document.getElementById(`${mode}Radio`).checked = true;
-            
-            // Show/hide sections
-            if (mode === 'manual') {
-                document.getElementById('manualSection').classList.remove('hidden');
-                document.getElementById('excelSection').classList.add('hidden');
-                document.getElementById('downloadAllBtn').style.display = 'none';
-            } else {
-                document.getElementById('manualSection').classList.add('hidden');
-                document.getElementById('excelSection').classList.remove('hidden');
-                if (uploadedData.length > 0) {
-                    document.getElementById('downloadAllBtn').style.display = 'inline-flex';
-                }
-            }
+            document.getElementById("manualModeBtn").classList.toggle("active", mode === 'manual');
+            document.getElementById("excelModeBtn").classList.toggle("active", mode === 'excel');
+            document.getElementById("manualInputs").style.display = mode === 'manual' ? 'block' : 'none';
+            document.getElementById("excelInputs").style.display = mode === 'excel' ? 'block' : 'none';
+            document.getElementById("recordsCountCard").style.display = mode === 'excel' ? 'flex' : 'none';
+            document.getElementById("exportExcelBtn").style.display = mode === 'excel' ? 'inline-flex' : 'none';
+            calculateTariffs();
         }
 
-        function calculateTariffCost(kwh, type, period) {
-            if (isNaN(kwh) || kwh <= 0) return 0;
-            const cfg = allConfigs[period];
-            if (!cfg) return 0;
-            const rates = cfg[type];
-            if (!rates || rates.length === 0) return 0;
+        function getSmartPeriodKey(year, month) {
+            const y = parseInt(year); const m = parseInt(month);
+            if (isNaN(y) || isNaN(m)) return "Apr-2026";
+            const ref = (y * 100) + m;
+            if (ref >= 202604) return "Apr-2026";
+            if (ref >= 202408) return "Aug-2024";
+            if (ref >= 202401) return "Jan2024-Jul2024";
+            if (ref >= 202101) return "2021-2023";
+            return "2019-2020";
+        }
+
+        // دالة تشريح وحساب موحدة تخدم العرض اليدوي والـ Excel بالتفصيل الكامل
+        function getTariffRowsBreakdown(kwh, type, periodKey) {
+            if (isNaN(kwh) || kwh <= 0) return [];
+            const cfg = allConfigs[periodKey]; if (!cfg) return [];
+            const rates = cfg[type]; if (!rates) return [];
             
-            let remaining = kwh;
-            let totalCost = 0;
-            
+            const rows = []; let remaining = kwh;
             for (let i = 0; i < rates.length && remaining > 0; i++) {
-                const slab = rates[i];
-                const qty = Math.min(remaining, slab.limit);
-                totalCost += qty * slab.p + slab.s + (slab.extraDiff || 0);
-                remaining -= qty;
-            }
-            return totalCost;
+                const slab = rates[i]; const qty = Math.min(remaining, slab.limit);
+                if (qty > 0) {
+                    const rTotal = (qty * slab.p + slab.s) + (slab.extraDiff || 0);
+                    rows.push({ slab: slab.label, qty, price: slab.p, service: slab.s, diff: slab.extraDiff || 0, total: rTotal });
+                    remaining -= qty;
+                }
+            } return rows;
         }
 
         function calculateTariffs() {
             const type = document.getElementById("tariffType").value;
-            const period = document.getElementById("periodSelect").value;
-            let totalKwh = 0;
-            
-            if (currentMode === 'manual') {
-                totalKwh = Number(document.getElementById("tkwh").value) || 0;
-            } else if (uploadedData.length > 0) {
-                totalKwh = uploadedData[currentIndex].consumption;
-                document.getElementById("tkwh").value = totalKwh;
-            }
-            
-            const cfg = allConfigs[period];
-            const rates = cfg[type] || [];
-            
-            // Build tariff table
-            const tbody = document.getElementById("tariffTableBody");
+            const periodSelect = document.getElementById("periodSelect").value;
+            const tbody = document.getElementById("detailsBody");
+            const theadRow = document.getElementById("tableHeadRow");
             tbody.innerHTML = "";
-            
-            let remaining = totalKwh;
-            let grandTotal = 0;
-            
-            rates.forEach((slab, index) => {
-                const i = index + 1;
-                const qty = Math.min(remaining, slab.limit);
-                const slabTotal = qty * slab.p + slab.s + (slab.extraDiff || 0);
-                grandTotal += slabTotal;
+
+            // هيكلية عناوين الجدول الموحدة لعرض الشرائح التفصيلية دائماً
+            theadRow.innerHTML = `<th>م / السجل</th><th>العام/الشهر</th><th>الشريحة المطبقة</th><th>الكمية (ك.و.س)</th><th>سعر الكيلو (ج)</th><th>مقابل خدمة العملاء</th><th>فروق أخرى</th><th>الإجمالي</th>`;
+
+            if (currentMode === 'manual') {
+                const kwh = parseFloat(document.getElementById("manualKwh").value) || 0;
+                const activeKey = periodSelect === "auto_map" ? "Apr-2026" : periodSelect;
+                const rows = getTariffRowsBreakdown(kwh, type, activeKey);
+                let sumCost = 0;
+
+                document.getElementById("tableHeaderTitle").innerHTML = `<i class="fas fa-list-ol"></i> تشريح ملف اكسيل`;
                 
-                tbody.innerHTML += `<tr id="row${i}" ${qty > 0 ? 'class="highlight"' : ''}>
-                    <td>${slab.label}</td>
-                    <td><input id="q${i}" readonly value="${qty > 0 ? qty.toFixed(2) : '0'}" class="table-input-small"></td>
-                    <td><input id="p${i}" value="${slab.p}" oninput="calculateTariffs()" class="table-input-small"></td>
-                    <td><input id="s${i}" value="${slab.s}" oninput="calculateTariffs()" class="table-input-small"></td>
-                    <td><input id="r${i}" value="${slab.extraDiff || 0}" readonly class="table-input-small"></td>
-                    <td><input id="t${i}" readonly value="${qty > 0 ? slabTotal.toFixed(2) : '0'}" class="table-input-medium"></td>
-                 </tr>`;
+                if(rows.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-light);">يرجى إدخال كمية استهلاك صحيحة...</td></tr>`;
+                }
+
+                rows.forEach(r => {
+                    sumCost += r.total;
+                    tbody.innerHTML += `<tr>
+                        <td><span class="badge badge-dark">يدوي</span></td>
+                        <td>---</td>
+                        <td><span class="badge badge-info">${r.slab}</span></td>
+                        <td>${r.qty.toFixed(2)}</td><td>${r.price}</td><td>${r.service}</td><td>${r.diff}</td>
+                        <td style="font-weight:700; color:var(--primary-color);">${r.total.toFixed(2)} ج</td>
+                    </tr>`;
+                });
+
+                document.getElementById("totalKwh").innerText = kwh.toFixed(2);
+                document.getElementById("totalTariff").innerText = sumCost.toFixed(2);
+            } else {
+                if (uploadedData.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-light);">يرجى رفع ملف الاستهلاك لتفكيك شرائحه بالتفصيل هنا...</td></tr>`;
+                    document.getElementById("totalKwh").innerText = "0";
+                    document.getElementById("totalTariff").innerText = "0.00";
+                    return;
+                }
+
+                document.getElementById("tableHeaderTitle").innerHTML = `<i class="fas fa-table"></i>شرائح الأستهلاك`;
                 
-                remaining -= qty;
-            });
-            
-            document.getElementById("totmoney").value = grandTotal.toFixed(2);
+                let grandKwh = 0; let grandCost = 0;
+
+                uploadedData.forEach((item, index) => {
+                    const finalPeriodKey = periodSelect === "auto_map" ? getSmartPeriodKey(item.year, item.month) : periodSelect;
+                    const rows = getTariffRowsBreakdown(item.consumption, type, finalPeriodKey);
+                    
+                    grandKwh += item.consumption;
+
+                    if(rows.length === 0) {
+                         tbody.innerHTML += `<tr class="record-separator">
+                            <td>${index + 1}</td>
+                            <td>${item.year}/${item.month}</td>
+                            <td colspan="5" style="color:var(--danger); text-align:center;">استهلاك صفر أو غير صحيح</td>
+                            <td>0.00 ج</td>
+                         </tr>`;
+                    }
+
+                    rows.forEach((r, rIdx) => {
+                        grandCost += r.total;
+                        // نضع كلاس تمييز record-separator على أول شريحة من كل مشترك جديد لسهولة القراءة بوضوح
+                        const isFirstRow = (rIdx === 0) ? 'class="record-separator"' : '';
+                        
+                        tbody.innerHTML += `<tr ${isFirstRow}>
+                            <td>${rIdx === 0 ? `<b>السجل ${index + 1}</b>` : ''}</td>
+                            <td>${rIdx === 0 ? `${item.year || '---'} / ${item.month || '---'}` : ''}</td>
+                            <td><span class="badge badge-info">${r.slab}</span></td>
+                            <td>${r.qty.toFixed(2)}</td>
+                            <td>${r.price}</td>
+                            <td>${r.service}</td>
+                            <td>${r.diff}</td>
+                            <td style="font-weight:700; color:var(--primary-color);">${r.total.toFixed(2)} ج</td>
+                        </tr>`;
+                    });
+                });
+
+                document.getElementById("totalKwh").innerText = grandKwh.toFixed(2);
+                document.getElementById("totalTariff").innerText = grandCost.toFixed(2);
+                document.getElementById("recordsCount").innerText = uploadedData.length;
+            }
         }
 
-        function handleExcelUpload(input) {
-            const file = input.files[0];
-            if (!file) return;
-            
+        function handleExcelUpload(event) {
+            const file = event.target.files[0]; if (!file) return;
+            document.getElementById("fileStatus").innerText = "جاري قراءة ومعالجة الملف الفني...";
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, { type: 'array' });
-                const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                const jsonData = XLSX.utils.sheet_to_json(sheet);
-                
-                // Find consumption column
-                let consumptionColumn = null;
-                let monthColumn = null;
-                let yearColumn = null;
-                
-                const possibleConsumptionNames = ['كميه ك و س', 'كمية ك و س', 'الاستهلاك', 'كمية', 'kwh', 'consumption'];
-                const possibleMonthNames = ['الشهر', 'شهر', 'month', 'Month'];
-                const possibleYearNames = ['العام', 'سنة', 'year', 'Year', 'السنة'];
-                
-                if (jsonData.length > 0) {
-                    const headers = Object.keys(jsonData[0]);
-                    
-                    // Find consumption column
-                    for (const name of possibleConsumptionNames) {
-                        const found = headers.find(h => h.includes(name) || name.includes(h));
-                        if (found) {
-                            consumptionColumn = found;
-                            break;
-                        }
-                    }
-                    
-                    // Find month column
-                    for (const name of possibleMonthNames) {
-                        const found = headers.find(h => h.includes(name) || name.includes(h));
-                        if (found) {
-                            monthColumn = found;
-                            break;
-                        }
-                    }
-                    
-                    // Find year column
-                    for (const name of possibleYearNames) {
-                        const found = headers.find(h => h.includes(name) || name.includes(h));
-                        if (found) {
-                            yearColumn = found;
-                            break;
-                        }
-                    }
-                    
-                    if (consumptionColumn) {
-                        uploadedData = jsonData.map(row => ({
-                            consumption: parseFloat(row[consumptionColumn]) || 0,
-                            month: monthColumn ? (row[monthColumn] || '') : '',
-                            year: yearColumn ? (row[yearColumn] || '') : '',
-                            original: row
-                        })).filter(item => item.consumption > 0);
-                        
-                        if (uploadedData.length > 0) {
-                            currentIndex = 0;
-                            
-                            // Calculate totals
-                            const type = document.getElementById("tariffType").value;
-                            const period = document.getElementById("periodSelect").value;
-                            const totalConsumption = uploadedData.reduce((sum, item) => sum + item.consumption, 0);
-                            const totalTariff = uploadedData.reduce((sum, item) => sum + calculateTariffCost(item.consumption, type, period), 0);
-                            
-                            // Update summary section
-                            document.getElementById("summarySection").classList.remove("hidden");
-                            document.getElementById("excelNav").classList.remove("hidden");
-                            document.getElementById("recordCount").innerText = uploadedData.length;
-                            document.getElementById("totalConsumption").innerText = totalConsumption.toFixed(2);
-                            document.getElementById("totalTariff").innerText = totalTariff.toFixed(2);
-                            
-                            // Update record counter with month/year if available
-                            updateRecordCounter();
-                            
-                            // Set first record
-                            document.getElementById("tkwh").value = uploadedData[0].consumption;
-                            calculateTariffs();
-                            
-                            let columnInfo = `العمود: "${consumptionColumn}"`;
-                            if (monthColumn) columnInfo += `, الشهر: "${monthColumn}"`;
-                            if (yearColumn) columnInfo += `, العام: "${yearColumn}"`;
-                            document.getElementById("fileInfo").innerHTML = `✅ ${file.name} | ${uploadedData.length} سجل | ${columnInfo}`;
-                            document.getElementById("downloadAllBtn").style.display = 'inline-flex';
-                        } else {
-                            alert("لم يتم العثور على قيم استهلاك صالحة في الملف");
-                        }
-                    } else {
-                        alert("لم يتم العثور على عمود الاستهلاك. يرجى التأكد من وجود عمود باسم 'كميه ك و س' أو 'الاستهلاك'");
-                        document.getElementById("fileInfo").innerHTML = `❌ لم يتم العثور على عمود الاستهلاك في الملف`;
+                const ws = workbook.Sheets[workbook.SheetNames[0]];
+                const rows = XLSX.utils.sheet_to_json(ws);
+
+                let consKey = "", yearKey = "", monthKey = "";
+                if (rows.length > 0) {
+                    const firstRow = rows[0];
+                    for (let key in firstRow) {
+                        const kTrim = String(key).trim();
+                        if (kTrim.includes("كمية ك و س") || kTrim.includes("ك و س") || kTrim.includes("الاستهلاك") || kTrim.includes("الكمية")) consKey = key;
+                        if (kTrim === "العام" || kTrim.includes("عام") || kTrim === "السنة" || kTrim.includes("سنة")) yearKey = key;
+                        if (kTrim === "الشهر" || kTrim.includes("شهر") || kTrim.includes("Month")) monthKey = key;
                     }
                 }
+
+                if (!consKey) {
+                    alert("لم يتم العثور على حقل يحتوي على كمية الاستهلاك بالملف! يرجى التحقق من العناوين.");
+                    document.getElementById("fileStatus").innerText = "خطأ بالملف";
+                    return;
+                }
+
+                uploadedData = rows.map(r => ({
+                    consumption: parseFloat(r[consKey]) || 0,
+                    year: r[yearKey] ? String(r[yearKey]).trim() : "",
+                    month: r[monthKey] ? String(r[monthKey]).trim() : ""
+                })).filter(item => item.consumption >= 0);
+
+                document.getElementById("fileStatus").innerText = `✅ تم تحميل ${uploadedData.length} سجل وتشريحها بنجاح!`;
+                calculateTariffs();
             };
             reader.readAsArrayBuffer(file);
         }
 
-        function updateRecordCounter() {
-            if (uploadedData.length > 0 && currentIndex < uploadedData.length) {
-                const record = uploadedData[currentIndex];
-                let displayText = `السجل ${currentIndex + 1} من ${uploadedData.length}`;
-                if (record.month || record.year) {
-                    displayText += ` (`;
-                    if (record.month) displayText += `الشهر: ${record.month}`;
-                    if (record.month && record.year) displayText += ` - `;
-                    if (record.year) displayText += `العام: ${record.year}`;
-                    displayText += `)`;
-                }
-                document.getElementById("recordCounter").innerHTML = displayText;
-            }
-        }
-
-        function previousRecord() {
-            if (uploadedData.length > 0 && currentIndex > 0) {
-                currentIndex--;
-                document.getElementById("tkwh").value = uploadedData[currentIndex].consumption;
-                updateRecordCounter();
-                calculateTariffs();
-            }
-        }
-
-        function nextRecord() {
-            if (uploadedData.length > 0 && currentIndex < uploadedData.length - 1) {
-                currentIndex++;
-                document.getElementById("tkwh").value = uploadedData[currentIndex].consumption;
-                updateRecordCounter();
-                calculateTariffs();
-            }
-        }
-
-        function downloadCurrentTable() {
+        function exportAllToExcel() {
+            if (uploadedData.length === 0) return;
             const type = document.getElementById("tariffType").value;
-            const period = document.getElementById("periodSelect").value;
-            const consumption = Number(document.getElementById("tkwh").value) || 0;
-            const totalCost = Number(document.getElementById("totmoney").value) || 0;
+            const periodSelect = document.getElementById("periodSelect").value;
             
-            // Get table data
-            const table = document.getElementById("mainTable");
-            const rows = [];
+            const detailedReportRows = [];
             
-            // Add headers
-            const headers = [];
-            table.querySelectorAll("thead th").forEach(th => {
-                headers.push(th.innerText);
-            });
-            rows.push(headers);
-            
-            // Add data rows
-            table.querySelectorAll("tbody tr").forEach(tr => {
-                const row = [];
-                tr.querySelectorAll("td").forEach((td, idx) => {
-                    if (idx === 1) {
-                        // Get input value
-                        const input = td.querySelector("input");
-                        row.push(input ? input.value : td.innerText);
-                    } else if (idx === 2 || idx === 3) {
-                        const input = td.querySelector("input");
-                        row.push(input ? input.value : td.innerText);
-                    } else {
-                        row.push(td.innerText);
-                    }
+            uploadedData.forEach((item, idx) => {
+                const activeKey = periodSelect === "auto_map" ? getSmartPeriodKey(item.year, item.month) : periodSelect;
+                const rows = getTariffRowsBreakdown(item.consumption, type, activeKey);
+                
+                rows.forEach(r => {
+                    detailedReportRows.push({
+                        "رقم السجل المرجعي": idx + 1,
+                        "العام": item.year,
+                        "الشهر": item.month,
+                        "إجمالي استهلاك السجل": item.consumption,
+                        "التعريفة النشطة": activeKey,
+                        "الشريحة المفككة": r.slab,
+                        "الكمية داخل الشريحة": r.qty,
+                        "سعر الكيلو (جنيه)": r.price,
+                        "مقابل خدمة العملاء": r.service,
+                        "فروق شريحة أخرى": r.diff,
+                        "إجمالي تكلفة الشريحة (جنيه)": parseFloat(r.total.toFixed(2))
+                    });
                 });
-                rows.push(row);
             });
-            
-            // Add summary
-            rows.push([]);
-            rows.push(["", "", "", "", "الإجمالي:", totalCost.toFixed(2)]);
-            
-            // Add metadata if in excel mode and has month/year
-            if (currentMode === 'excel' && uploadedData[currentIndex]) {
-                rows.unshift([]);
-                rows.unshift(["نوع النشاط:", type]);
-                rows.unshift(["فترة التعرفة:", period]);
-                if (uploadedData[currentIndex].month) {
-                    rows.unshift(["الشهر:", uploadedData[currentIndex].month]);
-                }
-                if (uploadedData[currentIndex].year) {
-                    rows.unshift(["العام:", uploadedData[currentIndex].year]);
-                }
-                rows.unshift(["=".repeat(50)]);
-            }
-            
-            // Create worksheet
-            const ws = XLSX.utils.aoa_to_sheet(rows);
+
+            const ws = XLSX.utils.json_to_sheet(detailedReportRows);
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Tariff");
-            
-            // Download
-            let filename = `tariff_${type}_${consumption}kwh`;
-            if (currentMode === 'excel' && uploadedData[currentIndex]) {
-                if (uploadedData[currentIndex].year) filename += `_${uploadedData[currentIndex].year}`;
-                if (uploadedData[currentIndex].month) filename += `_${uploadedData[currentIndex].month}`;
-            }
-            XLSX.writeFile(wb, `${filename}.xlsx`);
+            XLSX.utils.book_append_sheet(wb, ws, "تفاصيل الشرائح الكاملة");
+            XLSX.writeFile(wb, `تقرير_تشريح_تفصيلي_شامل_${type}.xlsx`);
         }
 
-        function downloadAllRecords() {
-            if (uploadedData.length === 0) {
-                alert("لا توجد بيانات للتصدير");
-                return;
-            }
-            
-            const type = document.getElementById("tariffType").value;
-            const period = document.getElementById("periodSelect").value;
-            const rates = allConfigs[period][type] || [];
-            
-            // Prepare data for all records
-            const exportData = [];
-            
-            // Add header with metadata
-            exportData.push(["تقرير الشرائح الكهربائية"]);
-            exportData.push(["نوع النشاط:", type]);
-            exportData.push(["فترة التعرفة:", period]);
-            exportData.push(["تاريخ التصدير:", new Date().toLocaleDateString('ar-EG')]);
-            exportData.push([]);
-            
-            // Add main headers
-            const headers = ["م", "العام", "الشهر", "الاستهلاك (ك.و.س)", "إجمالي التشريح (جنيه)"];
-            rates.forEach((slab, idx) => {
-                headers.push(`${slab.label} - الاستهلاك`);
-                headers.push(`${slab.label} - الإجمالي`);
-            });
-            exportData.push(headers);
-            
-            // Add data for each record
-            uploadedData.forEach((record, idx) => {
-                const row = [
-                    idx + 1,
-                    record.year || '-',
-                    record.month || '-',
-                    record.consumption
-                ];
-                let totalCost = 0;
-                let remaining = record.consumption;
-                const slabDetails = [];
-                
-                rates.forEach(slab => {
-                    const qty = Math.min(remaining, slab.limit);
-                    const slabTotal = qty * slab.p + slab.s + (slab.extraDiff || 0);
-                    totalCost += slabTotal;
-                    slabDetails.push(qty.toFixed(2), slabTotal.toFixed(2));
-                    remaining -= qty;
-                });
-                
-                row.push(totalCost.toFixed(2));
-                row.push(...slabDetails);
-                exportData.push(row);
-            });
-            
-            // Add summary row
-            const totalConsumption = uploadedData.reduce((sum, item) => sum + item.consumption, 0);
-            const totalTariff = uploadedData.reduce((sum, item) => sum + calculateTariffCost(item.consumption, type, period), 0);
-            exportData.push([]);
-            exportData.push(["الإجمالي الكلي", "", "", totalConsumption.toFixed(2), totalTariff.toFixed(2)]);
-            
-            // Create worksheet and download
-            const ws = XLSX.utils.aoa_to_sheet(exportData);
-            
-            // Adjust column widths
-            ws['!cols'] = [
-                {wch: 8},  // م
-                {wch: 12}, // العام
-                {wch: 12}, // الشهر
-                {wch: 18}, // الاستهلاك
-                {wch: 22}, // الإجمالي
-                ...Array(rates.length * 2).fill({wch: 18})
-            ];
-            
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "All_Records");
-            XLSX.writeFile(wb, `tariff_all_records_${type}_${period}.xlsx`);
-        }
+        document.getElementById("tariffType").addEventListener("change", calculateTariffs);
+        document.getElementById("periodSelect").addEventListener("change", calculateTariffs);
 
-        // Event listeners
-        document.getElementById("tariffType").addEventListener("change", () => {
-            calculateTariffs();
-            if (uploadedData.length > 0 && currentMode === 'excel') {
-                const period = document.getElementById("periodSelect").value;
-                const type = document.getElementById("tariffType").value;
-                const totalTariff = uploadedData.reduce((sum, item) => sum + calculateTariffCost(item.consumption, type, period), 0);
-                document.getElementById("totalTariff").innerText = totalTariff.toFixed(2);
-            }
-        });
-        
-        document.getElementById("periodSelect").addEventListener("change", () => {
-            calculateTariffs();
-            if (uploadedData.length > 0 && currentMode === 'excel') {
-                const period = document.getElementById("periodSelect").value;
-                const type = document.getElementById("tariffType").value;
-                const totalTariff = uploadedData.reduce((sum, item) => sum + calculateTariffCost(item.consumption, type, period), 0);
-                document.getElementById("totalTariff").innerText = totalTariff.toFixed(2);
-            }
-        });
-        
-        window.onload = function () {
-            selectMode('manual');
-            calculateTariffs();
-        };
+        window.onload = function () { selectMode('manual'); };
     </script>
 </body>
 
