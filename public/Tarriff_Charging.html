@@ -356,7 +356,7 @@
 
                 <div>
                     <h3 style="font-size: 0.85rem; margin-bottom: 4px; color: #1e2f3f;"><i class="fas fa-history"></i>
-                        ملف حركات عداد ( تقارير خدمة العملاء)</h3>
+                        ملف حركات العداد ( تقارير خدمة العملاء)</h3>
                     <div class="preview-grid">
                         <table>
                             <thead>
@@ -364,11 +364,12 @@
                                     <th style="width: 40px;">#</th>
                                     <th>التاريخ والوقت </th>
                                     <th>المبلغ (جنيه)</th>
+                                    <th>حالة الفاتورة</th>
                                 </tr>
                             </thead>
                             <tbody id="previewTransactionsBody">
                                 <tr>
-                                    <td colspan="3" style="color: #64748b; padding:15px;">في انتظار الملف...</td>
+                                    <td colspan="4" style="color: #64748b; padding:15px;">في انتظار الملف...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -715,18 +716,26 @@
             const tbody = document.getElementById('previewTransactionsBody');
             tbody.innerHTML = "";
             if (rawTransactionsForPreview.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" style="color: #64748b; padding:15px;">في انتظار الملف...</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" style="color: #64748b; padding:15px;">في انتظار الملف...</td></tr>';
                 return;
             }
             rawTransactionsForPreview.slice(0, 50).forEach((tr, idx) => {
-                tbody.innerHTML += `<tr>
+                let statusHtml = `<span style="color: #2e7d32; font-weight:600;"><i class="fas fa-check-circle"></i> سليمة</span>`;
+                let rowStyle = "";
+                if (tr.isRemoved) {
+                    statusHtml = `<span style="color: #e74c3c; font-weight:600;"><i class="fas fa-times-circle"></i> مكررة/فارغة</span>`;
+                    rowStyle = "background-color: #fff5f5; color: #94a3b8;";
+                }
+                
+                tbody.innerHTML += `<tr style="${rowStyle}">
                     <td>${idx + 1}</td>
-                    <td style="color: #475569; font-weight: 500;">${formatExcelDate(tr.dateRaw)}</td>
-                    <td style="font-weight: 600; color: #27ae60;">${tr.value.toFixed(2)} ج</td>
+                    <td style="font-weight: 500;">${formatExcelDate(tr.dateRaw)}</td>
+                    <td style="font-weight: 600; ${tr.isRemoved ? 'color: #94a3b8; text-decoration: line-through;' : 'color: #27ae60;'}">${tr.value.toFixed(2)} ج</td>
+                    <td>${statusHtml}</td>
                 </tr>`;
             });
             if (rawTransactionsForPreview.length > 50) {
-                tbody.innerHTML += `<tr><td colspan="3" style="color: #64748b; font-size: 0.75rem; background: #f8fafc; padding:4px;">... تم عرض أول 50 حركة فقط لتسريع الأداء ...</td></tr>`;
+                tbody.innerHTML += `<tr><td colspan="4" style="color: #64748b; font-size: 0.75rem; background: #f8fafc; padding:4px;">... تم عرض أول 50 حركة فقط لتسريع الأداء ...</td></tr>`;
             }
         }
 
@@ -758,7 +767,7 @@
                         extractAndGroupTransactions(sheet);
                         const badge = document.getElementById('transactionsFileInfo');
                         badge.className = "file-badge badge-success";
-                        badge.innerHTML = `✅ حركات العداد: جاهز مصلح التواريخ (${groupedTransactions.size} شهر مالي)`;
+                        badge.innerHTML = `✅ حركات العداد: تم تصفير الفواتير المكررة/الفارغة جاهز (${groupedTransactions.size} شهر مالي)`;
                         renderTransactionsPreview();
                     } else {
                         alert(`تعذر فرز ملف "${file.name}" تلقائياً، يرجى مراجعة عناوين الحقول.`);
@@ -812,33 +821,56 @@
                 const cell = worksheet[XLSX.utils.encode_cell({ r: range.s.r, c: C })];
                 headers.push(cell ? String(cell.v).trim() : "");
             }
-            let datetimeIdx = -1, valueIdx = -1;
+            let datetimeIdx = -1, valueIdx = -1, invoiceIdx = -1;
             headers.forEach((h, i) => {
                 if (h.includes("وقت و تاريخ العملية") || h.includes("التاريخ") || h.includes("تاريخ")) datetimeIdx = i;
                 if (h.includes("قيمة العملية") || h.includes("القيمة") || h === "المبلغ") valueIdx = i;
+                if (h.includes("رقم الفاتورة") || h.includes("الفاتورة") || h.includes("رقم فاتورة")) invoiceIdx = i;
             });
 
             groupedTransactions = new Map();
             rawTransactionsForPreview = [];
+            const seenInvoices = new Set();
 
             for (let R = range.s.r + 1; R <= range.e.r; R++) {
                 let originalDateRaw = "", value = 0;
-                if (datetimeIdx !== -1) {
-                    let cell = worksheet[XLSX.utils.encode_cell({ r: R, c: datetimeIdx })];
-                    originalDateRaw = cell ? cell.v : "";
-                }
+                let isRemoved = false;
+
                 if (valueIdx !== -1) {
                     let cell = worksheet[XLSX.utils.encode_cell({ r: R, c: valueIdx })];
                     if (cell && cell.v !== undefined) value = parseFloat(cell.v) || 0;
                 }
-                if (value !== 0 && originalDateRaw) {
-                    rawTransactionsForPreview.push({ dateRaw: originalDateRaw, value: value });
-                    const { year, month } = parseDateToYearMonth(originalDateRaw);
-                    if (year && month) {
-                        const key = `${parseInt(year)}-${parseInt(month)}`;
-                        const current = groupedTransactions.get(key) || { year: parseInt(year), month: parseInt(month), totalValue: 0 };
-                        current.totalValue += value;
-                        groupedTransactions.set(key, current);
+                if (datetimeIdx !== -1) {
+                    let cell = worksheet[XLSX.utils.encode_cell({ r: R, c: datetimeIdx })];
+                    originalDateRaw = cell ? cell.v : "";
+                }
+
+                // التحقق من شرط رقم الفاتورة (مكرر أو فارغ)
+                if (invoiceIdx !== -1) {
+                    let invoiceCell = worksheet[XLSX.utils.encode_cell({ r: R, c: invoiceIdx })];
+                    let invoiceVal = invoiceCell && invoiceCell.v !== undefined ? String(invoiceCell.v).trim() : "";
+                    
+                    if (invoiceVal === "" || seenInvoices.has(invoiceVal)) {
+                        value = 0; // تصفير قيمة حقل "قيمة العملية"
+                        isRemoved = true;
+                    } else {
+                        seenInvoices.add(invoiceVal);
+                    }
+                }
+
+                if (originalDateRaw) {
+                    // إضافة الحركة لجدول المعاينة (بحالتها الجديدة وقيمتها المصفرة إذا كانت مخالفة)
+                    rawTransactionsForPreview.push({ dateRaw: originalDateRaw, value: value, isRemoved: isRemoved });
+                    
+                    // إذا لم تكن مكررة/فارغة، يتم تراكمها وحسابها في المجموع المالي للشهور
+                    if (!isRemoved && value !== 0) {
+                        const { year, month } = parseDateToYearMonth(originalDateRaw);
+                        if (year && month) {
+                            const key = `${parseInt(year)}-${parseInt(month)}`;
+                            const current = groupedTransactions.get(key) || { year: parseInt(year), month: parseInt(month), totalValue: 0 };
+                            current.totalValue += value;
+                            groupedTransactions.set(key, current);
+                        }
                     }
                 }
             }
