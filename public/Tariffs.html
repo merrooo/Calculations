@@ -2,386 +2,340 @@
 <html lang="ar" dir="rtl">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>التشريح</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>حسابات تعرفة الطاقة والشرائح الذكية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
-
     <style>
-        :root {
-            --primary-color: #004a99;
-            --secondary-color: #0099ff;
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-            --text-main: #2c3e50;
-            --text-light: #7f8c8d;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            --border-radius: 12px;
-            --danger: #e74c3c;
-            --success: #2ecc71;
-        }
-
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: 'Cairo', sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 20px;
+            background: #eef2f5;
+            padding: 12px;
+            color: #1e2a3e;
+            font-size: 0.85rem;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            background: var(--card-bg);
-            padding: 15px 25px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            border-right: 5px solid var(--primary-color);
-        }
-
-        header h1 {
-            font-size: 1.4rem;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .main-layout {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 992px) {
-            .main-layout { grid-template-columns: 1fr; }
-        }
-
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
         .card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            box-shadow: var(--shadow);
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 14px 18px;
+            margin-bottom: 14px;
         }
 
-        .card-title {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--primary-color);
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            border-right: 4px solid #004a99;
+            padding-right: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .card-header-left {
             display: flex;
             align-items: center;
             gap: 8px;
-            border-bottom: 1px solid #edf2f7;
-            padding-bottom: 8px;
         }
 
-        .mode-switch {
+        .card-header-left ion-icon {
+            font-size: 22px;
+            color: #004a99;
+        }
+
+        .card-header-left h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f2b3d;
+        }
+
+        .download-btn-small {
+            background: linear-gradient(135deg, #27ae60, #219653);
+            padding: 6px 12px;
+            font-size: 0.75rem;
+        }
+
+        .flex-row {
             display: flex;
-            background: #e2e8f0;
-            padding: 4px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-
-        .mode-btn {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-weight: 600;
-            border-radius: 6px;
-            transition: 0.2s;
-            font-size: 0.85rem;
-        }
-
-        .mode-btn.active {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            outline: none;
-            background: #fff;
-        }
-
-        .form-control:focus { border-color: var(--secondary-color); }
-
-        .upload-box {
-            border: 2px dashed #cbd5e1;
-            padding: 20px;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
-            background: #f8fafc;
-            transition: 0.2s;
-        }
-
-        .upload-box:hover {
-            border-color: var(--primary-color);
-            background: #f1f5f9;
-        }
-
-        .upload-box i {
-            font-size: 2rem;
-            color: var(--text-light);
-            margin-bottom: 10px;
-        }
-
-        .result-view {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
             align-items: center;
-            justify-content: space-between;
-        }
-
-        .stat-info h3 {
-            font-size: 0.8rem;
-            color: var(--text-light);
             margin-bottom: 4px;
         }
 
-        .stat-info p {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--primary-color);
+        .upload-area-unified {
+            width: 100%;
+            background: #f8fafc;
+            padding: 15px 15px;
+            border-radius: 14px;
+            border: 2px dashed #004a99;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .stat-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 50px;
-            background: #e6f0fa;
+        .upload-area-unified:hover {
+            background: #f0f6fc;
+        }
+
+        .upload-label-unified {
+            background: linear-gradient(135deg, #004a99, #0077cc);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+        }
+
+        .badges-container {
             display: flex;
-            align-items: center;
+            gap: 8px;
             justify-content: center;
-            color: var(--primary-color);
-            font-size: 1.2rem;
+            flex-wrap: wrap;
+            margin-top: 4px;
         }
 
-        .table-container {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
+        .file-badge {
+            font-size: 0.75rem;
+            background: #e9f4ff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            border: 1px solid #cbd5e1;
+        }
+
+        .badge-success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-color: #a5d6a7;
+        }
+
+        .preview-grid {
+            margin-top: 8px;
             overflow-x: auto;
-            padding: 15px;
+            overflow-y: auto;
+            max-height: 240px;
+            border-radius: 12px;
+            border: 1px solid #e2edf2;
+            margin-bottom: 5px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
-            text-align: right;
+            font-size: 0.8rem;
         }
 
         th {
-            background: #f8fafc;
-            color: var(--text-main);
-            font-weight: 700;
-            padding: 12px;
-            border-bottom: 2px solid #e2e8f0;
+            background: #004a99;
+            color: white;
+            padding: 8px 8px;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         td {
-            padding: 12px;
-            border-bottom: 1px solid #edf2f7;
-            color: #4a5568;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 7px 8px;
+            text-align: center;
+            background: white;
         }
 
-        tr:hover td { background-color: #f8fafc; }
-
-        /* لتمييز بداية ونهاية حسابات كل مشترك ملون داخل جدول الـ Excel المدمج */
-        .record-separator {
-            border-top: 2px solid var(--primary-color) !important;
-            background-color: #f1f5f9 !important;
-            font-weight: bold;
+        tr:hover td {
+            background: #fefce8;
         }
 
-        .btn {
-            padding: 10px 20px;
+        button {
+            background: #2c3e50;
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
+            padding: 6px 16px;
+            border-radius: 30px;
             font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            transition: 0.2s;
+            gap: 6px;
+            font-size: 0.8rem;
         }
 
-        .btn-primary { background: var(--primary-color); color: white; }
-        .btn-primary:hover { background: #003d80; }
-        .btn-success { background: var(--success); color: white; }
-        .btn-success:hover { background: #27ae60; }
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
-        .badge-info { background: #e0f2fe; color: #0369a1; }
-        .badge-dark { background: #1e293b; color: #f8fafc; }
+        button.primary {
+            background: linear-gradient(135deg, #004a99, #0088dd);
+        }
+
+        button.outline {
+            background: transparent;
+            border: 2px solid #004a99;
+            color: #004a99;
+            padding: 5px 14px;
+        }
+
+        button.success {
+            background: linear-gradient(135deg, #27ae60, #219653);
+        }
+
+        button.download {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .total-row {
+            background: #fef9e3;
+            font-weight: 800;
+            border-top: 2px solid #f59e0b;
+        }
+
+        select {
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 2px solid #cbd5e1;
+            background: white;
+            font-size: 0.8rem;
+            cursor: pointer;
+            min-width: 220px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <header>
-            <h1><i class="fas fa-calculator"></i> التشريح</h1>
-            <button class="btn btn-primary" onclick="window.location.href='index.html'">
-                <i class="fas fa-home"></i> الرئيسية
-            </button>
-        </header>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <ion-icon name="cloud-upload-outline"></ion-icon>
+                    <h2>📂 رفع ملف استهلاك المشتركين</h2>
+                </div>
+                <button onclick="window.location.href='index.html'"
+                    style="background-color: #0077cc; height: 30px; padding: 0 10px;">
+                    <ion-icon name="arrow-up-outline"></ion-icon><span>الرئيسية</span>
+                </button>
+            </div>
 
-        <div class="main-layout">
-            <div class="sidebar">
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-sliders-h"></i> خيارات الإدخال</div>
-                    <div class="mode-switch">
-                        <button class="mode-btn active" id="manualModeBtn" onclick="selectMode('manual')">يدوي</button>
-                        <button class="mode-btn" id="excelModeBtn" onclick="selectMode('excel')">رفع Excel</button>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="tariffType">نوع النشاط / المشترك</label>
-                        <select id="tariffType" class="form-control">
-                            <option value="residential">🏠 منزلي</option>
-                            <option value="commercial">🏢 تجاري</option>
-                            <option value="Randomly">🎲 عداد كودى</option>
-                            <option value="farmer">🌾 الري</option>
-                            <option value="factory">⚙️ قوى محركة</option>
-                            <option value="lighting">💡 انارة عامة</option>
-                            <option value="balance_cst">🧾 باقى المشتركين</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="periodSelect">الفترة الزمنية للتعريفة</label>
-                        <select id="periodSelect" class="form-control">
-                            <option value="auto_map">🔄 توزيع ذكي تلقائي (حسب تاريخ الشهر)</option>
-                            <option value="Apr-2026">التعريفة الجديدة من (Apr-2026)</option>
-                            <option value="Aug-2024">تعريفة أغسطس (Aug-2024)</option>
-                            <option value="Jan2024-Jul2024">تعريفة يناير (Jan2024-Jul2024)</option>
-                            <option value="2021-2023">تعريفة الفترة (2021-2023)</option>
-                            <option value="2019-2020">تعريفة الفترة (2019-2020)</option>
-                        </select>
-                    </div>
-
-                    <div id="manualInputs">
-                        <div class="form-group">
-                            <label for="manualKwh">كمية الاستهلاك (ك.و.س)</label>
-                            <input type="number" id="manualKwh" class="form-control" placeholder="أدخل الكمية..." value="250" oninput="calculateTariffs()" />
-                        </div>
-                    </div>
-
-                    <div id="excelInputs" style="display: none;">
-                        <div class="upload-box" onclick="document.getElementById('excelFile').click()">
-                            <i class="fas fa-file-excel"></i>
-                            <p>اضغط لرفع ملف الإستهلاك</p>
-                            <small style="color:var(--text-light); display:block; margin-top:5px;">يجب أن يحتوي الحقل على "الاستهلاك" أو "كمية ك و س"</small>
-                            <input type="file" id="excelFile" accept=".xlsx, .xls" style="display: none;" onchange="handleExcelUpload(event)" />
-                        </div>
-                        <div id="fileStatus" style="margin-top: 10px; font-size: 0.8rem; font-weight: 600; color: var(--success); text-align: center;"></div>
-                    </div>
+            <div class="upload-area-unified" onclick="document.getElementById('consumptionFileInput').click()">
+                <input type="file" id="consumptionFileInput" accept=".xlsx, .xls, .csv" style="display: none;">
+                <span class="upload-label-unified"><i class="fas fa-file-excel"></i> اضغط هنا لرفع ملف استهلاك المشتركين من تقارير
+                    البحوث والإحصاء</span>
+                <div class="badges-container">
+                    <div id="consumptionFileInfo" class="file-badge">📄 حالة الملف: لم يتم الرفع بعد</div>
                 </div>
             </div>
 
-            <div class="result-view">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3>إجمالي الاستهلاك </h3>
-                            <p id="totalKwh">0</p>
-                        </div>
-                        <div class="stat-icon"><i class="fas fa-bolt"></i></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3>إجمالي الحساب (بالجنيه)</h3>
-                            <p id="totalTariff">0.00</p>
-                        </div>
-                        <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
-                    </div>
-                    <div class="stat-card" id="recordsCountCard" style="display: none;">
-                        <div class="stat-info">
-                            <h3>عدد السجلات المرفوعة</h3>
-                            <p id="recordsCount">0</p>
-                        </div>
-                        <div class="stat-icon"><i class="fas fa-file-invoice"></i></div>
-                    </div>
-                </div>
-
-                <div class="table-container">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h2 style="font-size: 1rem; color: var(--primary-color);" id="tableHeaderTitle"><i class="fas fa-list-ol"></i> تشريح ملف اكسيل</h2>
-                        <button id="exportExcelBtn" class="btn btn-success" style="display: none;" onclick="exportAllToExcel()">
-                            <i class="fas fa-download"></i> تصدير التقرير  (Excel)
-                        </button>
-                    </div>
-
-                    <table id="detailsTable">
+            <div style="margin-top: 10px;">
+                <h3 style="font-size: 0.85rem; margin-bottom: 4px; color: #004a99;"><i class="fas fa-table"></i> معاينة
+                    البيانات المستوردة والمفلترة</h3>
+                <div class="preview-grid">
+                    <table>
                         <thead>
-                            <tr id="tableHeadRow"></tr>
+                            <tr>
+                                <th style="width: 40px;">#</th>
+                                <th>العام</th>
+                                <th>الشهر</th>
+                                <th>كمية ك و س</th>
+                                <th>الحالة</th>
+                            </tr>
                         </thead>
-                        <tbody id="detailsBody"></tbody>
+                        <tbody id="previewConsumptionBody">
+                            <tr>
+                                <td colspan="5" style="color: #64748b; padding:15px;">في انتظار رفع ملف الاكسيل...</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
+            </div>
+
+            <div style="width: 100%; text-align: left; margin-top: 6px;">
+                <button id="processBtn" class="success" disabled style="padding: 5px 14px;"><i
+                        class="fas fa-calculator"></i> تشريح الاستهلاك وعرض الجدول</button>
+            </div>
+        </div>
+
+        <div class="card" style="padding: 10px 18px;">
+            <div class="flex-row" style="justify-content: space-between;">
+                <div class="flex-row" style="gap:10px; margin-bottom:0;">
+                    <select id="tariffTypeSelector">
+                        <option value="residential">🏠 منزلي</option>
+                        <option value="commercial" selected>🏢 تجاري</option>
+                        <option value="factory">⚙️ قوى محركة</option>
+                        <option value="farmer">🌾 الري</option>
+                        <option value="lighting">💡 انارة عامة</option>
+                        <option value="balance_cst">🧾 باقى المشتركين</option>
+                    </select>
+                    <select id="periodSelector" style="min-width: 320px;">
+                        <option value="auto_map" selected>🔄 توزيع تلقائي ذكي (مطابقة السعر حسب تاريخ الشهر تلقائياً)
+                        </option>
+                        <option value="01/04/2026">التعريفة الجديدة من تاريخ (1/4/2026)</option>
+                        <option value="1/8/2024-31/3/2026">التعريفة 2024/8-2026/3 بداية من (1/8/2024)</option>
+                        <option value="1/1/2024-31/7/2024">التعريفة 2024/1-2024/7 بداية من (1/1/2024)</option>
+                        <option value="1/1/2021-31/1/2023">التعريفة 2021-2024 بداية من (1/1/2021)</option>
+                        <option value="1/1/2020-31/12/2020">التعريفة 2020 بداية من (1/1/2020)</option>
+                        <option value="1/1/2019-31/12/2019">التعريفة 2019 بداية من (1/1/2019)</option>
+                    </select>
+                </div>
+                <button id="recalcBtn" class="outline"><i class="fas fa-sync-alt"></i> إعادة احتساب فوري</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <ion-icon name="tablet-landscape-outline"></ion-icon>
+                    <h2>📊 تفاصيل حسابات الشرائح التشريحية شهرياً</h2>
+                </div>
+                <button id="downloadTariffTableBtn" class="download download-btn-small" style="display: none;">
+                    <i class="fas fa-download"></i> تصدير لملف (Excel)
+                </button>
+            </div>
+            <div class="preview-grid" style="max-height: 400px;">
+                <table id="unifiedTariffTable">
+                    <thead>
+                        <tr>
+                            <th>الشهر/السنة</th>
+                            <th>التعريفة المطبقة</th>
+                            <th>الشريحة</th>
+                            <th>الاستهلاك المستهلك</th>
+                            <th>سعر الكيلو</th>
+                            <th>مقابل الخدمة</th>
+                            <th>فرق تشريح</th>
+                            <th>القيمة الإجمالية للسطر</th>
+                        </tr>
+                    </thead>
+                    <tbody id="unifiedTariffBody">
+                        <tr>
+                            <td colspan="8" style="padding: 10px; color:#64748b;">يرجى رفع ملف الاستهلاك أولاً واضغط على
+                                زر التشريح...</td>
+                        </tr>
+                    </tbody>
+                    <tfoot id="unifiedTariffFoot"></tfoot>
+                </table>
             </div>
         </div>
     </div>
 
     <script>
-        const allConfigs = {
-            "Apr-2026": {
+        const TARIFF_CONFIGS = {
+            "01/04/2026": {
                 residential: [
                     { label: "ش1 (0-50)", limit: 50, p: 0.68, s: 1, extraDiff: 0 },
                     { label: "ش2 (51-100)", limit: 50, p: 0.78, s: 2, extraDiff: 0 },
@@ -398,13 +352,12 @@
                     { label: "ش4 (601-1000)", limit: 400, p: 2.74, s: 25, extraDiff: 25 },
                     { label: "ش5 (1001+)", limit: Infinity, p: 2.79, s: 40, extraDiff: 140 }
                 ],
-                Randomly: [{ label: "كودى", limit: Infinity, p: 2.74, s: 15, extraDiff: 0 }],
                 farmer: [{ label: "الري", limit: Infinity, p: 2.15, s: 4, extraDiff: 0 }],
                 factory: [{ label: "قوى محركة", limit: Infinity, p: 2.74, s: 15, extraDiff: 0 }],
                 lighting: [{ label: "انارة عامة", limit: Infinity, p: 2.34, s: 4, extraDiff: 0 }],
                 balance_cst: [{ label: "باقى المشتركين", limit: Infinity, p: 2.34, s: 15, extraDiff: 0 }]
             },
-            "Aug-2024": {
+            "1/8/2024-31/3/2026": {
                 residential: [
                     { label: "ش1 (0-50)", limit: 50, p: 0.68, s: 1, extraDiff: 0 },
                     { label: "ش2 (51-100)", limit: 50, p: 0.78, s: 2, extraDiff: 0 },
@@ -421,13 +374,12 @@
                     { label: "ش4 (601-1000)", limit: 400, p: 2.27, s: 25, extraDiff: 25 },
                     { label: "ش5 (1001+)", limit: Infinity, p: 2.33, s: 40, extraDiff: 140 }
                 ],
-                Randomly: [{ label: "كودى", limit: Infinity, p: 2.34, s: 15, extraDiff: 0 }],
                 farmer: [{ label: "الري", limit: Infinity, p: 2.0, s: 4, extraDiff: 0 }],
                 factory: [{ label: "قوى محركة", limit: Infinity, p: 2.34, s: 15, extraDiff: 0 }],
                 lighting: [{ label: "انارة عامة", limit: Infinity, p: 2.34, s: 4, extraDiff: 0 }],
                 balance_cst: [{ label: "باقى المشتركين", limit: Infinity, p: 2.34, s: 15, extraDiff: 0 }]
             },
-            "Jan2024-Jul2024": {
+            "1/1/2024-31/7/2024": {
                 residential: [
                     { label: "ش1 (0-50)", limit: 50, p: 0.58, s: 1, extraDiff: 0 },
                     { label: "ش2 (51-100)", limit: 50, p: 0.68, s: 2, extraDiff: 0 },
@@ -441,16 +393,15 @@
                     { label: "ش1 (0-100)", limit: 100, p: 0.65, s: 5, extraDiff: 0 },
                     { label: "ش2 (0-250)", limit: 150, p: 1.36, s: 15, extraDiff: 70 },
                     { label: "ش3 (0-600)", limit: 350, p: 1.5, s: 20, extraDiff: 70 },
-                    { label: "ش4 (601-1000)", limit: 400, p: 1.65, s: 25, extraDiff: 25 },
+                    { label: "ش4 (601-1000)", limit: 400, p: 1.56, s: 25, extraDiff: 25 },
                     { label: "ش5 (1001+)", limit: Infinity, p: 1.8, s: 40, extraDiff: 140 }
                 ],
-                Randomly: [{ label: "كودى", limit: Infinity, p: 1.5, s: 15, extraDiff: 0 }],
                 farmer: [{ label: "الري", limit: Infinity, p: 1.1, s: 4, extraDiff: 0 }],
                 factory: [{ label: "قوى محركة", limit: Infinity, p: 1.5, s: 15, extraDiff: 0 }],
                 lighting: [{ label: "انارة عامة", limit: Infinity, p: 1.5, s: 4, extraDiff: 0 }],
                 balance_cst: [{ label: "باقى المشتركين", limit: Infinity, p: 1.5, s: 15, extraDiff: 0 }]
             },
-            "2021-2023": {
+            "1/1/2021-31/1/2023": {
                 residential: [
                     { label: "ش1 (0-50)", limit: 50, p: 0.48, s: 1, extraDiff: 0 },
                     { label: "ش2 (51-100)", limit: 50, p: 0.58, s: 2, extraDiff: 0 },
@@ -467,13 +418,12 @@
                     { label: "ش4 (601-1000)", limit: 400, p: 1.55, s: 25, extraDiff: 25 },
                     { label: "ش5 (1001+)", limit: Infinity, p: 1.6, s: 40, extraDiff: 140 }
                 ],
-                Randomly: [{ label: "كودى", limit: Infinity, p: 1.25, s: 15, extraDiff: 0 }],
-                farmer: [{ label: "الري (موحد)", limit: Infinity, p: 0.95, s: 4, extraDiff: 0 }],
+                farmer: [{ label: "الري", limit: Infinity, p: 0.95, s: 4, extraDiff: 0 }],
                 factory: [{ label: "قوى محركة", limit: Infinity, p: 1.25, s: 15, extraDiff: 0 }],
                 lighting: [{ label: "انارة عامة", limit: Infinity, p: 1.25, s: 4, extraDiff: 0 }],
                 balance_cst: [{ label: "باقى المشتركين", limit: Infinity, p: 1.25, s: 15, extraDiff: 0 }]
             },
-            "2019-2020": {
+            "1/1/2020-31/12/2020": {
                 residential: [
                     { label: "ش1 (0-50)", limit: 50, p: 0.38, s: 1, extraDiff: 0 },
                     { label: "ش2 (51-100)", limit: 50, p: 0.65, s: 2, extraDiff: 0 },
@@ -490,219 +440,222 @@
                     { label: "ش4 (601-1000)", limit: 400, p: 1.55, s: 25, extraDiff: 25 },
                     { label: "ش5 (1001+)", limit: Infinity, p: 1.6, s: 40, extraDiff: 140 }
                 ],
-                Randomly: [{ label: "كودى", limit: Infinity, p: 1.25, s: 15, extraDiff: 0 }],
-                farmer: [{ label: "الري (موحد)", limit: Infinity, p: 0.85, s: 4, extraDiff: 0 }],
+                farmer: [{ label: "الري", limit: Infinity, p: 0.85, s: 4, extraDiff: 0 }],
+                factory: [{ label: "قوى محركة", limit: Infinity, p: 1.25, s: 15, extraDiff: 0 }],
+                lighting: [{ label: "انارة عامة", limit: Infinity, p: 1.25, s: 4, extraDiff: 0 }],
+                balance_cst: [{ label: "باقى المشتركين", limit: Infinity, p: 1.25, s: 15, extraDiff: 0 }]
+            },
+            "1/1/2019-31/12/2019": {
+                residential: [
+                    { label: "ش1 (0-50)", limit: 50, p: 0.3, s: 1, extraDiff: 0 },
+                    { label: "ش2 (51-100)", limit: 50, p: 0.4, s: 2, extraDiff: 0 },
+                    { label: "ش3 (0-200)", limit: 200, p: 0.5, s: 6, extraDiff: 24 },
+                    { label: "ش4 (201-350)", limit: 150, p: 0.82, s: 11, extraDiff: 0 },
+                    { label: "ش5 (351-650)", limit: 300, p: 1, s: 15, extraDiff: 0 },
+                    { label: "ش6 (651-1000)", limit: 350, p: 1.4, s: 25, extraDiff: 135 },
+                    { label: "ش7 (1001+)", limit: Infinity, p: 1.45, s: 40, extraDiff: 170 }
+                ],
+                commercial: [
+                    { label: "ش1 (0-100)", limit: 100, p: 0.65, s: 5, extraDiff: 0 },
+                    { label: "ش2 (0-250)", limit: 150, p: 1.15, s: 15, extraDiff: 70 },
+                    { label: "ش3 (0-600)", limit: 350, p: 1.4, s: 20, extraDiff: 70 },
+                    { label: "ش4 (601-1000)", limit: 400, p: 1.55, s: 25, extraDiff: 25 },
+                    { label: "ش5 (1001+)", limit: Infinity, p: 1.6, s: 40, extraDiff: 140 }
+                ],
+                farmer: [{ label: "الري", limit: Infinity, p: 0.75, s: 4, extraDiff: 0 }],
                 factory: [{ label: "قوى محركة", limit: Infinity, p: 1.25, s: 15, extraDiff: 0 }],
                 lighting: [{ label: "انارة عامة", limit: Infinity, p: 1.25, s: 4, extraDiff: 0 }],
                 balance_cst: [{ label: "باقى المشتركين", limit: Infinity, p: 1.25, s: 15, extraDiff: 0 }]
             }
         };
 
-        let currentMode = 'manual';
-        let uploadedData = [];
+        let consumptionData = [];
 
-        function selectMode(mode) {
-            currentMode = mode;
-            document.getElementById("manualModeBtn").classList.toggle("active", mode === 'manual');
-            document.getElementById("excelModeBtn").classList.toggle("active", mode === 'excel');
-            document.getElementById("manualInputs").style.display = mode === 'manual' ? 'block' : 'none';
-            document.getElementById("excelInputs").style.display = mode === 'excel' ? 'block' : 'none';
-            document.getElementById("recordsCountCard").style.display = mode === 'excel' ? 'flex' : 'none';
-            document.getElementById("exportExcelBtn").style.display = mode === 'excel' ? 'inline-flex' : 'none';
-            calculateTariffs();
-        }
-
-        function getSmartPeriodKey(year, month) {
+        function getTariffKeyByDate(year, month) {
             const y = parseInt(year); const m = parseInt(month);
-            if (isNaN(y) || isNaN(m)) return "Apr-2026";
-            const ref = (y * 100) + m;
-            if (ref >= 202604) return "Apr-2026";
-            if (ref >= 202408) return "Aug-2024";
-            if (ref >= 202401) return "Jan2024-Jul2024";
-            if (ref >= 202101) return "2021-2023";
-            return "2019-2020";
+            if (isNaN(y) || !m) return "01/04/2026";
+            const dateRef = (y * 100) + m;
+
+            if (dateRef >= 202604) return "01/04/2026";
+            if (dateRef >= 202408 && dateRef <= 202603) return "1/8/2024-31/3/2026";
+            if (dateRef >= 202401 && dateRef <= 202407) return "1/1/2024-31/7/2024";
+            if (dateRef >= 202101 && dateRef <= 202312) return "1/1/2021-31/1/2023";
+            if (dateRef >= 202001 && dateRef <= 202012) return "1/1/2020-31/12/2020";
+            if (dateRef <= 201912) return "1/1/2019-31/12/2019";
+            return "01/04/2026";
         }
 
-        // دالة تشريح وحساب موحدة تخدم العرض اليدوي والـ Excel بالتفصيل الكامل
-        function getTariffRowsBreakdown(kwh, type, periodKey) {
-            if (isNaN(kwh) || kwh <= 0) return [];
-            const cfg = allConfigs[periodKey]; if (!cfg) return [];
-            const rates = cfg[type]; if (!rates) return [];
-            
-            const rows = []; let remaining = kwh;
+        function getEffectivePeriodKey(rec) {
+            const selectorVal = document.getElementById('periodSelector').value;
+            return selectorVal === "auto_map" ? getTariffKeyByDate(rec.year, rec.month) : selectorVal;
+        }
+
+        function getTariffRowsForMonth(kwh, tariffType, periodKey) {
+            const cfg = TARIFF_CONFIGS[periodKey]; if (!cfg) return { rows: [], totalCost: 0 };
+            const rates = cfg[tariffType]; if (!rates) return { rows: [], totalCost: 0 };
+            const rows = []; let remaining = kwh; let totalCost = 0;
             for (let i = 0; i < rates.length && remaining > 0; i++) {
                 const slab = rates[i]; const qty = Math.min(remaining, slab.limit);
                 if (qty > 0) {
-                    const rTotal = (qty * slab.p + slab.s) + (slab.extraDiff || 0);
-                    rows.push({ slab: slab.label, qty, price: slab.p, service: slab.s, diff: slab.extraDiff || 0, total: rTotal });
-                    remaining -= qty;
-                }
-            } return rows;
+                    const rowTotal = (qty * slab.p + slab.s) + (slab.extraDiff || 0);
+                    rows.push({ slab: slab.label, qty, price: slab.p, service: slab.s, diff: slab.extraDiff || 0, total: rowTotal });
+                    totalCost += rowTotal;
+                } remaining -= qty;
+            } return { rows, totalCost };
         }
 
-        function calculateTariffs() {
-            const type = document.getElementById("tariffType").value;
-            const periodSelect = document.getElementById("periodSelect").value;
-            const tbody = document.getElementById("detailsBody");
-            const theadRow = document.getElementById("tableHeadRow");
+        function applyPriorityFilters(array) {
+            const seenConsumption = new Set();
+            let phase1Data = array.filter(item => {
+                const consValue = parseFloat(item.consumption).toFixed(2);
+                if (seenConsumption.has(consValue)) return false;
+                seenConsumption.add(consValue);
+                return true;
+            });
+
+            const seenYearMonth = new Set();
+            let phase2Data = phase1Data.filter(item => {
+                const ymKey = `${String(item.year).trim()}-${String(item.month).trim()}`;
+                if (seenYearMonth.has(ymKey)) return false;
+                seenYearMonth.add(ymKey);
+                return true;
+            });
+            return phase2Data;
+        }
+
+        function renderConsumptionPreview() {
+            const tbody = document.getElementById('previewConsumptionBody');
             tbody.innerHTML = "";
-
-            // هيكلية عناوين الجدول الموحدة لعرض الشرائح التفصيلية دائماً
-            theadRow.innerHTML = `<th>م / السجل</th><th>العام/الشهر</th><th>الشريحة المطبقة</th><th>الكمية (ك.و.س)</th><th>سعر الكيلو (ج)</th><th>مقابل خدمة العملاء</th><th>فروق أخرى</th><th>الإجمالي</th>`;
-
-            if (currentMode === 'manual') {
-                const kwh = parseFloat(document.getElementById("manualKwh").value) || 0;
-                const activeKey = periodSelect === "auto_map" ? "Apr-2026" : periodSelect;
-                const rows = getTariffRowsBreakdown(kwh, type, activeKey);
-                let sumCost = 0;
-
-                document.getElementById("tableHeaderTitle").innerHTML = `<i class="fas fa-list-ol"></i> تشريح ملف اكسيل`;
-                
-                if(rows.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-light);">يرجى إدخال كمية استهلاك صحيحة...</td></tr>`;
-                }
-
-                rows.forEach(r => {
-                    sumCost += r.total;
-                    tbody.innerHTML += `<tr>
-                        <td><span class="badge badge-dark">يدوي</span></td>
-                        <td>---</td>
-                        <td><span class="badge badge-info">${r.slab}</span></td>
-                        <td>${r.qty.toFixed(2)}</td><td>${r.price}</td><td>${r.service}</td><td>${r.diff}</td>
-                        <td style="font-weight:700; color:var(--primary-color);">${r.total.toFixed(2)} ج</td>
-                    </tr>`;
-                });
-
-                document.getElementById("totalKwh").innerText = kwh.toFixed(2);
-                document.getElementById("totalTariff").innerText = sumCost.toFixed(2);
-            } else {
-                if (uploadedData.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-light);">يرجى رفع ملف الاستهلاك لتفكيك شرائحه بالتفصيل هنا...</td></tr>`;
-                    document.getElementById("totalKwh").innerText = "0";
-                    document.getElementById("totalTariff").innerText = "0.00";
-                    return;
-                }
-
-                document.getElementById("tableHeaderTitle").innerHTML = `<i class="fas fa-table"></i>شرائح الأستهلاك`;
-                
-                let grandKwh = 0; let grandCost = 0;
-
-                uploadedData.forEach((item, index) => {
-                    const finalPeriodKey = periodSelect === "auto_map" ? getSmartPeriodKey(item.year, item.month) : periodSelect;
-                    const rows = getTariffRowsBreakdown(item.consumption, type, finalPeriodKey);
-                    
-                    grandKwh += item.consumption;
-
-                    if(rows.length === 0) {
-                         tbody.innerHTML += `<tr class="record-separator">
-                            <td>${index + 1}</td>
-                            <td>${item.year}/${item.month}</td>
-                            <td colspan="5" style="color:var(--danger); text-align:center;">استهلاك صفر أو غير صحيح</td>
-                            <td>0.00 ج</td>
-                         </tr>`;
-                    }
-
-                    rows.forEach((r, rIdx) => {
-                        grandCost += r.total;
-                        // نضع كلاس تمييز record-separator على أول شريحة من كل مشترك جديد لسهولة القراءة بوضوح
-                        const isFirstRow = (rIdx === 0) ? 'class="record-separator"' : '';
-                        
-                        tbody.innerHTML += `<tr ${isFirstRow}>
-                            <td>${rIdx === 0 ? `<b>السجل ${index + 1}</b>` : ''}</td>
-                            <td>${rIdx === 0 ? `${item.year || '---'} / ${item.month || '---'}` : ''}</td>
-                            <td><span class="badge badge-info">${r.slab}</span></td>
-                            <td>${r.qty.toFixed(2)}</td>
-                            <td>${r.price}</td>
-                            <td>${r.service}</td>
-                            <td>${r.diff}</td>
-                            <td style="font-weight:700; color:var(--primary-color);">${r.total.toFixed(2)} ج</td>
-                        </tr>`;
-                    });
-                });
-
-                document.getElementById("totalKwh").innerText = grandKwh.toFixed(2);
-                document.getElementById("totalTariff").innerText = grandCost.toFixed(2);
-                document.getElementById("recordsCount").innerText = uploadedData.length;
+            if (consumptionData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="color: #64748b; padding:15px;">في انتظار الملف...</td></tr>';
+                return;
             }
+            consumptionData.forEach((rec, idx) => {
+                tbody.innerHTML += `<tr>
+                    <td>${idx + 1}</td>
+                    <td>${rec.year}</td>
+                    <td>${rec.month}</td>
+                    <td style="font-weight: 600; color: #004a99;">${rec.consumption}</td>
+                    <td><span style="color: #2e7d32; font-weight:600;"><i class="fas fa-check-circle"></i> فريد ونشط</span></td>
+                </tr>`;
+            });
         }
 
-        function handleExcelUpload(event) {
-            const file = event.target.files[0]; if (!file) return;
-            document.getElementById("fileStatus").innerText = "جاري قراءة ومعالجة الملف الفني...";
+        function handleFileUpload(file) {
+            if (!file) return;
             const reader = new FileReader();
-            reader.onload = function (e) {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const ws = workbook.Sheets[workbook.SheetNames[0]];
-                const rows = XLSX.utils.sheet_to_json(ws);
+            reader.onload = (e) => {
+                const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+                const sheet = wb.Sheets[wb.SheetNames[0]];
 
-                let consKey = "", yearKey = "", monthKey = "";
-                if (rows.length > 0) {
-                    const firstRow = rows[0];
-                    for (let key in firstRow) {
-                        const kTrim = String(key).trim();
-                        if (kTrim.includes("كمية ك و س") || kTrim.includes("ك و س") || kTrim.includes("الاستهلاك") || kTrim.includes("الكمية")) consKey = key;
-                        if (kTrim === "العام" || kTrim.includes("عام") || kTrim === "السنة" || kTrim.includes("سنة")) yearKey = key;
-                        if (kTrim === "الشهر" || kTrim.includes("شهر") || kTrim.includes("Month")) monthKey = key;
-                    }
-                }
+                let rawData = extractConsumptionColumns(sheet);
+                consumptionData = applyPriorityFilters(rawData);
 
-                if (!consKey) {
-                    alert("لم يتم العثور على حقل يحتوي على كمية الاستهلاك بالملف! يرجى التحقق من العناوين.");
-                    document.getElementById("fileStatus").innerText = "خطأ بالملف";
-                    return;
-                }
+                const badge = document.getElementById('consumptionFileInfo');
+                badge.className = "file-badge badge-success";
+                badge.innerHTML = `✅ تم تحميل واستخلاص: ${consumptionData.length} شهر مالي صحيح بنجاح`;
 
-                uploadedData = rows.map(r => ({
-                    consumption: parseFloat(r[consKey]) || 0,
-                    year: r[yearKey] ? String(r[yearKey]).trim() : "",
-                    month: r[monthKey] ? String(r[monthKey]).trim() : ""
-                })).filter(item => item.consumption >= 0);
-
-                document.getElementById("fileStatus").innerText = `✅ تم تحميل ${uploadedData.length} سجل وتشريحها بنجاح!`;
-                calculateTariffs();
+                renderConsumptionPreview();
+                document.getElementById('processBtn').disabled = consumptionData.length === 0;
             };
             reader.readAsArrayBuffer(file);
         }
 
-        function exportAllToExcel() {
-            if (uploadedData.length === 0) return;
-            const type = document.getElementById("tariffType").value;
-            const periodSelect = document.getElementById("periodSelect").value;
-            
-            const detailedReportRows = [];
-            
-            uploadedData.forEach((item, idx) => {
-                const activeKey = periodSelect === "auto_map" ? getSmartPeriodKey(item.year, item.month) : periodSelect;
-                const rows = getTariffRowsBreakdown(item.consumption, type, activeKey);
-                
-                rows.forEach(r => {
-                    detailedReportRows.push({
-                        "رقم السجل المرجعي": idx + 1,
-                        "العام": item.year,
-                        "الشهر": item.month,
-                        "إجمالي استهلاك السجل": item.consumption,
-                        "التعريفة النشطة": activeKey,
-                        "الشريحة المفككة": r.slab,
-                        "الكمية داخل الشريحة": r.qty,
-                        "سعر الكيلو (جنيه)": r.price,
-                        "مقابل خدمة العملاء": r.service,
-                        "فروق شريحة أخرى": r.diff,
-                        "إجمالي تكلفة الشريحة (جنيه)": parseFloat(r.total.toFixed(2))
-                    });
-                });
+        function extractConsumptionColumns(worksheet) {
+            const range = XLSX.utils.decode_range(worksheet['!ref'] || 'A1:A1');
+            const headers = [];
+            for (let C = range.s.c; C <= range.e.c; C++) {
+                const cell = worksheet[XLSX.utils.encode_cell({ r: range.s.r, c: C })];
+                headers.push(cell ? String(cell.v).trim() : "");
+            }
+            let consIdx = -1, yearIdx = -1, monthIdx = -1;
+            headers.forEach((h, i) => {
+                if (h.includes("کمية ك و س") || h.includes("ك و س") || h.includes("الاستهلاك") || h.includes("الكمية")) consIdx = i;
+                if (h === "العام" || h.includes("عام") || h === "السنة" || h.includes("سنة")) yearIdx = i;
+                if (h === "الشهر" || h.includes("شهر") || h.includes("Month")) monthIdx = i;
             });
 
-            const ws = XLSX.utils.json_to_sheet(detailedReportRows);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "تفاصيل الشرائح الكاملة");
-            XLSX.writeFile(wb, `تقرير_تشريح_تفصيلي_شامل_${type}.xlsx`);
+            const records = [];
+            for (let R = range.s.r + 1; R <= range.e.r; R++) {
+                let consumption = 0, year = "", month = "";
+                if (consIdx !== -1) {
+                    let cell = worksheet[XLSX.utils.encode_cell({ r: R, c: consIdx })];
+                    if (cell && cell.v !== undefined) consumption = parseFloat(cell.v) || 0;
+                }
+                if (yearIdx !== -1) {
+                    let cell = worksheet[XLSX.utils.encode_cell({ r: R, c: yearIdx })];
+                    if (cell) year = String(cell.v).trim();
+                }
+                if (monthIdx !== -1) {
+                    let cell = worksheet[XLSX.utils.encode_cell({ r: R, c: monthIdx })];
+                    if (cell) month = String(cell.v).trim();
+                }
+
+                // ========================== التعديل الذكي المطلوب هنا ==========================
+                // إذا كانت خانة العام أو الشهر فارغة، أو السطر يحتوي على نصوص الإجماليات، يتم تخطيه بالكامل ولن يدخل ضمن العد
+                if (year === "" || month === "" || year === "---" || month === "---" ||
+                    year.includes("إجمالي") || year.includes("الاجمالي") || year.toLowerCase().includes("total") ||
+                    month.includes("إجمالي") || month.includes("الاجمالي") || month.toLowerCase().includes("total")) {
+                    continue;
+                }
+                // ============================================================================
+
+                if (consumption >= 0) {
+                    records.push({ consumption, year, month });
+                }
+            }
+            return records;
         }
 
-        document.getElementById("tariffType").addEventListener("change", calculateTariffs);
-        document.getElementById("periodSelect").addEventListener("change", calculateTariffs);
+        function displayUnifiedTariffTable() {
+            if (consumptionData.length === 0) return;
+            const tariffType = document.getElementById('tariffTypeSelector').value;
+            const tbody = document.getElementById('unifiedTariffBody');
+            let html = ''; let grandTotal = 0; let totalKwh = 0;
 
-        window.onload = function () { selectMode('manual'); };
+            consumptionData.forEach((rec) => {
+                const monthLabel = `${rec.year} - ${rec.month}`;
+                const periodKey = getEffectivePeriodKey(rec);
+                const { rows, totalCost } = getTariffRowsForMonth(rec.consumption, tariffType, periodKey);
+                grandTotal += totalCost;
+                totalKwh += rec.consumption;
+
+                rows.forEach((row, i) => {
+                    if (i === 0) {
+                        html += `<tr>
+                            <td rowspan="${rows.length}" style="font-weight:800; vertical-align:middle; background:#f8fafc; border-left:3px solid #004a99;">${monthLabel}<br><small>(${totalCost.toFixed(2)} ج)</small></td>
+                            <td rowspan="${rows.length}" style="vertical-align:middle; font-size:10px; background:#f8fafc; font-weight: 600; color: #004a99;">${periodKey}</td>
+                            <td style="text-align:right;">${row.slab}</td><td>${row.qty.toFixed(2)}</td><td>${row.price}</td><td>${row.service}</td><td>${row.diff}</td><td style="font-weight:700;">${row.total.toFixed(2)}</td>
+                        </tr>`;
+                    } else {
+                        html += `<tr><td>${row.slab}</td><td>${row.qty.toFixed(2)}</td><td>${row.price}</td><td>${row.service}</td><td>${row.diff}</td><td style="font-weight:700;">${row.total.toFixed(2)}</td></tr>`;
+                    }
+                });
+            });
+            tbody.innerHTML = html;
+            document.getElementById('unifiedTariffFoot').innerHTML = `<tr class="total-row">
+                <td colspan="3" style="text-align:left;">الإجمالي العام الكلي:</td>
+                <td>${totalKwh.toFixed(2)} ك و س</td>
+                <td colspan="3"></td>
+                <td>${grandTotal.toFixed(2)} ج</td>
+            </tr>`;
+            document.getElementById('downloadTariffTableBtn').style.display = 'inline-flex';
+        }
+
+        function downloadTable(tableId, fileName) {
+            const table = document.getElementById(tableId);
+            const wb = XLSX.utils.table_to_book(table, { sheet: "تقرير الشرائح" });
+            XLSX.writeFile(wb, `${fileName}.xlsx`);
+        }
+
+        document.getElementById('consumptionFileInput').addEventListener('change', (e) => { handleFileUpload(e.target.files[0]); });
+        document.getElementById('processBtn').addEventListener('click', displayUnifiedTariffTable);
+        document.getElementById('downloadTariffTableBtn').addEventListener('click', () => { downloadTable('unifiedTariffTable', 'تقرير_حسابات_الشرائح_الشهري'); });
+        document.getElementById('recalcBtn').addEventListener('click', () => {
+            if (consumptionData.length > 0) {
+                displayUnifiedTariffTable();
+            } else { alert("يرجى رفع ملف استهلاك أولاً"); }
+        });
     </script>
 </body>
 
